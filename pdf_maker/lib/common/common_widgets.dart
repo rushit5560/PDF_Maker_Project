@@ -55,3 +55,27 @@ BoxDecoration containerBackgroundGradient() {
     ),
   );
 }
+
+InputDecoration fileNameFieldDecoration() {
+  return InputDecoration(
+    hintText: 'File Name',
+    isDense: true,
+    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: AppColor.kBorderGradientColor3),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: AppColor.kBorderGradientColor3),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: AppColor.kBorderGradientColor3),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: const BorderSide(color: AppColor.kBorderGradientColor3),
+    ),
+  );
+}

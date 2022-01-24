@@ -1,10 +1,11 @@
 import 'dart:io';
+import 'package:external_path/external_path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
+import 'package:pdf_maker/common/field_validation.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_merger/pdf_merger.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -19,6 +20,8 @@ class PdfMergeScreen extends StatefulWidget {
 }
 
 class _PdfMergeScreenState extends State<PdfMergeScreen> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController fileNameController = TextEditingController();
   List<PlatformFile>? files;
   List<String> filesPath = [];
   String? singleFile;
@@ -29,6 +32,7 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
       print('Files : ${widget.files}');
     }
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           const MainBackgroundWidget(),
@@ -58,6 +62,8 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                       ),
                     ),
                   ),
+                  customTextField(),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -94,12 +100,71 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
-                GestureDetector(
-                  onTap: () => makePdfFunction(),
+                Container(),
+                /*GestureDetector(
+                  onTap: () => makePdfFunction(fileNameController),
                   child: const Icon(Icons.check_rounded),
-                ),
+                ),*/
               ],
             )),
+      ),
+    );
+  }
+
+  Widget customTextField() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Form(
+              key: formKey,
+              child: TextFormField(
+                controller: fileNameController,
+                maxLines: 1,
+                keyboardType: TextInputType.text,
+                validator: (value) => FieldValidator().validateFileName(fileNameController.text.trim()),
+                decoration: fileNameFieldDecoration(),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {
+                if (formKey.currentState!.validate()){
+                  makePdfFunction(fileNameController);
+                  if (kDebugMode) {
+                    print('Name : ${fileNameController.text.trim()}');
+                  }
+
+                }
+              },
+              child: Container(
+                decoration: borderGradientDecoration(),
+                child: Padding(
+                  padding: const EdgeInsets.all(3),
+                  child: Container(
+                    decoration: containerBackgroundGradient(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            "Done",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -141,18 +206,19 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
     );
   }
 
-  makePdfFunction() async {
+  makePdfFunction(TextEditingController fileNameController) async {
     if(widget.files.isNotEmpty) {
       for(int i = 0; i < widget.files.length; i++){
         filesPath.add(widget.files[i].path);
       }
-      Directory tempDir = await getTemporaryDirectory();
-      String outPutPath = '${tempDir.path}' '/newMergePdf1' '.pdf';
+      String directory = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOCUMENTS);
+      // Directory tempDir = await getTemporaryDirectory();
+      String outPutPath = '$directory' '/${fileNameController.text.trim()}' '.pdf';
 
       MergeMultiplePDFResponse response  = await PdfMerger.mergeMultiplePDF(paths: filesPath, outputDirPath: outPutPath);
 
       if(response.status == 'success') {
-        Get.snackbar('Directory Path', '${response.message}');
+        Get.snackbar('Directory Path', 'Saved In Document Folder');
         if (kDebugMode) {
           print('msgs : ${response.response}');
         }
