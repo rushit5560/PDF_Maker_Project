@@ -8,6 +8,7 @@ import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/field_validation.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_merger/pdf_merger.dart';
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfMergeScreen extends StatefulWidget {
@@ -46,7 +47,27 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                   Expanded(
                     child: Container(
                       margin: const EdgeInsets.all(10),
-                      child: GridView.builder(
+                      child: ReorderableGridView.count(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        onReorder: (oldIndex, newIndex) {
+                          File path = widget.files.removeAt(oldIndex);
+                          widget.files.insert(newIndex, path);
+                        },
+                        children: [
+                          for(int i = 0; i < widget.files.length; i++)
+                            Container(
+                              key: ValueKey(widget.files[i]),
+                              child: SfPdfViewer.file(
+                                File("${widget.files[i]}"),
+                                pageLayoutMode: PdfPageLayoutMode.continuous,
+                              ),
+                            )
+
+                        ],
+                      ),
+                      /*child: GridView.builder(
                         itemCount: widget.files.length,
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -59,7 +80,7 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                             pageLayoutMode: PdfPageLayoutMode.continuous,
                           );
                         },
-                      ),
+                      ),*/
                     ),
                   ),
                   customTextField(),
@@ -153,7 +174,7 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Text(
-                            "Done",
+                            "Save",
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
