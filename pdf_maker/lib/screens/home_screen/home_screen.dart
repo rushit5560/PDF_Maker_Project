@@ -37,6 +37,7 @@ class HomeScreen extends StatelessWidget {
                         flex: 6,
                         child: Row(
                           children: [
+                            // Single Image Module
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
@@ -49,6 +50,7 @@ class HomeScreen extends StatelessWidget {
                               child: Container(
                                 child: Column(
                                   children: [
+                                    // Multi Image Module
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
@@ -57,6 +59,7 @@ class HomeScreen extends StatelessWidget {
                                         child: const PickMultiImageModule(),
                                       ),
                                     ),
+                                    // Merge PDF Module
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () async {
@@ -72,12 +75,11 @@ class HomeScreen extends StatelessWidget {
                           ],
                         ),
                       ),
+                      // Saved PDF Module
                       Expanded(
                         flex: 3,
                         child: GestureDetector(
-                          onTap: (){
-                            // Get.to(()=> PreviousSessionScreen());
-                          },
+                          onTap: (){},
                           child: const SavedPDfModule(),
                         ),
                       ),
@@ -91,62 +93,6 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
     );
-    /*return Scaffold(
-      appBar: AppBar(title: const Text('PDF Maker')),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: ElevatedButton(
-              //onPressed: ()=> getImageFromGallery(),
-              onPressed: () {
-                pickSingleImage(context);
-              },
-              child: const Text('Pick Single Image'),
-            ),
-          ),
-          Center(
-            child: Builder(
-              builder: (context) {
-                return ElevatedButton(
-                  onPressed: () => goToPdfScreen(context),
-                  child: const Text('Select Multiple Images'),
-                );
-              },
-            ),
-          ),
-          Center(
-            child: Builder(
-              builder: (context) {
-                return ElevatedButton(
-                  onPressed: () async {
-                    FilePickerResult? result =
-                        await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['pdf'],
-                      allowMultiple: true,
-                    );
-                    if (result != null) {
-                      List<File> files =
-                          result.paths.map((path) => File(path!)).toList();
-                      if (files.length > 1) {
-                        Get.to(() => PdfMergeScreen(files: files));
-                      } else {
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text("Please Select 2 PDF"),
-                        ));
-                      }
-                    }
-                  },
-                  child: const Text('Merge PDF'),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );*/
   }
 
   pickSingleImage(context) {
@@ -164,18 +110,16 @@ class HomeScreen extends StatelessWidget {
                 GestureDetector(
                     onTap: () {
                       Get.back();
-                      getImageFromGallery();
-                    },
-                    child: const Icon(Icons.collections)),
-                const SizedBox(
-                  height: 10,
-                ),
-                GestureDetector(
-                    onTap: () {
-                      Get.back();
                       getImageFromCamera();
                     },
                     child: const Icon(Icons.camera)),
+                const SizedBox(height: 10),
+                GestureDetector(
+                    onTap: () {
+                      Get.back();
+                      getImageFromGallery();
+                    },
+                    child: const Icon(Icons.collections)),
               ],
             ),
           ),
@@ -241,4 +185,6 @@ class HomeScreen extends StatelessWidget {
       }
     }
   }
+
+
 }

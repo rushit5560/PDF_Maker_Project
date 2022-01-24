@@ -12,6 +12,7 @@ class ImgUrl {
   static const pickSingleImage = mainpath + 'pick_single_image.jpg';
   static const gallery = mainpath + 'gallery.png';
   static const camera = mainpath + 'camera.png';
+  static const leftArrow = mainpath + 'left_arrow.png';
 
 
 
