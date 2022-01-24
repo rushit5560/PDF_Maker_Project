@@ -3,20 +3,95 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
+import 'home_screen_widgets.dart';
+
+
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final homeScreenController = Get.put(HomeScreenController());
-
   final ImagePicker imagePicker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: Stack(
+        children: [
+          const MainBackgroundWidget(),
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const HeaderTextModule(),
+                Container(
+                  height: Get.height * 0.32,
+                  margin: const EdgeInsets.only(left: 10, right: 10),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 6,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  pickSingleImage(context);
+                                },
+                                child: const PickSingleImageModule(),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          goToPdfScreen(context);
+                                        },
+                                        child: const PickMultiImageModule(),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () async {
+                                          mergePdf(context);
+                                        },
+                                        child: const MergePdfModule(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: GestureDetector(
+                          onTap: (){
+                            // Get.to(()=> PreviousSessionScreen());
+                          },
+                          child: const SavedPDfModule(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+    /*return Scaffold(
       appBar: AppBar(title: const Text('PDF Maker')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +146,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );*/
   }
 
   pickSingleImage(context) {
@@ -147,6 +222,23 @@ class HomeScreen extends StatelessWidget {
       }
     } catch (e) {
       print('goToPdfScreen : $e');
+    }
+  }
+
+  mergePdf(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+      allowMultiple: true,
+    );
+    if (result != null) {
+      List<File> files = result.paths.map((path) => File(path!)).toList();
+      if (files.length > 1) {
+        Get.to(() => PdfMergeScreen(files: files));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Please Select 2 PDF")));
+      }
     }
   }
 }
