@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pdf_maker/models/onboarding_screen_model/onboarding_screen_model.dart';
 import 'package:pdf_maker/screens/home_screen/home_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pdf_maker/common/img_url.dart';
 
 class OnBoardingScreenController extends GetxController {
 
@@ -22,17 +23,17 @@ class OnBoardingScreenController extends GetxController {
 
   List<OnBoardingInfo> onBoardingPages= [
     OnBoardingInfo(
-      imageAsset: 'assets/images/service1.png',
+      imageAsset: ImgUrl.service1,
       title: 'Sports Accessories',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing slit. Morbi dapibus, sem vel dapibus pellentesque, tellus lectus',
     ),
     OnBoardingInfo(
-      imageAsset: 'assets/images/service2.png',
+      imageAsset: ImgUrl.service2,
       title: 'Sports Clothes',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing slit. Morbi dapibus, sem vel dapibus pellentesque, tellus lectus',
     ),
     OnBoardingInfo(
-      imageAsset: 'assets/images/service3.png',
+      imageAsset: ImgUrl.service3,
       title: 'Sports Shoes',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing slit. Morbi dapibus, sem vel dapibus pellentesque, tellus lectus',
     ),

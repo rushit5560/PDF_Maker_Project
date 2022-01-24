@@ -21,8 +21,7 @@ class OnBoardingScreen extends StatelessWidget {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(onBoardingScreenController
-                        .onBoardingPages[index].imageAsset,
+                    Image.asset(onBoardingScreenController.onBoardingPages[index].imageAsset,
                       height: Get.height * 0.35,),
                     const SizedBox(height: 20),
                     Padding(

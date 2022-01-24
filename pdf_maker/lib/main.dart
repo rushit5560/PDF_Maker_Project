@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Final Demo - New Implementation',
+      debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
   }
