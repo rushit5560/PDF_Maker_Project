@@ -49,6 +49,11 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^19.4.43-beta
   shared_preferences: ^2.0.12
   external_path: ^1.0.1
+  google_sign_in: ^5.1.0
+  flutter_login_facebook: ^1.2.0
+  firebase_auth:
+  firebase_core:
+  cloud_firestore:
 
 dev_dependencies:
   flutter_test:

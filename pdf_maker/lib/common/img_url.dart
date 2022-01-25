@@ -13,6 +13,8 @@ class ImgUrl {
   static const gallery = mainpath + 'gallery.png';
   static const camera = mainpath + 'camera.png';
   static const leftArrow = mainpath + 'left_arrow.png';
+  static const google = mainpath + 'google.png';
+  static const facebook = mainpath + 'facebook.png';
 
 
 
