@@ -5,22 +5,23 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
+import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/field_validation.dart';
 import 'package:pdf_maker/common/img_url.dart';
+import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_screen_controller.dart';
 import 'package:pdf_merger/pdf_merger.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfMergeScreen extends StatefulWidget {
-  List<File> files;
-
-  PdfMergeScreen({Key? key, required this.files}) : super(key: key);
-
+  // List<File> files;
+  // PdfMergeScreen({Key? key, required this.files}) : super(key: key);
   @override
   State<PdfMergeScreen> createState() => _PdfMergeScreenState();
 }
 
 class _PdfMergeScreenState extends State<PdfMergeScreen> {
+  final pdfMergeScreenController = Get.find<PdfMergeScreenController>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController fileNameController = TextEditingController();
   List<PlatformFile>? files;
@@ -29,11 +30,8 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print('Files : ${widget.files}');
-    }
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           const MainBackgroundWidget(),
@@ -52,39 +50,25 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                         onReorder: (oldIndex, newIndex) {
-                          File path = widget.files.removeAt(oldIndex);
-                          widget.files.insert(newIndex, path);
+                          File path = pdfMergeScreenController.files.removeAt(oldIndex);
+                          pdfMergeScreenController.files.insert(newIndex, path);
                         },
                         children: [
-                          for(int i = 0; i < widget.files.length; i++)
+                          for(int i = 0; i < pdfMergeScreenController.files.length; i++)
                             Container(
-                              key: ValueKey(widget.files[i]),
+                              key: ValueKey(pdfMergeScreenController.files[i]),
                               child: SfPdfViewer.file(
-                                File("${widget.files[i]}"),
+                                File(pdfMergeScreenController.files[i].path),
                                 pageLayoutMode: PdfPageLayoutMode.continuous,
+
                               ),
                             )
 
                         ],
                       ),
-                      /*child: GridView.builder(
-                        itemCount: widget.files.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemBuilder: (context, i) {
-                          return SfPdfViewer.file(
-                            File("${widget.files[i]}"),
-                            pageLayoutMode: PdfPageLayoutMode.continuous,
-                          );
-                        },
-                      ),*/
                     ),
                   ),
                   customTextField(),
-                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -109,9 +93,7 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                  onTap: () {
-                    showAlertDialog(context);
-                  },
+                  onTap: () => showAlertDialog(context),
                   child: Image.asset(ImgUrl.leftArrow, scale: 2.5),
                 ),
                 const Text(
@@ -123,8 +105,8 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                 ),
                 Container(),
                 /*GestureDetector(
-                  onTap: () => makePdfFunction(fileNameController),
-                  child: const Icon(Icons.check_rounded),
+                  onTap: () => addPDFFile(),
+                    child: const Icon(Icons.add_rounded, size: 30),
                 ),*/
               ],
             )),
@@ -145,6 +127,7 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                 maxLines: 1,
                 keyboardType: TextInputType.text,
                 validator: (value) => FieldValidator().validateFileName(fileNameController.text.trim()),
+                cursorColor: AppColor.kBorderGradientColor3,
                 decoration: fileNameFieldDecoration(),
               ),
             ),
@@ -159,7 +142,6 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                   if (kDebugMode) {
                     print('Name : ${fileNameController.text.trim()}');
                   }
-
                 }
               },
               child: Container(
@@ -189,6 +171,18 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
       ),
     );
   }
+
+  /*addPDFFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+      allowMultiple: true,
+    );
+    if (result != null) {
+      pdfMergeScreenController.files.value = result.paths.map((path) => File(path!)).toList();
+
+    }
+  }*/
 
   showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
@@ -228,9 +222,9 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
   }
 
   makePdfFunction(TextEditingController fileNameController) async {
-    if(widget.files.isNotEmpty) {
-      for(int i = 0; i < widget.files.length; i++){
-        filesPath.add(widget.files[i].path);
+    if(pdfMergeScreenController.files.isNotEmpty) {
+      for(int i = 0; i < pdfMergeScreenController.files.length; i++){
+        filesPath.add(pdfMergeScreenController.files[i].path);
       }
       String directory = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOCUMENTS);
       // Directory tempDir = await getTemporaryDirectory();

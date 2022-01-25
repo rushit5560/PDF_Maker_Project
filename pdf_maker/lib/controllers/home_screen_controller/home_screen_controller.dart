@@ -8,6 +8,9 @@ class HomeScreenController extends GetxController {
   RxList<File> captureImageList = RxList<File>();
   File? file;
   RxDouble rotation = 0.0.obs;
+  RxInt crossAxisCount = 2.obs;
+  RxDouble minScale = 1.0.obs;
+  RxDouble maxScale = 5.0.obs;
 
 
   loading() {

@@ -28,54 +28,65 @@ class ImageListScreen extends StatelessWidget {
                 children: [
                   customAppBar(context),
                   const SizedBox(height: 15),
-                  Expanded(
-                    child: Obx(
-                        () => homeScreenController.captureImageList.isEmpty
-                            ? const Center(child: Text('Please Add Image'))
-                            : ReorderableGridView.count(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          // childAspectRatio: 1.5,
-                          onReorder: (oldIndex, newIndex) {
-                            File path = homeScreenController.captureImageList.removeAt(oldIndex);
-                            homeScreenController.captureImageList.insert(newIndex, path);
-                          },
-                          children: [
-                            for(int i = 0; i < homeScreenController.captureImageList.length; i++)
-                              Container(
-                                key: ValueKey(homeScreenController.captureImageList[i]),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: FileImage(File(homeScreenController.captureImageList[i].path)),
-                                          fit: BoxFit.cover,
+                  Obx(
+                    ()=> Expanded(
+                      child: InteractiveViewer(
+                        minScale: homeScreenController.minScale.value,
+                        maxScale: homeScreenController.maxScale.value,
+                        onInteractionUpdate: (scaleUpdateDetails) {
+                          if(scaleUpdateDetails.scale > 1) {
+                            homeScreenController.crossAxisCount.value = 1;
+                          }
+                        },
+                        child: Obx(
+                            () => homeScreenController.captureImageList.isEmpty
+                                ? const Center(child: Text('Please Add Image'))
+                                : ReorderableGridView.count(
+                              crossAxisCount: homeScreenController.crossAxisCount.value,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              // childAspectRatio: 1.5,
+                              onReorder: (oldIndex, newIndex) {
+                                File path = homeScreenController.captureImageList.removeAt(oldIndex);
+                                homeScreenController.captureImageList.insert(newIndex, path);
+                              },
+                              children: [
+                                for(int i = 0; i < homeScreenController.captureImageList.length; i++)
+                                  Container(
+                                    key: ValueKey(homeScreenController.captureImageList[i]),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: FileImage(File(homeScreenController.captureImageList[i].path)),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
 
-                                    // Image.file(File(homeScreenController.captureImageList[i].path), fit: BoxFit.cover,),
-                                    Positioned(
-                                      top: 10,
-                                      right: 10,
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          print('index : $i');
-                                          homeScreenController.captureImageList.removeAt(i);
-                                        },
-                                        child: const Icon(Icons.delete_rounded, color: Colors.red),
-                                      ),
+                                        // Image.file(File(homeScreenController.captureImageList[i].path), fit: BoxFit.cover,),
+                                        Positioned(
+                                          top: 10,
+                                          right: 10,
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              print('index : $i');
+                                              homeScreenController.captureImageList.removeAt(i);
+                                            },
+                                            child: const Icon(Icons.delete_rounded, color: Colors.red),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                          ],
+                                  ),
+                              ],
+                            ),
                         ),
+                      ),
                     ),
                   ),
                 ],

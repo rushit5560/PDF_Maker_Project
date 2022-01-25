@@ -11,6 +11,7 @@ class MainBackgroundWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: Get.height,
+      width: Get.width,
       child: Image.asset(
         ImgUrl.background2,
         fit: BoxFit.cover,
@@ -60,7 +61,7 @@ InputDecoration fileNameFieldDecoration() {
   return InputDecoration(
     hintText: 'File Name',
     isDense: true,
-    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
       borderSide: const BorderSide(color: AppColor.kBorderGradientColor3),

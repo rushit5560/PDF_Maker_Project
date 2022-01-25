@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_screen_controller.dart';
 import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
@@ -15,6 +16,7 @@ import 'home_screen_widgets.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final homeScreenController = Get.put(HomeScreenController());
+  final pdfMergeScreenController = Get.put(PdfMergeScreenController());
   final ImagePicker imagePicker = ImagePicker();
 
   @override
@@ -176,9 +178,9 @@ class HomeScreen extends StatelessWidget {
       allowMultiple: true,
     );
     if (result != null) {
-      List<File> files = result.paths.map((path) => File(path!)).toList();
-      if (files.length > 1) {
-        Get.to(() => PdfMergeScreen(files: files));
+      pdfMergeScreenController.files.value = result.paths.map((path) => File(path!)).toList();
+      if (pdfMergeScreenController.files.length > 1) {
+        Get.to(() => PdfMergeScreen());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Please Select 2 PDF")));
