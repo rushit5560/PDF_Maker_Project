@@ -14,14 +14,18 @@ class LoginScreen extends StatelessWidget {
         children: [
           const MainBackgroundWidget(),
 
-          SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                welcomeText(),
+          Obx(
+            ()=> loginScreenController.isLoading.value
+            ? const Center(child: CircularProgressIndicator())
+            : SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  welcomeText(),
 
-                socialLogin()
-              ],
+                  socialLogin()
+                ],
+              ),
             ),
           )
 

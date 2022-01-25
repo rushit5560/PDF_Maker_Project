@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -136,12 +137,16 @@ class CustomAppBar extends StatelessWidget {
           for(int i = 0; i < homeScreenController.captureImageList.length; i++){
             localList.add(homeScreenController.captureImageList[i].path);
           }
-          print('localList : $localList');
+          if (kDebugMode) {
+            print('localList : $localList');
+          }
 
           if(localList.isNotEmpty){
             await localStorage.storeSingleImageList(localList);
           }
         }
+        Get.back();
+        Get.back();
       },
     );
 

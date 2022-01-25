@@ -9,6 +9,7 @@ import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_scre
 import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
+import 'package:pdf_maker/screens/saved_pdf_screen/saved_pdf_screen.dart';
 import 'home_screen_widgets.dart';
 
 
@@ -81,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                       Expanded(
                         flex: 3,
                         child: GestureDetector(
-                          onTap: (){},
+                          onTap: ()=> Get.to(()=> SavedPdfScreen()),
                           child: const SavedPDfModule(),
                         ),
                       ),

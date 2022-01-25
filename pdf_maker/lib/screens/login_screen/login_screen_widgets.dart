@@ -23,12 +23,7 @@ class welcomeText extends StatelessWidget {
 }
 
 class socialLogin extends StatelessWidget {
-
   final loginScreenController = Get.find<LoginScreenController>();
-
-  //Connectivity connectivity = Connectivity();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +68,14 @@ class socialLogin extends StatelessWidget {
         GestureDetector(
           onTap: (){
             //facebookAuthentication(context);
+            loginScreenController.isLoading(true);
             _onPressedLogInButton().then((value) {
               if(loginScreenController.profile1!.userId.isNotEmpty){
                 Get.to(() => HomeScreen());
               }
 
             });
+            loginScreenController.isLoading(false);
           },
           child: Padding(
             padding: const EdgeInsets.all(5),
@@ -116,7 +113,7 @@ class socialLogin extends StatelessWidget {
 
         GestureDetector(
           onTap: (){
-            Get.to(() => HomeScreen());
+            Get.off(() => HomeScreen());
           },
           child: const Text("Skip", style: TextStyle(
              fontSize: 19, decoration: TextDecoration.underline
@@ -155,6 +152,7 @@ class socialLogin extends StatelessWidget {
     // } catch (error) {
     //   print(error);
     // }
+    loginScreenController.isLoading(true);
     final FirebaseAuth auth = FirebaseAuth.instance;
     final GoogleSignIn googleSignIn = GoogleSignIn();
     googleSignIn.signOut();
@@ -174,6 +172,7 @@ class socialLogin extends StatelessWidget {
         Get.to(() => HomeScreen());
       }
     }
+    loginScreenController.isLoading(false);
   }
 
   Future<void> _onPressedLogInButton() async {
