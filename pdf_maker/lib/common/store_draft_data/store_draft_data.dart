@@ -20,4 +20,13 @@ class LocalStorage {
       print('Sublist New : ${prefs.getStringList(singleImageListKey)}');
     }
   }
+
+  Future<List<String>> getStorageImageList() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> storageList = prefs.getStringList(singleImageListKey) ?? [];
+    if (kDebugMode) {
+      print('storageList : $storageList');
+    }
+    return storageList;
+  }
 }
