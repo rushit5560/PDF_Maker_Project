@@ -8,7 +8,8 @@ import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/screens/home_screen/home_screen.dart';
 
 class welcomeText extends StatelessWidget {
-  const welcomeText({Key? key}) : super(key: key);
+  welcomeText({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +21,8 @@ class welcomeText extends StatelessWidget {
   }
 }
 
-class socialLogin extends StatefulWidget {
-  //const socialLogin({Key? key}) : super(key: key);
+class socialLogin extends StatelessWidget {
   final FacebookLogin  plugin = FacebookLogin(debug: true);
-
-  @override
-  _socialLoginState createState() => _socialLoginState();
-}
-
-class _socialLoginState extends State<socialLogin> {
   //Connectivity connectivity = Connectivity();
   FacebookAccessToken? _token;
   FacebookUserProfile? _profile;
@@ -182,7 +176,7 @@ class _socialLoginState extends State<socialLogin> {
       UserCredential result = await auth.signInWithCredential(authCredential);
       // User? user = result.user;
 
-      if (result != null) {
+      if (result.toString().isNotEmpty) {
         Get.to(() => HomeScreen());
       }
     }

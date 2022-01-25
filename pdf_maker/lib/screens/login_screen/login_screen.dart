@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
+import 'package:pdf_maker/controllers/login_screen_controller/login_screen_controller.dart';
 import 'package:pdf_maker/screens/login_screen/login_screen_widgets.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreen extends StatelessWidget {
+  final loginScreenController = Get.put(LoginScreenController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const welcomeText(),
+                welcomeText(),
 
                 socialLogin()
               ],
