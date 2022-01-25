@@ -16,18 +16,16 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          MainBackgroundWidget(),
+          const MainBackgroundWidget(),
 
           SafeArea(
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  welcomeText(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const welcomeText(),
 
-                  socialLogin()
-                ],
-              ),
+                socialLogin()
+              ],
             ),
           )
 

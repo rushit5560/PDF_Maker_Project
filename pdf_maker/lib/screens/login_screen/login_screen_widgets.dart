@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/screens/home_screen/home_screen.dart';
@@ -14,12 +12,10 @@ class welcomeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        "Welcome to Scan4PDF",
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 30, fontFamily: "", fontWeight: FontWeight.bold),
-      ),
+    return const Text(
+      "Welcome to Scan4PDF",
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
     );
   }
 }
@@ -71,11 +67,10 @@ class _socialLoginState extends State<socialLogin> {
                         ImgUrl.google,
                         scale: 2.5,
                       ),
-                      SizedBox(width: 15),
-                      Text(
+                      const SizedBox(width: 15),
+                      const Text(
                         "Login With Google",
                         style: TextStyle(
-                          fontFamily: "",
                           fontSize: 20,
                         ),
                       ),
@@ -114,11 +109,11 @@ class _socialLoginState extends State<socialLogin> {
                         ImgUrl.facebook,
                         scale: 2.5,
                       ),
-                      SizedBox(width: 15),
-                      Text(
+                      const SizedBox(width: 15),
+                      const Text(
                         "Login With Facebook",
                         style: TextStyle(
-                          fontFamily: "",
+
                           fontSize: 20,
                         ),
                       ),
@@ -129,17 +124,15 @@ class _socialLoginState extends State<socialLogin> {
             ),
           ),
         ),
-        SizedBox(height: 20,),
+        const SizedBox(height: 20),
 
         GestureDetector(
           onTap: (){
             Get.to(() => HomeScreen());
           },
-          child: Container(
-            child: Text("Skip", style: TextStyle(
-              fontFamily: "", fontSize: 19, decoration: TextDecoration.underline
-            ),),
-          ),
+          child: const Text("Skip", style: TextStyle(
+             fontSize: 19, decoration: TextDecoration.underline
+          ),),
         )
       ],
     );
@@ -187,7 +180,7 @@ class _socialLoginState extends State<socialLogin> {
 
       // Getting users credential
       UserCredential result = await auth.signInWithCredential(authCredential);
-      User? user = result.user;
+      // User? user = result.user;
 
       if (result != null) {
         Get.to(() => HomeScreen());
