@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/img_url.dart';
+import 'package:pdf_maker/controllers/login_screen_controller/login_screen_controller.dart';
 import 'package:pdf_maker/screens/home_screen/home_screen.dart';
 
 class welcomeText extends StatelessWidget {
@@ -22,19 +23,12 @@ class welcomeText extends StatelessWidget {
 }
 
 class socialLogin extends StatelessWidget {
-  final FacebookLogin  plugin = FacebookLogin(debug: true);
-  //Connectivity connectivity = Connectivity();
-  FacebookAccessToken? _token;
-  FacebookUserProfile? _profile;
-  String? _imageUrl;
-  String? _email;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _updateLoginInfo();
-  }
+  final loginScreenController = Get.find<LoginScreenController>();
+
+  //Connectivity connectivity = Connectivity();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +74,7 @@ class socialLogin extends StatelessWidget {
           onTap: (){
             //facebookAuthentication(context);
             _onPressedLogInButton().then((value) {
-              if(_profile!.userId.isNotEmpty){
+              if(loginScreenController.profile1!.userId.isNotEmpty){
                 Get.to(() => HomeScreen());
               }
 
@@ -183,37 +177,14 @@ class socialLogin extends StatelessWidget {
   }
 
   Future<void> _onPressedLogInButton() async {
-    await widget.plugin.logIn(
+    await loginScreenController.plugin.logIn(
         permissions: [
       FacebookPermission.publicProfile,
       FacebookPermission.email,
     ]);
-    await _updateLoginInfo();
-    await widget.plugin.logOut();
+    await loginScreenController.updateLoginInfo();
+    await loginScreenController.plugin.logOut();
   }
 
-  Future<void> _updateLoginInfo() async {
-    final plugin = widget.plugin;
-    final token = await plugin.accessToken;
-    FacebookUserProfile? profile;
-    String? email;
-    String? imageUrl;
 
-    if (token != null) {
-      print("token===$token");
-      profile = await plugin.getUserProfile();
-      print("profile===$profile");
-      if (token.permissions.contains(FacebookPermission.email.name)) {
-        email = await plugin.getUserEmail();
-      }
-      imageUrl = await plugin.getProfileImageUrl(width: 100);
-    }
-
-    setState(() {
-      _token = token;
-      _profile = profile;
-      _email = email;
-      _imageUrl = imageUrl;
-    });
-  }
 }
