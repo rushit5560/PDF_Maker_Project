@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
@@ -5,16 +7,25 @@ import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 class SavedPdfScreenController extends GetxController with GetSingleTickerProviderStateMixin {
   RxBool isLoading = false.obs;
   LocalStorage localStorage = LocalStorage();
-  List<String> storeImageList = [];
+  RxList<String> storeImageList = RxList();
+  // RxList<File> storeImageFileList = RxList();
   late TabController tabController;
 
   getStorageImages() async {
     isLoading(true);
-    storeImageList.clear();
-    storeImageList = await localStorage.getStorageImageList();
+    storeImageList.value = await localStorage.getStorageImageList();
     if(storeImageList.isEmpty) {
-      storeImageList = [];
+      storeImageList.value = [];
     }
+    isLoading(false);
+  }
+
+  updateStorageImages(int i) async {
+    isLoading(true);
+    storeImageList.removeAt(i);
+    print('Remove at $i : $storeImageList');
+    localStorage.updateStorageImageList(storeImageList);
+    getStorageImages();
     isLoading(false);
   }
 
@@ -29,5 +40,10 @@ class SavedPdfScreenController extends GetxController with GetSingleTickerProvid
   void dispose() {
     tabController.dispose();
     super.dispose();
+  }
+
+  loading() {
+    isLoading(true);
+    isLoading(false);
   }
 }

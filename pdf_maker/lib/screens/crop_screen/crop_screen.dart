@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:pdf_maker/screens/filter_screen/filter_screen.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 
 class CropScreen extends StatefulWidget {
@@ -63,7 +64,8 @@ class _CropScreenState extends State<CropScreen> {
                                               homeScreenController.loading();
                                               homeScreenController.captureImageList.add(widget.imageFile);
                                               // Get.off(()=> RotateScreen(imageFile: widget.imageFile));
-                                              Get.off(() => ImageListScreen());
+                                              // Get.off(() => ImageListScreen());
+                                              Get.off(()=> FilterScreen(imageFile: widget.imageFile));
                                             }),
                                       ),
                                     ],

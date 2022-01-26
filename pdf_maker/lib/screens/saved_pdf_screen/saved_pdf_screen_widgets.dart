@@ -138,9 +138,10 @@ class ItemDeleteButton extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         print('index : $i');
-        savedPdfScreenController.storeImageList.removeAt(i);
-        localStorage.storeSingleImageList(savedPdfScreenController.storeImageList);
-        await savedPdfScreenController.getStorageImages();
+        savedPdfScreenController.updateStorageImages(i);
+        // savedPdfScreenController.storeImageList.removeAt(i);
+        // localStorage.storeSingleImageList(savedPdfScreenController.storeImageList);
+        // await savedPdfScreenController.getStorageImages();
       },
       child: const Icon(Icons.delete_rounded, color: Colors.red),
     );
@@ -162,6 +163,7 @@ class SavedPrefsImagesModule extends StatelessWidget {
             onReorder: (oldIndex, newIndex) {
               String path = savedPdfScreenController.storeImageList.removeAt(oldIndex);
               savedPdfScreenController.storeImageList.insert(newIndex, path);
+              savedPdfScreenController.loading();
             },
             children: [
               for (int i = 0; i < savedPdfScreenController.storeImageList.length; i++)

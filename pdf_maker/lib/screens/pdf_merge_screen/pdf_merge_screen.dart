@@ -234,6 +234,8 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
 
       if(response.status == 'success') {
         Get.snackbar('Directory Path', 'Saved In Document Folder');
+        fileNameController.clear();
+        Get.back();
         if (kDebugMode) {
           print('msgs : ${response.response}');
         }

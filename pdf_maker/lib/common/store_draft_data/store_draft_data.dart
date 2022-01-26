@@ -11,7 +11,7 @@ class LocalStorage {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // List<String> tempList = prefs.getStringList(singleImageListKey) ?? [];
-    prefs.remove(singleImageListKey);
+    // prefs.remove(singleImageListKey);
     List<String> tempList = [];
     for(int i =0; i< subList.length; i++){
       tempList.add(subList[i]);
@@ -30,5 +30,12 @@ class LocalStorage {
       print('storageList : $storageList');
     }
     return storageList;
+  }
+
+  Future updateStorageImageList(List<String> localList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // prefs.remove(singleImageListKey);
+    prefs.setStringList(singleImageListKey, localList);
+    print('singleImageListKey : ${prefs.getStringList(singleImageListKey)}');
   }
 }
