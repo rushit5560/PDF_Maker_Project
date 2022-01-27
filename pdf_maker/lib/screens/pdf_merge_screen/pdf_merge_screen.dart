@@ -28,6 +28,21 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
   List<String> filesPath = [];
   String? singleFile;
 
+  // Future<bool> checkPermission() async {
+  //   await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+  //   PermissionStatus permission = await PermissionHandler()
+  //       .checkPermissionStatus(PermissionGroup.storage);
+  //   print(permission);
+  //   if (permission == PermissionStatus.neverAskAgain) {
+  //     print("Go to Settings and provide media access");
+  //     return false;
+  //   } else if (permission == PermissionStatus.granted) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +75,7 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                               child: SfPdfViewer.file(
                                 File(pdfMergeScreenController.files[i].path),
                                 pageLayoutMode: PdfPageLayoutMode.continuous,
-
+                                interactionMode: PdfInteractionMode.pan,
                               ),
                             )
 
@@ -136,9 +151,9 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: GestureDetector(
-              onTap: () {
+              onTap: () async {
                 if (formKey.currentState!.validate()){
-                  makePdfFunction(fileNameController);
+                  await makePdfFunction(fileNameController);
                   if (kDebugMode) {
                     print('Name : ${fileNameController.text.trim()}');
                   }
@@ -195,10 +210,8 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
     Widget continueButton = TextButton(
       child: const Text("Yes"),
       onPressed: () async {
-        // await _capturePng().then((value) {
-        //   Get.back();
-        //   Get.back();
-        // });
+          Get.back();
+          Get.back();
       },
     );
 
@@ -227,19 +240,19 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
         filesPath.add(pdfMergeScreenController.files[i].path);
       }
       String directory = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOCUMENTS);
-      // Directory tempDir = await getTemporaryDirectory();
       String outPutPath = '$directory' '/${fileNameController.text.trim()}' '.pdf';
 
       MergeMultiplePDFResponse response  = await PdfMerger.mergeMultiplePDF(paths: filesPath, outputDirPath: outPutPath);
 
       if(response.status == 'success') {
-        Get.snackbar('Directory Path', 'Saved In Document Folder');
-        fileNameController.clear();
-        Get.back();
+        Get.snackbar('Directory', 'Saved In Document');
         if (kDebugMode) {
           print('msgs : ${response.response}');
         }
       }
+
+      fileNameController.clear();
+      Get.back();
     }
   }
 

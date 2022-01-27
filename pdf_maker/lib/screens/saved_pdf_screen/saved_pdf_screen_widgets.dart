@@ -8,7 +8,6 @@ import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:pdf_maker/controllers/saved_pdf_screen_controller/saved_pdf_screen_controller.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
-import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 
@@ -42,9 +41,7 @@ class CustomAppBar extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    savedPdfScreenController.tabController.index == 0
-                        ? goToImageListScreen()
-                        : Get.to(()=> PdfMergeScreen());
+                    goToImageListAndMergePdfScreen();
                   },
                   child: const Icon(Icons.check_rounded),
                 ),
@@ -54,11 +51,16 @@ class CustomAppBar extends StatelessWidget {
     );
   }
 
-  goToImageListScreen() {
-    for(int i = 0; i < savedPdfScreenController.storeImageList.length; i++) {
-      homeScreenController.captureImageList.add(File(savedPdfScreenController.storeImageList[i]));
+  goToImageListAndMergePdfScreen() {
+    if(savedPdfScreenController.tabController.index == 0){
+      for(int i = 0; i < savedPdfScreenController.storeImageList.length; i++) {
+        homeScreenController.captureImageList.add(File(savedPdfScreenController.storeImageList[i]));
+      }
+      Get.off(()=> ImageListScreen());
+    } else if (savedPdfScreenController.tabController.index == 1) {
+      print('index 1 : ${savedPdfScreenController.tabController.index}');
     }
-    Get.off(()=> ImageListScreen());
+
   }
 
 

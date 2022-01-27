@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
@@ -33,7 +32,6 @@ class PdfShowScreen extends StatelessWidget {
                     maxPageWidth: 1000,
                     canChangeOrientation: true,
                     canDebug: false,
-                    // canChangePageFormat: false,
                     initialPageFormat: PdfPageFormat.a4,
                     build: (format) => generateDocument(
                       format,
@@ -47,23 +45,6 @@ class PdfShowScreen extends StatelessWidget {
           ),
         ],
       ),
-      // appBar: AppBar(
-      //   title: const Text('Pdf Maker'),
-      // ),
-
-      /*body: PdfPreview(
-        maxPageWidth: 1000,
-        canChangeOrientation: true,
-        canDebug: false,
-        // canChangePageFormat: false,
-        initialPageFormat: PdfPageFormat.a4,
-        build: (format) => generateDocument(
-          format,
-          homeScreenController.captureImageList.length,
-          homeScreenController.captureImageList,
-        ),
-      ),*/
-
     );
   }
 
@@ -87,7 +68,6 @@ class PdfShowScreen extends StatelessWidget {
                 const Text(
                   "PDF",
                   style: TextStyle(
-                      fontFamily: "",
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),

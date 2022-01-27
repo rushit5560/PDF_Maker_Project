@@ -161,7 +161,6 @@ class CustomAppBar extends StatelessWidget {
         print('No Button List : ${homeScreenController.captureImageList}');
         Get.back();
         Get.back();
-
       },
     );
 
@@ -178,6 +177,7 @@ class CustomAppBar extends StatelessWidget {
           if(localList.isNotEmpty){
             await localStorage.storeSingleImageList(localList);
           }
+          homeScreenController.captureImageList.clear();
         }
         Get.back();
         Get.back();
