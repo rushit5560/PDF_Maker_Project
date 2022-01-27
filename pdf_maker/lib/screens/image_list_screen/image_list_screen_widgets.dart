@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:edge_detection/edge_detection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
@@ -11,9 +13,15 @@ import 'package:pdf_maker/controllers/home_screen_controller/home_screen_control
 import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen.dart';
 
-class FloatingActionButtonModule extends StatelessWidget {
+class FloatingActionButtonModule extends StatefulWidget {
   FloatingActionButtonModule({Key? key}) : super(key: key);
+
+  @override
+  State<FloatingActionButtonModule> createState() => _FloatingActionButtonModuleState();
+}
+class _FloatingActionButtonModuleState extends State<FloatingActionButtonModule> {
   final homeScreenController = Get.find<HomeScreenController>();
+
   final ImagePicker imagePicker = ImagePicker();
 
   @override
@@ -31,7 +39,8 @@ class FloatingActionButtonModule extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
-                  onTap: () => getImageFromCamera(),
+                  // onTap: () => getImageFromCamera(),
+                  onTap: () async => await getImage(),
                   child: const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Icon(Icons.camera, color: Colors.black, size: 30),
@@ -53,13 +62,39 @@ class FloatingActionButtonModule extends StatelessWidget {
     );
   }
 
+  Future<void> getImage() async {
+    String? imagePath;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
+    try {
+      imagePath = (await EdgeDetection.detectEdge);
+      print("$imagePath");
+
+      if(imagePath != null) {
+        homeScreenController.captureImageList.add(File(imagePath));
+      }
+
+    } on PlatformException catch (e) {
+      imagePath = e.toString();
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    // setState(() {
+    //   _imagePath = imagePath;
+    // });
+  }
+
   getImageFromGallery() async {
     final image = await imagePicker.pickImage(source: ImageSource.gallery);
     if(image != null) {
       // Original File Store In Controller file
       homeScreenController.file = File(image.path);
       File imageFile = File(image.path);
-      Get.to(()=> CropScreen(imageFile: imageFile));
+      Get.off(()=> CropScreen(imageFile: imageFile));
     }
   }
 
@@ -72,7 +107,6 @@ class FloatingActionButtonModule extends StatelessWidget {
       Get.to(()=> CropScreen(imageFile: imageFile));
     }
   }
-
 }
 
 class CustomAppBar extends StatelessWidget {
@@ -123,9 +157,11 @@ class CustomAppBar extends StatelessWidget {
     Widget cancelButton = TextButton(
       child: const Text("No"),
       onPressed: () {
-        Get.back();
-        Get.back();
         homeScreenController.captureImageList.clear();
+        print('No Button List : ${homeScreenController.captureImageList}');
+        Get.back();
+        Get.back();
+
       },
     );
 
@@ -137,9 +173,7 @@ class CustomAppBar extends StatelessWidget {
           for(int i = 0; i < homeScreenController.captureImageList.length; i++){
             localList.add(homeScreenController.captureImageList[i].path);
           }
-          if (kDebugMode) {
-            print('localList : $localList');
-          }
+          if (kDebugMode) {print('localList : $localList');}
 
           if(localList.isNotEmpty){
             await localStorage.storeSingleImageList(localList);

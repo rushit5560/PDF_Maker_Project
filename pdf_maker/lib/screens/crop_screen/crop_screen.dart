@@ -62,9 +62,6 @@ class _CropScreenState extends State<CropScreen> {
                                               homeScreenController.isCropping.value = false;
                                               homeScreenController.cropEnable.value = false;
                                               homeScreenController.loading();
-                                              homeScreenController.captureImageList.add(widget.imageFile);
-                                              // Get.off(()=> RotateScreen(imageFile: widget.imageFile));
-                                              // Get.off(() => ImageListScreen());
                                               Get.off(()=> FilterScreen(imageFile: widget.imageFile));
                                             }),
                                       ),
@@ -157,7 +154,7 @@ class _CropScreenState extends State<CropScreen> {
                 GestureDetector(
                   onTap: () {
                     cropController.crop();
-                    Fluttertoast.showToast(msg: 'Please Wait...', toastLength: Toast.LENGTH_LONG, timeInSecForIosWeb: 1,);
+                    Fluttertoast.showToast(msg: 'Please wait...', toastLength: Toast.LENGTH_LONG, timeInSecForIosWeb: 1,);
                     homeScreenController.isCropping.value = true;
 
                   },

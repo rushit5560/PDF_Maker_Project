@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'package:edge_detection/edge_detection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
@@ -14,8 +16,13 @@ import 'home_screen_widgets.dart';
 
 
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+class _HomeScreenState extends State<HomeScreen> {
   final homeScreenController = Get.put(HomeScreenController());
   final pdfMergeScreenController = Get.put(PdfMergeScreenController());
   final ImagePicker imagePicker = ImagePicker();
@@ -43,8 +50,9 @@ class HomeScreen extends StatelessWidget {
                             // Single Image Module
                             Expanded(
                               child: GestureDetector(
-                                onTap: () {
-                                  pickSingleImage(context);
+                                onTap: () async {
+                                  // pickSingleImage(context);
+                                  await scanSingleImage();
                                 },
                                 child: const PickSingleImageModule(),
                               ),
@@ -57,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                                     Expanded(
                                       child: GestureDetector(
                                         onTap: () {
-                                          goToPdfScreen(context);
+                                          pickSingleImage(context);
                                         },
                                         child: const PickMultiImageModule(),
                                       ),
@@ -98,6 +106,34 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  Future<void> scanSingleImage() async {
+    String? imagePath;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
+    try {
+      imagePath = (await EdgeDetection.detectEdge);
+      print("$imagePath");
+
+      if(imagePath != null) {
+        homeScreenController.captureImageList.add(File(imagePath));
+        Get.to(() => ImageListScreen());
+      }
+
+    } on PlatformException catch (e) {
+      // imagePath = e.toString();
+      print('PlatformException : $e');
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    // setState(() {
+    //   _imagePath = imagePath;
+    // });
+  }
+
   pickSingleImage(context) {
     return showModalBottomSheet<void>(
       context: context,
@@ -112,17 +148,21 @@ class HomeScreen extends StatelessWidget {
               children: <Widget>[
                 GestureDetector(
                     onTap: () {
+                      // homeScreenController.selectedGalleryModule.value = 1;
                       Get.back();
-                      getImageFromCamera();
+                      getSingleImageFromGallery();
                     },
-                    child: const Icon(Icons.camera)),
+                    // child: const Icon(Icons.camera)),
+                    child: const Text('Single Image')),
                 const SizedBox(height: 10),
                 GestureDetector(
                     onTap: () {
+                      // homeScreenController.selectedGalleryModule.value = 2;
                       Get.back();
-                      getImageFromGallery();
+                      getMultipleImageFromGallery();
                     },
-                    child: const Icon(Icons.collections)),
+                    // child: const Icon(Icons.collections)),
+                  child: const Text('Multi Image')),
               ],
             ),
           ),
@@ -131,7 +171,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  getImageFromGallery() async {
+  getSingleImageFromGallery() async {
     final image = await imagePicker.pickImage(source: ImageSource.gallery);
     if (image != null) {
       // Original File Store In Controller file
@@ -141,17 +181,7 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
-  getImageFromCamera() async {
-    final image = await imagePicker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      // Original File Store In Controller file
-      homeScreenController.file = File(image.path);
-      File imageFile = File(image.path);
-      Get.to(() => CropScreen(imageFile: imageFile));
-    }
-  }
-
-  goToPdfScreen(BuildContext context) async {
+  getMultipleImageFromGallery() async {
     final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
     try {
       if (selectedImages!.isEmpty) {
@@ -172,6 +202,17 @@ class HomeScreen extends StatelessWidget {
     }
   }
 
+  // getImageFromCamera() async {
+  //   final image = await imagePicker.pickImage(source: ImageSource.camera);
+  //   if (image != null) {
+  //     // Original File Store In Controller file
+  //     homeScreenController.file = File(image.path);
+  //     File imageFile = File(image.path);
+  //     Get.to(() => CropScreen(imageFile: imageFile));
+  //   }
+  // }
+
+
   mergePdf(BuildContext context) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -188,6 +229,4 @@ class HomeScreen extends StatelessWidget {
       }
     }
   }
-
-
 }

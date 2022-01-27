@@ -1,10 +1,23 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/img_url.dart';
+import 'package:pdf_maker/controllers/filter_screen_controller/filter_screen_controller.dart';
+import 'dart:ui' as ui;
+
+import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 
 class CustomFilterAppBarModule extends StatelessWidget {
-  const CustomFilterAppBarModule({Key? key}) : super(key: key);
+  File imageFile;
+  CustomFilterAppBarModule({Key? key, required this.imageFile}) : super(key: key);
+  final filterScreenController = Get.find<FilterScreenController>();
+  final homeScreenController = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +43,15 @@ class CustomFilterAppBarModule extends StatelessWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
-                Container(),
-                /*GestureDetector(
-                  onTap: () => addPDFFile(),
-                    child: const Icon(Icons.add_rounded, size: 30),
-                ),*/
+                GestureDetector(
+                  onTap: () async {
+                    filterScreenController.isFilterSelected.value
+                        ? await convertBlackAndWhiteImage()
+                        : gotoOriginalImage(imageFile);
+
+                  },
+                    child: const Icon(Icons.check_rounded, size: 30),
+                ),
               ],
             )),
       ),
@@ -76,5 +93,36 @@ class CustomFilterAppBarModule extends StatelessWidget {
     );
   }
 
+  gotoOriginalImage(File imageFile) {
+    print('gotoOriginalImage');
+    homeScreenController.captureImageList.add(imageFile);
+    Get.off(()=> ImageListScreen());
+  }
+
+  Future convertBlackAndWhiteImage() async{
+    print('convertBlackAndWhiteImage');
+    try {
+      DateTime time = DateTime.now();
+      String imgName = "${time.hour}-${time.minute}-${time.second}";
+      print('inside');
+      RenderRepaintBoundary boundary =
+      filterScreenController.repaintKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      print(boundary);
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      print("image:===$image");
+      final directory = (await getApplicationDocumentsDirectory()).path;
+      ByteData? byteData =
+      await image.toByteData(format: ui.ImageByteFormat.png);
+      print("byte data:===$byteData");
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+      File imgFile = File('$directory/$imgName.jpg');
+      await imgFile.writeAsBytes(pngBytes);
+      homeScreenController.captureImageList.add(imgFile);
+      Get.off(()=> ImageListScreen());
+      // await saveImage();
+    } catch (e) {
+      print(e);
+    }
+  }
 
 }

@@ -32,39 +32,44 @@ class ImageListScreen extends StatelessWidget {
                           homeScreenController.changeLayoutOnGesture(details);
                         },
                         child: Obx(
-                            () => homeScreenController.captureImageList.isEmpty
-                                ? const Center(child: Text('Please Add Image'))
-                                : ReorderableGridView.count(
-                              crossAxisCount: homeScreenController.crossAxisCount.value,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              onReorder: (oldIndex, newIndex) {
-                                File path = homeScreenController.captureImageList.removeAt(oldIndex);
-                                homeScreenController.captureImageList.insert(newIndex, path);
-                              },
-                              children: [
-                                for(int i = 0; i < homeScreenController.captureImageList.length; i++)
-                                  Container(
-                                    key: ValueKey(homeScreenController.captureImageList[i]),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
+                        () => homeScreenController.captureImageList.isEmpty
+                            ? const Center(child: Text('Please Add Image'))
+                            : ReorderableGridView.count(
+                                crossAxisCount:
+                                    homeScreenController.crossAxisCount.value,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                                onReorder: (oldIndex, newIndex) {
+                                  File path = homeScreenController.captureImageList.removeAt(oldIndex);
+                                  homeScreenController.captureImageList.insert(newIndex, path);
+                                },
+                                children: [
+                                  for (int i = 0;
+                                      i <
+                                          homeScreenController
+                                              .captureImageList.length;
+                                      i++)
+                                    Container(
+                                      key: ValueKey(homeScreenController
+                                          .captureImageList[i]),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Stack(
+                                        children: [
+                                          ImageShowModule(i: i),
+                                          Positioned(
+                                            top: 10,
+                                            right: 10,
+                                            child: ItemDeleteButton(i: i),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        ImageShowModule(i: i),
-
-                                        Positioned(
-                                          top: 10,
-                                          right: 10,
-                                          child: ItemDeleteButton(i: i),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                              ],
-                            ),
-                        ),
+                                ],
+                              ),
                       ),
+                    ),
                     ),
                 ],
               ),

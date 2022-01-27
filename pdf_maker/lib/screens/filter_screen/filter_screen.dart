@@ -12,7 +12,6 @@ class FilterScreen extends StatelessWidget {
 
   final filterScreenController = Get.put(FilterScreenController());
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,35 +25,80 @@ class FilterScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  const CustomFilterAppBarModule(),
-
+                  CustomFilterAppBarModule(imageFile: imageFile),
+                  const SizedBox(height: 10),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Flexible(
-                          child: RepaintBoundary(
-                            key: filterScreenController.repaintKey,
-                            child: ColorFiltered(
-                                colorFilter: const ColorFilter.mode(
-                                Colors.white, BlendMode.saturation),
-                                child: Image.file(imageFile),
-                            ),
+                          child: Obx(
+                            () => filterScreenController.isFilterSelected.value
+                                ? RepaintBoundary(
+                                    key: filterScreenController.repaintKey,
+                                    child: ColorFiltered(
+                                      colorFilter: const ColorFilter.mode(
+                                          Colors.white, BlendMode.saturation),
+                                      child: Image.file(imageFile),
+                                    ),
+                                  )
+                                : Image.file(imageFile),
                           ),
-                          // child: RepaintBoundary(
-                          //   key: filterScreenController.repaintKey,
-                          //   child: Container(
-                          //     child: Image.file(imageFile),
-                          //     foregroundDecoration: const BoxDecoration(
-                          //       color: Colors.white,
-                          //       backgroundBlendMode: BlendMode.saturation,
-                          //     ),
-                          //   ),
-                          // ),
                         ),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  Obx(
+                    ()=> Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              filterScreenController.isFilterSelected.value = false;
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                  child: Text(
+                                    'Original',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                      fontWeight: filterScreenController.isFilterSelected.value
+                                      ? FontWeight.normal
+                                      : FontWeight.bold
+                                    ),
+                                  ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              filterScreenController.isFilterSelected.value = true;
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                  child: Text(
+                                      'Black & White',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                        fontWeight: filterScreenController.isFilterSelected.value
+                                            ? FontWeight.bold
+                                            : FontWeight.normal
+                                    ),
+                                  ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
