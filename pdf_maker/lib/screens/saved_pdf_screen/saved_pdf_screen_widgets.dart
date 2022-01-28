@@ -39,12 +39,13 @@ class CustomAppBar extends StatelessWidget {
                   style: TextStyle( fontSize: 18,
                       fontWeight: FontWeight.bold),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    goToImageListAndMergePdfScreen();
-                  },
-                  child: const Icon(Icons.check_rounded),
-                ),
+                Container(),
+                // GestureDetector(
+                //   onTap: () {
+                //     goToImageListAndMergePdfScreen();
+                //   },
+                //   child: const Icon(Icons.check_rounded),
+                // ),
               ],
             )),
       ),
@@ -111,45 +112,6 @@ class TabSelectView extends StatelessWidget {
   }
 }
 
-class ImageShowModule extends StatelessWidget {
-  int i;
-  ImageShowModule({Key? key, required this.i}) : super(key: key);
-  final savedPdfScreenController =Get.find<SavedPdfScreenController>();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: FileImage(File(savedPdfScreenController.storeImageList[i])),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-}
-
-class ItemDeleteButton extends StatelessWidget {
-  int i;
-  ItemDeleteButton({Key? key, required this.i}) : super(key: key);
-  final savedPdfScreenController =Get.find<SavedPdfScreenController>();
-  LocalStorage localStorage = LocalStorage();
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        print('index : $i');
-        savedPdfScreenController.updateStorageImages(i);
-        // savedPdfScreenController.storeImageList.removeAt(i);
-        // localStorage.storeSingleImageList(savedPdfScreenController.storeImageList);
-        // await savedPdfScreenController.getStorageImages();
-      },
-      child: const Icon(Icons.delete_rounded, color: Colors.red),
-    );
-  }
-}
-
 class SavedPrefsImagesModule extends StatelessWidget {
   SavedPrefsImagesModule({Key? key}) : super(key: key);
   final savedPdfScreenController = Get.find<SavedPdfScreenController>();
@@ -189,6 +151,62 @@ class SavedPrefsImagesModule extends StatelessWidget {
           );
   }
 }
+
+class ImageShowModule extends StatelessWidget {
+  int i;
+
+  ImageShowModule({Key? key, required this.i}) : super(key: key);
+  final savedPdfScreenController = Get.find<SavedPdfScreenController>();
+  final homeScreenController = Get.find<HomeScreenController>();
+
+  @override
+  Widget build(BuildContext context) {
+    String oneObject = savedPdfScreenController.storeImageList[i];
+    List<String> tempList = oneObject.split(',');
+
+    return GestureDetector(
+      onTap: () {
+        for(int i = 0; i < tempList.length; i++){
+          if(i == 0){
+            homeScreenController.captureImageList.add(File(tempList[i]));
+          } else {
+            String sub = tempList[i].substring(1);
+            homeScreenController.captureImageList.add(File(sub));
+          }
+          
+        }
+        Get.off(()=> ImageListScreen());
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: FileImage(File(tempList[0])),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ItemDeleteButton extends StatelessWidget {
+  int i;
+  ItemDeleteButton({Key? key, required this.i}) : super(key: key);
+  final savedPdfScreenController =Get.find<SavedPdfScreenController>();
+  LocalStorage localStorage = LocalStorage();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        print('index : $i');
+        savedPdfScreenController.updateStorageImages(i);
+      },
+      child: const Icon(Icons.delete_rounded, color: Colors.red),
+    );
+  }
+}
+
 
 class SavedPrefsPdfModule extends StatelessWidget {
   SavedPrefsPdfModule({Key? key}) : super(key: key);

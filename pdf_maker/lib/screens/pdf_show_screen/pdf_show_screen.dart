@@ -77,7 +77,8 @@ class PdfShowScreen extends StatelessWidget {
                 //   child: const Icon(Icons.check_rounded),
                 // ),
               ],
-            )),
+            ),
+        ),
       ),
     );
   }
@@ -100,8 +101,9 @@ class PdfShowScreen extends StatelessWidget {
       ),
       onPressed: () async {
         // await _capturePng().then((value) {
-          Get.back();
-          Get.back();
+        homeScreenController.captureImageList.clear();
+        Get.back();
+        Get.back();
         // });
       },
     );

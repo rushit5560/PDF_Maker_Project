@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
+
 
 class SavedPdfScreenController extends GetxController with GetSingleTickerProviderStateMixin {
   RxBool isLoading = false.obs;
