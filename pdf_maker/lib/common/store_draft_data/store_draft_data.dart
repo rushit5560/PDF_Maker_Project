@@ -2,8 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorage {
-  String singleImageListKey = 'SingleImageListKey';
+  // String singleImageListKey = 'SingleImageListKey';
   String mainImageListKey = 'MainImageListKey';
+  String mainPdfListKey = 'MainPdfListKey';
 
   Future storeSingleImageList(List<String> subList) async {
     if (kDebugMode) {print('subList : $subList');}
@@ -21,9 +22,32 @@ class LocalStorage {
 
   }
 
+  Future storePdfList(List<String> pdfList) async {
+    if (kDebugMode) {print('subList : $pdfList');}
+    String pdfListString = pdfList.toString();
+    String subString2 = pdfListString.substring(1, pdfListString.length-1);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> oldPdfList = prefs.getStringList(mainPdfListKey) ?? [];
+    oldPdfList.add(subString2);
+    prefs.setStringList(mainPdfListKey, oldPdfList);
+  }
+
+
+
+
+
+
   Future<List<String>> getStorageImageList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> storageList = prefs.getStringList(mainImageListKey) ?? [];
+    if (kDebugMode) {print('storageList : $storageList');}
+    return storageList;
+  }
+
+  Future<List<String>> getStoragePdfList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> storageList = prefs.getStringList(mainPdfListKey) ?? [];
     if (kDebugMode) {print('storageList : $storageList');}
     return storageList;
   }
@@ -33,5 +57,11 @@ class LocalStorage {
     // prefs.remove(singleImageListKey);
     prefs.setStringList(mainImageListKey, localList);
     if (kDebugMode) {print('singleImageListKey : ${prefs.getStringList(mainImageListKey)}');}
+  }
+
+  Future updateStoragePdfList(List<String> localList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setStringList(mainPdfListKey, localList);
+    if (kDebugMode) {print('singlePdfListKey : ${prefs.getStringList(mainPdfListKey)}');}
   }
 }

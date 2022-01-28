@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
+import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_screen_controller.dart';
 import 'package:pdf_maker/controllers/saved_pdf_screen_controller/saved_pdf_screen_controller.dart';
 import 'saved_pdf_screen_widgets.dart';
 
@@ -8,6 +9,7 @@ import 'saved_pdf_screen_widgets.dart';
 class SavedPdfScreen extends StatelessWidget {
   SavedPdfScreen({Key? key}) : super(key: key);
   final savedPdfScreenController =Get.put(SavedPdfScreenController());
+  final pdfMergeScreenController = Get.put(PdfMergeScreenController());
 
   @override
   Widget build(BuildContext context) {

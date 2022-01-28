@@ -8,6 +8,7 @@ import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/field_validation.dart';
 import 'package:pdf_maker/common/img_url.dart';
+import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_screen_controller.dart';
 import 'package:pdf_merger/pdf_merger.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
@@ -23,10 +24,12 @@ class PdfMergeScreen extends StatefulWidget {
 class _PdfMergeScreenState extends State<PdfMergeScreen> {
   final pdfMergeScreenController = Get.find<PdfMergeScreenController>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  LocalStorage localStorage = LocalStorage();
   TextEditingController fileNameController = TextEditingController();
   List<PlatformFile>? files;
   List<String> filesPath = [];
   String? singleFile;
+  List<String> localList = [];
 
   // Future<bool> checkPermission() async {
   //   await PermissionHandler().requestPermissions([PermissionGroup.storage]);
@@ -211,16 +214,28 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
       child: const Text("Yes"),
       onPressed: () async {
         //todo
-        
-          Get.back();
-          Get.back();
+        if(pdfMergeScreenController.files.isNotEmpty){
+          localList.clear();
+          for(int i = 0; i < pdfMergeScreenController.files.length; i++){
+            localList.add(pdfMergeScreenController.files[i].path);
+          }
+          print('localList : $localList');
+          if (kDebugMode) {print('localList : $localList');}
+        }
+
+        localStorage.storePdfList(localList);
+
+
+        pdfMergeScreenController.files.clear();
+        Get.back();
+        Get.back();
       },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       //title: Text("AlertDialog"),
-      content: const Text("Do you want to exit?"),
+      content: const Text("Do you want to save in Draft?"),
       actions: [
         cancelButton,
         continueButton,

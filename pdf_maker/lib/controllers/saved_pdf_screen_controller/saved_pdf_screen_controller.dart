@@ -7,6 +7,7 @@ class SavedPdfScreenController extends GetxController with GetSingleTickerProvid
   RxBool isLoading = false.obs;
   LocalStorage localStorage = LocalStorage();
   RxList<String> storeImageList = RxList();
+  RxList<String> storePdfList = RxList();
   // RxList<File> storeImageFileList = RxList();
   late TabController tabController;
 
@@ -19,6 +20,12 @@ class SavedPdfScreenController extends GetxController with GetSingleTickerProvid
     isLoading(false);
   }
 
+  getStoragePdfs() async {
+    isLoading(true);
+    storePdfList.value = await localStorage.getStoragePdfList();
+    isLoading(false);
+  }
+
   updateStorageImages(int i) async {
     isLoading(true);
     storeImageList.removeAt(i);
@@ -28,10 +35,20 @@ class SavedPdfScreenController extends GetxController with GetSingleTickerProvid
     isLoading(false);
   }
 
+  updateStoragePdfs(int i) async {
+    isLoading(true);
+    storePdfList.removeAt(i);
+    print('Remove at $i : $storePdfList');
+    localStorage.updateStoragePdfList(storePdfList);
+    getStoragePdfs();
+    isLoading(false);
+  }
+
   @override
   void onInit() {
     tabController = TabController(vsync: this, length: 2);
     getStorageImages();
+    getStoragePdfs();
     super.onInit();
   }
 

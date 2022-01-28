@@ -6,9 +6,12 @@ import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_screen_controller.dart';
 import 'package:pdf_maker/controllers/saved_pdf_screen_controller/saved_pdf_screen_controller.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
+import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 
 class CustomAppBar extends StatelessWidget {
@@ -210,10 +213,101 @@ class ItemDeleteButton extends StatelessWidget {
 
 class SavedPrefsPdfModule extends StatelessWidget {
   SavedPrefsPdfModule({Key? key}) : super(key: key);
+  final savedPdfScreenController = Get.find<SavedPdfScreenController>();
+  final pdfMergeScreenController = Get.find<PdfMergeScreenController>();
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('No Saved Pdf'));
+    return savedPdfScreenController.storePdfList.isEmpty
+    ? const Center(child: Text("No Saved Pdf's"))
+    : GridView.builder(
+      itemCount: savedPdfScreenController.storePdfList.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+      ),
+      itemBuilder: (context, index){
+
+        String oneObject = savedPdfScreenController.storePdfList[index];
+        List<String> tempList = oneObject.split(',');
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Stack(
+            children: [
+              PdfShowModule(i: index, filePath: tempList[index]),
+              Positioned(
+                top: 10,
+                right: 10,
+                child: PdfDeleteButton(i: index),
+              ),
+              Positioned(
+                right: 10,
+                bottom: 5,
+                child: GestureDetector(
+                  onTap: () {
+                    for(int i = 0; i < tempList.length; i++){
+                      if(i == 0){
+                        pdfMergeScreenController.files.add(File(tempList[i]));
+                      } else {
+                        String sub = tempList[i].substring(1);
+                        pdfMergeScreenController.files.add(File(sub));
+                      }
+                    }
+                    Get.off(()=> PdfMergeScreen());
+                  },
+                    child: const Icon(
+                      Icons.arrow_right_alt_outlined,
+                      color: Colors.white,
+                    ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class PdfShowModule extends StatelessWidget {
+  int i;
+  String filePath;
+
+  PdfShowModule({Key? key, required this.i, required this.filePath}) : super(key: key);
+  final savedPdfScreenController = Get.find<SavedPdfScreenController>();
+
+  @override
+  Widget build(BuildContext context) {
+    String oneObject = savedPdfScreenController.storePdfList[i];
+    List<String> tempList = oneObject.split(',');
+
+    return SfPdfViewer.file(
+      File(filePath),
+      canShowScrollHead: false,
+      enableDoubleTapZooming: false,
+      enableTextSelection: false,
+      interactionMode: PdfInteractionMode.pan,
+    );
+  }
+}
+
+class PdfDeleteButton extends StatelessWidget {
+  int i;
+  PdfDeleteButton({Key? key, required this.i}) : super(key: key);
+  final savedPdfScreenController =Get.find<SavedPdfScreenController>();
+  LocalStorage localStorage = LocalStorage();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        savedPdfScreenController.updateStoragePdfs(i);
+      },
+      child: const Icon(Icons.delete_rounded, color: Colors.red),
+    );
   }
 }
 
