@@ -258,6 +258,7 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
       }
       String directory = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOCUMENTS);
       String outPutPath = '$directory' '/${fileNameController.text.trim()}' '.pdf';
+      print('outPutPath : $outPutPath');
 
       MergeMultiplePDFResponse response  = await PdfMerger.mergeMultiplePDF(paths: filesPath, outputDirPath: outPutPath);
 
