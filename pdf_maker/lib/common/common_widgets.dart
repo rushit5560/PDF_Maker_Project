@@ -80,3 +80,16 @@ InputDecoration fileNameFieldDecoration() {
     ),
   );
 }
+
+Decoration shadowEffectDecoration() {
+  return BoxDecoration(
+      borderRadius: BorderRadius.circular(15),
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+            color: Colors.grey.shade400,
+            blurRadius: 10
+        ),
+      ]
+  );
+}

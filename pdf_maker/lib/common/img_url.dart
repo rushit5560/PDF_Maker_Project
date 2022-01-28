@@ -17,5 +17,12 @@ class ImgUrl {
   static const facebook = mainpath + 'facebook.png';
 
 
+  static const setting = mainpath + 'setting.png';
+  static const singleImage = mainpath + 'single_image.png';
+  static const mergePdf = mainpath + 'merge_pdf.png';
+  static const multipleImage = mainpath + 'multiple_image.png';
+  static const save = mainpath + 'save.png';
+
+
 
 }
