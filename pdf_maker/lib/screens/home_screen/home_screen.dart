@@ -258,9 +258,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         // Single Image Module
                         SingleImageModule(),
                         const SizedBox(width: 10),
+
                         // Merge Pdf Module
                         MergePdfModule(),
                         const SizedBox(width: 10),
+
                         // Multiple Image Module
                         MultipleImageModule(),
                       ],

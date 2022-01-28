@@ -22,6 +22,8 @@ class ImgUrl {
   static const mergePdf = mainpath + 'merge_pdf.png';
   static const multipleImage = mainpath + 'multiple_image.png';
   static const save = mainpath + 'save.png';
+  static const backOption = mainpath + 'back_option.png';
+  static const click = mainpath + 'click.png';
 
 
 
