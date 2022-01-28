@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pdf_maker/screens/on_boarding_screen/on_boarding_screen.dart';
 
 import 'screens/home_screen/home_screen.dart';
 
@@ -15,10 +16,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       title: 'Final Demo - New Implementation',
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: OnBoardingScreen(),
     );
   }
 }
