@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/controllers/on_boarding_screen_controller/on_boarding_screen_controller.dart';
-
 import 'on_boarding_screen_widgets.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   OnBoardingScreen({Key? key}) : super(key: key);
-  OnBoardingScreenController onBoardingScreenController = Get.put(OnBoardingScreenController());
+  final onBoardingScreenController = Get.put(OnBoardingScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +27,7 @@ class OnBoardingScreen extends StatelessWidget {
                     Image.asset(onBoardingScreenController.onBoardingPages[index].imageAsset,
                       height: Get.height * 0.35,),
                     const SizedBox(height: 35),
+                    // Header Text
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
@@ -42,6 +42,7 @@ class OnBoardingScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    // Description Text
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: Text(
@@ -57,6 +58,18 @@ class OnBoardingScreen extends StatelessWidget {
                 );
               },
             ),
+          ),
+
+          Positioned(
+            bottom: 25,
+            left: 20,
+            child: DotIndicatorModule(),
+          ),
+
+          Positioned(
+            right: 20,
+            bottom: 25,
+            child: NextButtonModule(),
           ),
 
         ],
