@@ -38,10 +38,7 @@ class CustomImageListScreenAppBar extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(17),
-                child: Image.asset(
-                    ImgUrl.backOption,
-                  // height: 5, width: 5,
-                ),
+                child: Image.asset(ImgUrl.backOption),
               ),
             ),
           ),

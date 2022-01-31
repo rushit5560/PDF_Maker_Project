@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/screens/splash_screen/splash_screen.dart';
 
 
@@ -18,6 +19,12 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Final Demo - New Implementation',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: AppColor.kDarkBlueColor
+        // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        //   backgroundColor: AppColor.kDarkBlueColor
+        // ),
+      ),
       home: SplashScreen(),
     );
   }

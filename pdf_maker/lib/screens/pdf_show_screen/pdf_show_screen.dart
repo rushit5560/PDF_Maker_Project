@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
+import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen_widgets.dart';
 import 'package:printing/printing.dart';
+
+
 
 class PdfShowScreen extends StatelessWidget {
   PdfShowScreen({Key? key}) : super(key: key);
@@ -16,6 +20,38 @@ class PdfShowScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.kLightBlueColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                child: CustomPdfShowScreenAppBar(),
+              ),
+              const SizedBox(height: 15),
+
+              Expanded(
+                child: PdfPreview(
+                  maxPageWidth: 1000,
+                  canChangeOrientation: true,
+                  canDebug: false,
+                  initialPageFormat: PdfPageFormat.a4,
+                  build: (format) => generateDocument(
+                    format,
+                    homeScreenController.captureImageList.length,
+                    homeScreenController.captureImageList,
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+        ),
+      ),
+    );
+    /*return Scaffold(
       body: Stack(
         children: [
           const MainBackgroundWidget(),
@@ -45,7 +81,7 @@ class PdfShowScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    );*/
   }
 
   Widget customAppBar(BuildContext context) {
