@@ -16,7 +16,7 @@ class LogoModule extends StatelessWidget {
       width: 160,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(ImgUrl.splashLogo)
+          image: AssetImage(ImgUrl.loginLogo)
         ),
       ),
     );
@@ -74,43 +74,6 @@ class SocialLoginModule extends StatelessWidget {
       ),
     );
   }
-
-
-
-  /*Future googleAuthentication(context) async {
-    loginScreenController.isLoading(true);
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    googleSignIn.signOut();
-    final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-    if (googleSignInAccount != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
-      final AuthCredential authCredential = GoogleAuthProvider.credential(
-          idToken: googleSignInAuthentication.idToken,
-          accessToken: googleSignInAuthentication.accessToken);
-
-      // Getting users credential
-      UserCredential result = await auth.signInWithCredential(authCredential);
-      // User? user = result.user;
-
-      if (result.toString().isNotEmpty) {
-        Get.to(() => HomeScreen());
-      }
-    }
-    loginScreenController.isLoading(false);
-  }*/
-
-  /*Future<void> _onPressedLogInButton() async {
-    await loginScreenController.plugin.logIn(
-        permissions: [
-      FacebookPermission.publicProfile,
-      FacebookPermission.email,
-    ]);
-    await loginScreenController.updateLoginInfo();
-    await loginScreenController.plugin.logOut();
-  }*/
-
 
 }
 

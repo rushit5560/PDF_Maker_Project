@@ -1,9 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pdf_maker/screens/on_boarding_screen/on_boarding_screen.dart';
+import 'package:pdf_maker/screens/splash_screen/splash_screen.dart';
 
-import 'screens/home_screen/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Final Demo - New Implementation',
       debugShowCheckedModeBanner: false,
-      home: OnBoardingScreen(),
+      home: SplashScreen(),
     );
   }
 }

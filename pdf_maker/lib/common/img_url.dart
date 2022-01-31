@@ -25,6 +25,7 @@ class ImgUrl {
   static const backOption = mainpath + 'back_option.png';
   static const click = mainpath + 'click.png';
   static const serviceBg = mainpath + 'serviceBg.png';
+  static const loginLogo = mainpath + 'login_logo.png';
   static const splashLogo = mainpath + 'splash_logo.png';
 
 

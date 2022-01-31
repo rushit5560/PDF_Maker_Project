@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pdf_maker/common/custom_color.dart';
+import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/splash_screen_controller/splash_screen_controller.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -7,18 +9,13 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Splash Screen On');
-    return const Scaffold(
-      // body: Image.asset(
-      //   'assets/images/splash.jpg',
-      //   // height: double.infinity,
-      //   fit: BoxFit.cover,
-      //   height: Get.height,
-      // ),
+    return Scaffold(
+      backgroundColor: AppColor.kLightBlueColor,
       body: Center(
-        child: Text(
-          'Splash Screen',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        child: Image.asset(
+            ImgUrl.splashLogo,
+          height: Get.width * 0.55,
+          width: Get.width * 0.55,
         ),
       ),
     );

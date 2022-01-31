@@ -23,17 +23,13 @@ class SplashScreenController extends GetxController {
   }
 
 
-
-
-
-
   @override
   void onInit() {
     super.onInit();
     if (kDebugMode) {
       print('Splash Controller Init Method');
     }
-    Timer(const Duration(seconds: 1), () => getOnBoardingValue());
+    Timer(const Duration(seconds: 2), () => getOnBoardingValue());
   }
 
 
