@@ -60,23 +60,26 @@ BoxDecoration containerBackgroundGradient() {
 InputDecoration fileNameFieldDecoration() {
   return InputDecoration(
     hintText: 'File Name',
+    hintStyle: const TextStyle(color: Colors.grey),
     isDense: true,
+    fillColor: Colors.white,
+    filled: true,
     contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: AppColor.kBorderGradientColor3),
+      borderSide: const BorderSide(color: Colors.transparent),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: AppColor.kBorderGradientColor3),
+      borderSide: const BorderSide(color: Colors.transparent),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: AppColor.kBorderGradientColor3),
+      borderSide: const BorderSide(color: Colors.transparent),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: AppColor.kBorderGradientColor3),
+      borderSide: const BorderSide(color: Colors.transparent),
     ),
   );
 }
