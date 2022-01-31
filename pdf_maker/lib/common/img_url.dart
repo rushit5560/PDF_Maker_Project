@@ -27,6 +27,10 @@ class ImgUrl {
   static const serviceBg = mainpath + 'serviceBg.png';
   static const loginLogo = mainpath + 'login_logo.png';
   static const splashLogo = mainpath + 'splash_logo.png';
+  static const profilePicture = mainpath + 'profile_picture.png';
+  static const aboutApp = mainpath + 'about_app.png';
+  static const help = mainpath + 'help.png';
+  static const signOut = mainpath + 'sign_out.png';
 
 
 

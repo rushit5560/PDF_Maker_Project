@@ -15,6 +15,7 @@ import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
 import 'package:pdf_maker/screens/saved_pdf_screen/saved_pdf_screen.dart';
+import 'package:pdf_maker/screens/setting_screen/setting_screen.dart';
 
 
 class CustomHomeScreenAppBar extends StatelessWidget {
@@ -45,15 +46,20 @@ class CustomHomeScreenAppBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 15),
-          Container(
-            decoration: BoxDecoration(
-              color: AppColor.kDarkBlueColor,
-              borderRadius: BorderRadius.circular(15),
+          GestureDetector(
+            onTap: () => Get.to(()=> SettingScreen(),
+              transition: Transition.rightToLeft,
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Center(
-                child: Image.asset(ImgUrl.setting),
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColor.kDarkBlueColor,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Center(
+                  child: Image.asset(ImgUrl.setting),
+                ),
               ),
             ),
           ),
