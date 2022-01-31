@@ -3,6 +3,7 @@ import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pdf_maker/screens/home_screen/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreenController extends GetxController {
   RxBool isLoading = false.obs;
@@ -46,6 +47,7 @@ class LoginScreenController extends GetxController {
 
   Future googleAuthentication(context) async {
     isLoading(true);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final FirebaseAuth auth = FirebaseAuth.instance;
     final GoogleSignIn googleSignIn = GoogleSignIn();
     googleSignIn.signOut();
@@ -59,9 +61,15 @@ class LoginScreenController extends GetxController {
 
       // Getting users credential
       UserCredential result = await auth.signInWithCredential(authCredential);
-      // User? user = result.user;
 
       if (result.toString().isNotEmpty) {
+        // All Details Save in Preference
+        prefs.setString('UserId', result.user!.uid);
+        prefs.setString('UserName', result.user!.displayName!);
+        prefs.setString('UserEmail', result.user!.email!);
+        prefs.setString('UserPhoto', result.user!.photoURL!);
+        prefs.setBool('isLoggedIn', true);
+
         Get.to(() => HomeScreen());
       }
     }

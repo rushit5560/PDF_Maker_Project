@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/img_url.dart';
+import 'package:pdf_maker/controllers/setting_screen_controller/setting_screen_controller.dart';
 
 class CustomSettingScreenAppBar extends StatelessWidget {
   CustomSettingScreenAppBar({Key? key}) : super(key: key);
@@ -57,6 +59,7 @@ class CustomSettingScreenAppBar extends StatelessWidget {
 
 class UserProfileDetailsModule extends StatelessWidget {
   UserProfileDetailsModule({Key? key}) : super(key: key);
+  final settingScreenController = Get.find<SettingScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -78,26 +81,29 @@ class UserProfileDetailsModule extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(15),
-                child: Image.asset(
-                    ImgUrl.profilePicture,
-                  height: 42,
-                  width: 42,
-                ),
+                child: settingScreenController.uPhotoUrl!.isEmpty
+                    ? Image.asset(ImgUrl.profilePicture, height: 42, width: 42)
+                    : Image.network(settingScreenController.uPhotoUrl!,
+                        height: 42, width: 42),
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'John Doe',
-              style: TextStyle(
+            Text(
+              settingScreenController.uName!.isEmpty
+              ? 'John Doe'
+              : settingScreenController.uName!,
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
             ),
             const SizedBox(height: 3),
-            const Text(
-              'johndoe@demo.com',
-              style: TextStyle(
+            Text(
+              settingScreenController.uEmail!.isEmpty
+              ? 'johndoe@demo.com'
+              : settingScreenController.uEmail!,
+              style: const TextStyle(
                 fontSize: 13,
                 color: Colors.white,
               ),
@@ -187,37 +193,44 @@ class HelpModule extends StatelessWidget {
 
 class SignOutModule extends StatelessWidget {
   SignOutModule({Key? key}) : super(key: key);
+  final settingScreenController = Get.find<SettingScreenController>();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: AppColor.kSettingModuleColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          Container(
-            height: 22,
-            width: 22,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(ImgUrl.signOut),
+    return GestureDetector(
+      onTap: () async {
+        final GoogleSignIn googleSignIn = GoogleSignIn();
+        googleSignIn.signOut();
+        await settingScreenController.clearUserDetails();
+        Get.back();
+      },
+      child: Container(
+        padding: const EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: AppColor.kSettingModuleColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            Container(
+              height: 22,
+              width: 22,
+              decoration: const BoxDecoration(
+                image: DecorationImage(image: AssetImage(ImgUrl.signOut)),
               ),
             ),
-          ),
-          const SizedBox(width: 20),
-          const Expanded(
-            child: Text(
-              'SIGNOUT',
-              style: TextStyle(
-                color: AppColor.kDarkBlueColor,
-                fontWeight: FontWeight.bold,
+            const SizedBox(width: 20),
+            const Expanded(
+              child: Text(
+                'SIGNOUT',
+                style: TextStyle(
+                  color: AppColor.kDarkBlueColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
