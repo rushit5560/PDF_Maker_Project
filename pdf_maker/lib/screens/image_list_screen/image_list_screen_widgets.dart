@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:edge_detection/edge_detection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,149 +6,138 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
+import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen.dart';
+import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
-class FloatingActionButtonModule extends StatefulWidget {
-  FloatingActionButtonModule({Key? key}) : super(key: key);
 
-  @override
-  State<FloatingActionButtonModule> createState() => _FloatingActionButtonModuleState();
-}
-class _FloatingActionButtonModuleState extends State<FloatingActionButtonModule> {
-  final homeScreenController = Get.find<HomeScreenController>();
-
-  final ImagePicker imagePicker = ImagePicker();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: borderGradientDecoration(),
-      child: Padding(
-        padding: const EdgeInsets.all(3),
-        child: Container(
-          decoration: containerBackgroundGradient(),
-          child: SizedBox(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  // onTap: () => getImageFromCamera(),
-                  onTap: () async => await getImage(),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    child: Icon(Icons.camera, color: Colors.black, size: 30),
-                  ),
-                ),
-                const VerticalDivider(indent: 5, endIndent: 5, thickness: 2),
-                GestureDetector(
-                  onTap: () => getImageFromGallery(),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                    child: Icon(Icons.collections, color: Colors.black, size: 30),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> getImage() async {
-    String? imagePath;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      imagePath = (await EdgeDetection.detectEdge);
-      print("$imagePath");
-
-      if(imagePath != null) {
-        homeScreenController.captureImageList.add(File(imagePath));
-      }
-
-    } on PlatformException catch (e) {
-      imagePath = e.toString();
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    // setState(() {
-    //   _imagePath = imagePath;
-    // });
-  }
-
-  getImageFromGallery() async {
-    final image = await imagePicker.pickImage(source: ImageSource.gallery);
-    if(image != null) {
-      // Original File Store In Controller file
-      homeScreenController.file = File(image.path);
-      File imageFile = File(image.path);
-      Get.off(()=> CropScreen(imageFile: imageFile));
-    }
-  }
-
-  getImageFromCamera() async {
-    final image = await imagePicker.pickImage(source: ImageSource.camera);
-    if(image != null) {
-      // Original File Store In Controller file
-      homeScreenController.file = File(image.path);
-      File imageFile = File(image.path);
-      Get.to(()=> CropScreen(imageFile: imageFile));
-    }
-  }
-}
-
-class CustomAppBar extends StatelessWidget {
-  CustomAppBar({Key? key}) : super(key: key);
+class CustomImageListScreenAppBar extends StatelessWidget {
+  CustomImageListScreenAppBar({Key? key}) : super(key: key);
   final homeScreenController = Get.find<HomeScreenController>();
   List<String> localList = [];
-
   LocalStorage localStorage = LocalStorage();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 50,
-      width: Get.width,
-      decoration: borderGradientDecoration(),
-      child: Padding(
-        padding: const EdgeInsets.all(3.0),
-        child: Container(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            decoration: containerBackgroundGradient(),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    showAlertDialog(context);
-                  },
-                  child: Image.asset(ImgUrl.leftArrow, scale: 2.5),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => showAlertDialog(context),
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: AppColor.kDarkBlueColor,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(17),
+                child: Image.asset(
+                    ImgUrl.backOption,
+                  // height: 5, width: 5,
                 ),
-                const Text(
-                  "Image List",
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Container(
+              decoration: shadowEffectDecoration(),
+              child: const Center(
+                child: Text(
+                  'IMAGES',
                   style: TextStyle(
-                      fontFamily: "",
+                    color: AppColor.kDarkBlueColor,
+                    fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      fontWeight: FontWeight.bold),
+                  ),
                 ),
-                GestureDetector(
-                  onTap: () => Get.off(()=> PdfShowScreen()),
-                  child: const Icon(Icons.check_rounded),
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          GestureDetector(
+            onTap: () => Get.off(()=> PdfShowScreen()),
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  color: AppColor.kDarkBlueColor,
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Image.asset(
+                  ImgUrl.click,
+                  // height: 5, width: 5,
                 ),
-              ],
-            )),
+              ),
+            ),
+          ),
+        ],
       ),
+      // child: Row(
+      //   children: [
+      //     GestureDetector(
+      //       onTap: () {
+      //         showAlertDialog(context);
+      //       },
+      //       child: Container(
+      //         decoration: BoxDecoration(
+      //           color: AppColor.kDarkBlueColor,
+      //           borderRadius: BorderRadius.circular(15),
+      //         ),
+      //         child: Padding(
+      //           padding: const EdgeInsets.all(20),
+      //           child: Center(
+      //             child: Image.asset(ImgUrl.backOption),
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //     const SizedBox(width: 15),
+      //     Expanded(
+      //       child: Container(
+      //         decoration: shadowEffectDecoration(),
+      //         child: const Padding(
+      //           padding: EdgeInsets.all(15),
+      //           child: Center(
+      //             child: Text(
+      //               'IMAGES',
+      //               style: TextStyle(
+      //                   color: AppColor.kDarkBlueColor,
+      //                   fontWeight: FontWeight.bold,
+      //                   fontSize: 18
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //     const SizedBox(width: 15),
+      //     GestureDetector(
+      //       onTap: () {},
+      //       child: Container(
+      //         decoration: BoxDecoration(
+      //           color: AppColor.kDarkBlueColor,
+      //           borderRadius: BorderRadius.circular(15),
+      //         ),
+      //         child: Padding(
+      //           padding: const EdgeInsets.all(20),
+      //           child: Center(
+      //             child: Image.asset(ImgUrl.click),
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 
@@ -205,6 +193,56 @@ class CustomAppBar extends StatelessWidget {
 
 }
 
+class SelectedImagesShowModule extends StatelessWidget {
+  SelectedImagesShowModule({Key? key}) : super(key: key);
+  final homeScreenController = Get.find<HomeScreenController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onScaleUpdate: (ScaleUpdateDetails details) {
+        print('scale : ${details.scale}');
+        homeScreenController.changeLayoutOnGesture(details);
+      },
+      child: Obx(
+        () => homeScreenController.captureImageList.isEmpty
+            ? const Center(child: Text('Please Add Image'))
+            : ReorderableGridView.count(
+                crossAxisCount: homeScreenController.crossAxisCount.value,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.75,
+                onReorder: (oldIndex, newIndex) {
+                  File path =
+                      homeScreenController.captureImageList.removeAt(oldIndex);
+                  homeScreenController.captureImageList.insert(newIndex, path);
+                },
+                children: [
+                  for (int i = 0;
+                      i < homeScreenController.captureImageList.length;
+                      i++)
+                    Container(
+                      key: ValueKey(homeScreenController.captureImageList[i]),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          ImageShowModule(i: i),
+                          Positioned(
+                            bottom: 5,
+                              child: ItemDeleteButton(i: i)),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+      ),
+    );
+  }
+}
+
 class ItemDeleteButton extends StatelessWidget {
   int i;
   ItemDeleteButton({Key? key, required this.i}) : super(key: key);
@@ -217,7 +255,18 @@ class ItemDeleteButton extends StatelessWidget {
         print('index : $i');
         homeScreenController.captureImageList.removeAt(i);
       },
-      child: const Icon(Icons.delete_rounded, color: Colors.red),
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white
+        ),
+        child: const Icon(
+          Icons.delete_rounded,
+          color: AppColor.kDarkBlueColor,
+          size: 20,
+        ),
+      ),
     );
   }
 }
@@ -238,4 +287,87 @@ class ImageShowModule extends StatelessWidget {
       ),
     );
   }
+}
+
+class FloatingActionButtonModule extends StatefulWidget {
+  FloatingActionButtonModule({Key? key}) : super(key: key);
+
+  @override
+  State<FloatingActionButtonModule> createState() => _FloatingActionButtonModuleState();
+}
+class _FloatingActionButtonModuleState extends State<FloatingActionButtonModule> {
+  final homeScreenController = Get.find<HomeScreenController>();
+
+  final ImagePicker imagePicker = ImagePicker();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () async => await getImage(),
+          child: Container(
+            height: 65,
+            width: 65,
+            decoration: shadowEffectDecoration(),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Image.asset(ImgUrl.camera),
+            ),
+          ),
+        ),
+        const SizedBox(width: 20),
+        GestureDetector(
+          onTap: () => getImageFromGallery(),
+          child: Container(
+            height: 65,
+            width: 65,
+            decoration: shadowEffectDecoration(),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Image.asset(ImgUrl.multipleImage),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> getImage() async {
+    String? imagePath;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
+    try {
+      imagePath = (await EdgeDetection.detectEdge);
+      print("$imagePath");
+
+      if(imagePath != null) {
+        homeScreenController.captureImageList.add(File(imagePath));
+      }
+
+    } on PlatformException catch (e) {
+      imagePath = e.toString();
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    // setState(() {
+    //   _imagePath = imagePath;
+    // });
+  }
+
+  getImageFromGallery() async {
+    final image = await imagePicker.pickImage(source: ImageSource.gallery);
+    if(image != null) {
+      // Original File Store In Controller file
+      homeScreenController.file = File(image.path);
+      File imageFile = File(image.path);
+      Get.off(()=> CropScreen(imageFile: imageFile));
+    }
+  }
+
 }

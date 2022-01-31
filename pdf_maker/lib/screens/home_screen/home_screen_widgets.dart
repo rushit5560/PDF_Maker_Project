@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:edge_detection/edge_detection.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,6 @@ import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_screen_controller.dart';
-import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
 import 'package:pdf_maker/screens/saved_pdf_screen/saved_pdf_screen.dart';
@@ -23,7 +23,7 @@ class CustomHomeScreenAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 60,
       child: Row(
         children: [
@@ -115,7 +115,7 @@ class SingleImageModule extends StatelessWidget {
     // We also handle the message potentially returning null.
     try {
       imagePath = (await EdgeDetection.detectEdge);
-      print("$imagePath");
+      if (kDebugMode) {print("$imagePath");}
 
       if(imagePath != null) {
         homeScreenController.captureImageList.add(File(imagePath));
@@ -124,7 +124,7 @@ class SingleImageModule extends StatelessWidget {
 
     } on PlatformException catch (e) {
       // imagePath = e.toString();
-      print('PlatformException : $e');
+      if (kDebugMode) {print('PlatformException : $e');}
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -209,7 +209,7 @@ class MultipleImageModule extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          pickSingleImage(context);
+          getMultipleImageFromGallery(context);
         },
         child: Column(
           children: [
@@ -240,7 +240,7 @@ class MultipleImageModule extends StatelessWidget {
     );
   }
 
-  pickSingleImage(context) {
+  /*pickSingleImage(context) {
     return showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -285,7 +285,7 @@ class MultipleImageModule extends StatelessWidget {
       File imageFile = File(image.path);
       Get.to(() => CropScreen(imageFile: imageFile));
     }
-  }
+  }*/
 
   getMultipleImageFromGallery(BuildContext context) async {
     final List<XFile>? selectedImages = await imagePicker.pickMultiImage();
@@ -304,14 +304,14 @@ class MultipleImageModule extends StatelessWidget {
         Get.to(() => ImageListScreen());
       }
     } catch (e) {
-      print('goToPdfScreen : $e');
+      if (kDebugMode) {print('goToImgListScreen : $e');}
     }
   }
 
 }
 
 class SavedPdfModule extends StatelessWidget {
-  SavedPdfModule({Key? key}) : super(key: key);
+  const SavedPdfModule({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
