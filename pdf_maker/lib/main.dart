@@ -20,7 +20,11 @@ class MyApp extends StatelessWidget {
       title: 'Final Demo - New Implementation',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: AppColor.kDarkBlueColor
+        primaryColor: AppColor.kDarkBlueColor,
+          tabBarTheme: const TabBarTheme(
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white,
+          ),
         // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         //   backgroundColor: AppColor.kDarkBlueColor
         // ),
