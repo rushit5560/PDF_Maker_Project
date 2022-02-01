@@ -241,45 +241,47 @@ class SavedPrefsPdfModule extends StatelessWidget {
       itemBuilder: (context, index){
         String oneObject = savedPdfScreenController.storePdfList[index];
         List<String> tempList = oneObject.split(',');
+        print('index : $index');
+        String path = '';
+        if(index == 0){
+          path = tempList[index];
+        } else {
+          path = tempList[0];
+        }
+
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(
-            alignment: Alignment.bottomCenter,
+            // alignment: Alignment.bottomCenter,
             children: [
-              PdfShowModule(i: index, filePath: tempList[index]),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Positioned(
-                      bottom: 10,
-                      child: PdfDeleteButton(i: index),
-                    ),
-                    Positioned(
-                      bottom: 10,
-                      child: GestureDetector(
-                        onTap: () {
-                          Fluttertoast.showToast(msg: 'Please wait');
-                          for(int i = 0; i < tempList.length; i++){
-                            if(i == 0){
-                              pdfMergeScreenController.files.add(File(tempList[i]));
-                            } else {
-                              String sub = tempList[i].substring(1);
-                              pdfMergeScreenController.files.add(File(sub));
-                            }
-                          }
-                          Get.off(()=> PdfMergeScreen());
-                        },
-                        child: const Icon(
-                          Icons.arrow_right_alt_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+              PdfShowModule(i: index, filePath: /*tempList[index]*/path),
+              Positioned(
+                bottom: 10,
+                left: 10,
+                child: PdfDeleteButton(i: index),
+              ),
+              Positioned(
+                bottom: 10,
+                right: 10,
+                child: GestureDetector(
+                  onTap: () {
+                    Fluttertoast.showToast(msg: 'Please wait');
+                    for(int i = 0; i < tempList.length; i++){
+                      if(i == 0){
+                        pdfMergeScreenController.files.add(File(tempList[i]));
+                      } else {
+                        String sub = tempList[i].substring(1);
+                        pdfMergeScreenController.files.add(File(sub));
+                      }
+                    }
+                    Get.off(()=> PdfMergeScreen());
+                  },
+                  child: const Icon(
+                    Icons.arrow_right_alt_outlined,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
@@ -300,6 +302,7 @@ class PdfShowModule extends StatelessWidget {
   Widget build(BuildContext context) {
     // String oneObject = savedPdfScreenController.storePdfList[i];
     // List<String> tempList = oneObject.split(',');
+    print('filePath :$filePath');
 
     return SfPdfViewer.file(
       File(filePath),
