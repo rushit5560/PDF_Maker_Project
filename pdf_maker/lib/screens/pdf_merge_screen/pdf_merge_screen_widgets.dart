@@ -174,7 +174,7 @@ class CustomTextFieldModule extends StatelessWidget {
     );
   }
 
-  makePdfFunction(TextEditingController fileNameController) async {
+  Future makePdfFunction(TextEditingController fileNameController) async {
     if(controller.files.isNotEmpty) {
       for(int i = 0; i < controller.files.length; i++){
         filesPath.add(controller.files[i].path);

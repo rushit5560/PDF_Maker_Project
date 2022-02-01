@@ -21,6 +21,7 @@ class LoginScreenController extends GetxController {
   }
 
   Future<void> updateLoginInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final plugin1 = plugin;
     final token = await plugin1.accessToken;
     FacebookUserProfile? profile;
@@ -34,12 +35,29 @@ class LoginScreenController extends GetxController {
       if (token.permissions.contains(FacebookPermission.email.name)) {
         email = await plugin1.getUserEmail();
       }
+      if(profile1!.userId.isNotEmpty){
+        String name = "${profile1!.firstName} ${profile1!.lastName!}";
+        String email = plugin1.getUserEmail().toString();
+        String photoUrl = plugin1.getProfileImageUrl(width: 100).toString();
+
+        prefs.setString('UserId', profile1!.userId);
+        prefs.setString('UserName', name);
+        prefs.setString('UserEmail', email);
+        prefs.setString('UserPhoto', photoUrl);
+        prefs.setBool('isLoggedIn', true);
+
+        String? id = prefs.getString('UserId');
+        String? username = prefs.getString('UserName');
+        String? useremail = prefs.getString('UserEmail');
+        String? userphoto = prefs.getString('UserPhoto');
+        print('id : $id \nusername : $username \nuseremail : $useremail \nuserphoto : $userphoto');
+      }
       imageUrl = await plugin1.getProfileImageUrl(width: 100);
     }
 
     //setState(() {
       _token = token;
-      profile1 = profile;
+      profile1 = profile!;
       _email = email;
       _imageUrl = imageUrl;
     //});

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreenController extends GetxController {
   RxBool isLoading = false.obs;
@@ -12,6 +13,8 @@ class HomeScreenController extends GetxController {
   RxInt crossAxisCount = 3.obs;
   RxDouble minScale = 1.0.obs;
   RxDouble maxScale = 5.0.obs;
+
+  RxBool permissionGranted = false.obs;
 
 
   changeLayoutOnGesture(ScaleUpdateDetails details) {
@@ -34,4 +37,22 @@ class HomeScreenController extends GetxController {
     isLoading(true);
     isLoading(false);
   }
+
+  Future getStoragePermission() async {
+    if (await Permission.storage.request().isGranted) {
+        permissionGranted.value = true;
+    } else if (await Permission.storage.request().isPermanentlyDenied) {
+      await openAppSettings();
+    } else if (await Permission.storage.request().isDenied) {
+        permissionGranted.value = false;
+    }
+  }
+
+  @override
+  void onInit() async {
+    await getStoragePermission();
+    super.onInit();
+  }
+
+
 }

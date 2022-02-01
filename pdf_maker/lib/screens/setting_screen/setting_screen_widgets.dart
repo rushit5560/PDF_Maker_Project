@@ -11,7 +11,7 @@ class CustomSettingScreenAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 55,
       child: Row(
         children: [
@@ -49,8 +49,6 @@ class CustomSettingScreenAppBar extends StatelessWidget {
               ),
             ),
           ),
-
-
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/login_screen_controller/login_screen_controller.dart';
 import 'package:pdf_maker/screens/home_screen/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LogoModule extends StatelessWidget {
@@ -44,10 +45,11 @@ class SocialLoginModule extends StatelessWidget {
           const SizedBox(height: 15),
 
           GestureDetector(
-            onTap: (){
+            onTap: () async {
               loginScreenController.isLoading(true);
               loginScreenController.onPressedLogInButton().then((value) {
                 if(loginScreenController.profile1!.userId.isNotEmpty){
+
                   Get.to(() => HomeScreen());
                 }
 
