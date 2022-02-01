@@ -177,30 +177,35 @@ class CustomTextFieldModule extends StatelessWidget {
   }
 
   Future makePdfFunction(TextEditingController fileNameController) async {
-    if(controller.files.isNotEmpty) {
-      for(int i = 0; i < controller.files.length; i++){
-        filesPath.add(controller.files[i].path);
-      }
-      String directory = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOCUMENTS);
-      String outPutPath = '$directory' '/${fileNameController.text.trim()}' '.pdf';
-      print('outPutPath : $outPutPath');
+    try{
+      if(controller.files.isNotEmpty) {
+        for(int i = 0; i < controller.files.length; i++){
+          filesPath.add(controller.files[i].path);
+        }
+        String directory = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOCUMENTS);
+        String outPutPath = '$directory' '/${fileNameController.text.trim()}' '.pdf';
+        print('outPutPath : $outPutPath');
 
-      MergeMultiplePDFResponse response  = await PdfMerger.mergeMultiplePDF(paths: filesPath, outputDirPath: outPutPath);
-      Fluttertoast.showToast(msg: 'Saved');
-      controller.fileNameController.clear();
-      Get.back();
+        /*MergeMultiplePDFResponse response  = */await PdfMerger.mergeMultiplePDF(paths: filesPath, outputDirPath: outPutPath);
+        Fluttertoast.showToast(msg: 'Saved');
+        controller.fileNameController.clear();
+        Get.back();
 
-      // Get.snackbar('Directory', 'Saved In Document');
-      // fileNameController.clear();
+        // Get.snackbar('Directory', 'Saved In Document');
+        // fileNameController.clear();
 
-      /*if(response.status == 'success') {
+        /*if(response.status == 'success') {
         Get.snackbar('Directory', 'Saved In Document');
         if (kDebugMode) {
           print('msgs : ${response.response}');
         }
       }*/
 
-      // Get.back();
+        // Get.back();
+      }
+    } catch(e) {
+      print('Error : $e');
+      Fluttertoast.showToast(msg: 'Please Change Name');
     }
   }
 

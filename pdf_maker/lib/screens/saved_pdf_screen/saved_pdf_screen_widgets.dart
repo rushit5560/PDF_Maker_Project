@@ -123,35 +123,38 @@ class SavedPrefsImagesModule extends StatelessWidget {
   Widget build(BuildContext context) {
     return savedPdfScreenController.storeImageList.isEmpty
         ? const Center(child: Text('No Saved Images'))
-        : ReorderableGridView.count(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            onReorder: (oldIndex, newIndex) {
-              String path = savedPdfScreenController.storeImageList.removeAt(oldIndex);
-              savedPdfScreenController.storeImageList.insert(newIndex, path);
-              savedPdfScreenController.loading();
-            },
-            children: [
-              for (int i = 0; i < savedPdfScreenController.storeImageList.length; i++)
-                Container(
-                  key: ValueKey(savedPdfScreenController.storeImageList[i]),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+        : Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: ReorderableGridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              onReorder: (oldIndex, newIndex) {
+                String path = savedPdfScreenController.storeImageList.removeAt(oldIndex);
+                savedPdfScreenController.storeImageList.insert(newIndex, path);
+                savedPdfScreenController.loading();
+              },
+              children: [
+                for (int i = 0; i < savedPdfScreenController.storeImageList.length; i++)
+                  Container(
+                    key: ValueKey(savedPdfScreenController.storeImageList[i]),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        ImageShowModule(i: i),
+                        Positioned(
+                          bottom: 10,
+                          child: ItemDeleteButton(i: i),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      ImageShowModule(i: i),
-                      Positioned(
-                        bottom: 10,
-                        child: ItemDeleteButton(i: i),
-                      ),
-                    ],
-                  ),
-                ),
-            ],
-          );
+              ],
+            ),
+        );
   }
 }
 class ImageShowModule extends StatelessWidget {
@@ -231,63 +234,66 @@ class SavedPrefsPdfModule extends StatelessWidget {
   Widget build(BuildContext context) {
     return savedPdfScreenController.storePdfList.isEmpty
     ? const Center(child: Text("No Saved PDF"))
-    : GridView.builder(
-      itemCount: savedPdfScreenController.storePdfList.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        mainAxisSpacing: 10,
-        crossAxisSpacing: 10,
-      ),
-      itemBuilder: (context, index){
-        String oneObject = savedPdfScreenController.storePdfList[index];
-        List<String> tempList = oneObject.split(',');
-        print('index : $index');
-        String path = '';
-        if(index == 0){
-          path = tempList[index];
-        } else {
-          path = tempList[0];
-        }
+    : Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: GridView.builder(
+        itemCount: savedPdfScreenController.storePdfList.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+        ),
+        itemBuilder: (context, index){
+          String oneObject = savedPdfScreenController.storePdfList[index];
+          List<String> tempList = oneObject.split(',');
+          print('index : $index');
+          String path = '';
+          if(index == 0){
+            path = tempList[index];
+          } else {
+            path = tempList[0];
+          }
 
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Stack(
-            // alignment: Alignment.bottomCenter,
-            children: [
-              PdfShowModule(i: index, filePath: /*tempList[index]*/path),
-              Positioned(
-                bottom: 10,
-                left: 10,
-                child: PdfDeleteButton(i: index),
-              ),
-              Positioned(
-                bottom: 10,
-                right: 10,
-                child: GestureDetector(
-                  onTap: () {
-                    Fluttertoast.showToast(msg: 'Please wait');
-                    for(int i = 0; i < tempList.length; i++){
-                      if(i == 0){
-                        pdfMergeScreenController.files.add(File(tempList[i]));
-                      } else {
-                        String sub = tempList[i].substring(1);
-                        pdfMergeScreenController.files.add(File(sub));
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              // alignment: Alignment.bottomCenter,
+              children: [
+                PdfShowModule(i: index, filePath: /*tempList[index]*/path),
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  child: PdfDeleteButton(i: index),
+                ),
+                Positioned(
+                  bottom: 10,
+                  right: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      Fluttertoast.showToast(msg: 'Please wait');
+                      for(int i = 0; i < tempList.length; i++){
+                        if(i == 0){
+                          pdfMergeScreenController.files.add(File(tempList[i]));
+                        } else {
+                          String sub = tempList[i].substring(1);
+                          pdfMergeScreenController.files.add(File(sub));
+                        }
                       }
-                    }
-                    Get.off(()=> PdfMergeScreen());
-                  },
-                  child: const Icon(
-                    Icons.arrow_right_alt_outlined,
-                    color: Colors.white,
+                      Get.off(()=> PdfMergeScreen());
+                    },
+                    child: const Icon(
+                      Icons.arrow_right_alt_outlined,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }
