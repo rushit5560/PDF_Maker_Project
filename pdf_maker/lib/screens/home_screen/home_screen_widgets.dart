@@ -96,7 +96,7 @@ class SingleImageModule extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             const Text(
-              'Single Image',
+              'Scan',
               maxLines: 1,
               style: TextStyle(
                 color: AppColor.kDarkBlueColor,

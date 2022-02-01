@@ -5,6 +5,7 @@ import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/setting_screen_controller/setting_screen_controller.dart';
+import 'package:pdf_maker/screens/login_screen/login_screen.dart';
 
 class CustomSettingScreenAppBar extends StatelessWidget {
   CustomSettingScreenAppBar({Key? key}) : super(key: key);
@@ -200,7 +201,8 @@ class SignOutModule extends StatelessWidget {
         final GoogleSignIn googleSignIn = GoogleSignIn();
         googleSignIn.signOut();
         await settingScreenController.clearUserDetails();
-        Get.back();
+        // Get.back();
+        Get.offAll(()=> LoginScreen());
       },
       child: Container(
         padding: const EdgeInsets.all(15),

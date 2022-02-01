@@ -363,7 +363,9 @@ class _FloatingActionButtonModuleState extends State<FloatingActionButtonModule>
       // Original File Store In Controller file
       homeScreenController.file = File(image.path);
       File imageFile = File(image.path);
-      Get.off(()=> CropScreen(imageFile: imageFile));
+      homeScreenController.captureImageList.add(imageFile);
+      Get.back();
+      // Get.off(()=> CropScreen(imageFile: imageFile));
     }
   }
 

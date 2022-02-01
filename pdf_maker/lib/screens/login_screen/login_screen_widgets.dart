@@ -58,7 +58,7 @@ class SocialLoginModule extends StatelessWidget {
             },
             child: const FacebookButtonUIModule(),
           ),
-          const SizedBox(height: 20),
+          /*const SizedBox(height: 20),
 
           GestureDetector(
             onTap: () {
@@ -71,7 +71,7 @@ class SocialLoginModule extends StatelessWidget {
                 decoration: TextDecoration.underline,
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );

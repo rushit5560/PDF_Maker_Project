@@ -43,7 +43,7 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
               decoration: shadowEffectDecoration(),
               child: const Center(
                 child: Text(
-                  'IMAGES',
+                  'MERGE PDF',
                   style: TextStyle(
                     color: AppColor.kDarkBlueColor,
                     fontWeight: FontWeight.bold,

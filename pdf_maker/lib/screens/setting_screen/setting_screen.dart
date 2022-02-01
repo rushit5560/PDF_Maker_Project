@@ -24,10 +24,10 @@ class SettingScreen extends StatelessWidget {
                 const SizedBox(height: 15),
                 UserProfileDetailsModule(),
                 const SizedBox(height: 15),
-                AboutAppModule(),
-                const SizedBox(height: 15),
-                HelpModule(),
-                const SizedBox(height: 15),
+                /*AboutAppModule(),
+                const SizedBox(height: 15),*/
+                /*HelpModule(),
+                const SizedBox(height: 15),*/
                 SignOutModule(),
                 const SizedBox(height: 15),
               ],
