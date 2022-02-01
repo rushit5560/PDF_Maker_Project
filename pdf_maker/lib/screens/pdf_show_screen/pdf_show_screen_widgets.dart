@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
@@ -82,6 +83,7 @@ class CustomPdfShowScreenAppBar extends StatelessWidget {
       ),
       onPressed: () {
         Get.back();
+        Get.back();
       },
     );
 
@@ -91,7 +93,18 @@ class CustomPdfShowScreenAppBar extends StatelessWidget {
         style: TextStyle(fontFamily: ""),
       ),
       onPressed: () async {
-        homeScreenController.captureImageList.clear();
+        if(homeScreenController.captureImageList.isNotEmpty) {
+          homeScreenController.localList.clear();
+          for(int i = 0; i < homeScreenController.captureImageList.length; i++){
+            homeScreenController.localList.add(homeScreenController.captureImageList[i].path);
+          }
+          if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
+
+          if(homeScreenController.localList.isNotEmpty){
+            await homeScreenController.localStorage.storeSingleImageList(homeScreenController.localList);
+          }
+          homeScreenController.captureImageList.clear();
+        }
         Get.back();
         Get.back();
       },
@@ -101,7 +114,7 @@ class CustomPdfShowScreenAppBar extends StatelessWidget {
     AlertDialog alert = AlertDialog(
       //title: Text("AlertDialog"),
       content: const Text(
-        "Do you want to exit?",
+        "Do you want to save in Draft ?",
         style: TextStyle(),
       ),
       actions: [

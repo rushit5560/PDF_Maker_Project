@@ -88,7 +88,7 @@ class LoginScreenController extends GetxController {
         prefs.setString('UserPhoto', result.user!.photoURL!);
         prefs.setBool('isLoggedIn', true);
 
-        Get.to(() => HomeScreen());
+        Get.off(() => HomeScreen());
       }
     }
     isLoading(false);

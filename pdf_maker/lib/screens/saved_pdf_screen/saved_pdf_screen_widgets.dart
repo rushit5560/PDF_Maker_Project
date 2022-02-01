@@ -44,7 +44,7 @@ class CustomSavedPdfScreenAppBar extends StatelessWidget {
               decoration: shadowEffectDecoration(),
               child: const Center(
                 child: Text(
-                  'DRAFT PDF',
+                  'SAVED PDF',
                   style: TextStyle(
                     color: AppColor.kDarkBlueColor,
                     fontWeight: FontWeight.bold,
@@ -230,7 +230,7 @@ class SavedPrefsPdfModule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return savedPdfScreenController.storePdfList.isEmpty
-    ? const Center(child: Text("No Saved Pdf's"))
+    ? const Center(child: Text("No Saved PDF"))
     : GridView.builder(
       itemCount: savedPdfScreenController.storePdfList.length,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

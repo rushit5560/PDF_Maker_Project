@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/custom_color.dart';
@@ -54,98 +55,151 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.kLightBlueColor,
-      body: Obx(
-        () => pdfMergeScreenController.isLoading.value
-            ? const Center(child: CircularProgressIndicator())
-            : SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      CustomPdfMergeScreenAppBar(),
-                      const SizedBox(height: 15),
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.all(10),
-                          child: ReorderableGridView.count(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 10,
-                            mainAxisSpacing: 10,
-                            onReorder: (oldIndex, newIndex) {
-                              File path = pdfMergeScreenController.files
-                                  .removeAt(oldIndex);
-                              pdfMergeScreenController.files
-                                  .insert(newIndex, path);
-                            },
-                            children: [
-                              for (int i = 0;
-                                  i < pdfMergeScreenController.files.length;
-                                  i++)
-                                Container(
-                                  key: ValueKey(
-                                      pdfMergeScreenController.files[i]),
-                                  child: SfPdfViewer.file(
-                                    File(pdfMergeScreenController.files[i].path),
-                                    pageLayoutMode:
-                                        PdfPageLayoutMode.continuous,
-                                    interactionMode: PdfInteractionMode.pan,
-                                  ),
-                                )
-                            ],
+    return WillPopScope(
+      onWillPop: () async => showAlertDialog(context),
+      child: Scaffold(
+        backgroundColor: AppColor.kLightBlueColor,
+        body: Obx(
+          () => pdfMergeScreenController.isLoading.value
+              ? const Center(child: CircularProgressIndicator())
+              : SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        CustomPdfMergeScreenAppBar(),
+                        const SizedBox(height: 15),
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.all(10),
+                            child: ReorderableGridView.count(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              onReorder: (oldIndex, newIndex) {
+                                File path = pdfMergeScreenController.files
+                                    .removeAt(oldIndex);
+                                pdfMergeScreenController.files
+                                    .insert(newIndex, path);
+                              },
+                              children: [
+                                for (int i = 0;
+                                    i < pdfMergeScreenController.files.length;
+                                    i++)
+                                  Container(
+                                    key: ValueKey(
+                                        pdfMergeScreenController.files[i]),
+                                    child: SfPdfViewer.file(
+                                      File(pdfMergeScreenController.files[i].path),
+                                      pageLayoutMode:
+                                          PdfPageLayoutMode.continuous,
+                                      interactionMode: PdfInteractionMode.pan,
+                                    ),
+                                  )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      CustomTextFieldModule(),
-                    ],
-                  ),
-                ),
-              ),
-      ),
-      /*body: Stack(
-        children: [
-          const MainBackgroundWidget(),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  customAppBar(context),
-                  const SizedBox(height: 5),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      child: ReorderableGridView.count(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        onReorder: (oldIndex, newIndex) {
-                          File path = pdfMergeScreenController.files.removeAt(oldIndex);
-                          pdfMergeScreenController.files.insert(newIndex, path);
-                        },
-                        children: [
-                          for(int i = 0; i < pdfMergeScreenController.files.length; i++)
-                            Container(
-                              key: ValueKey(pdfMergeScreenController.files[i]),
-                              child: SfPdfViewer.file(
-                                File(pdfMergeScreenController.files[i].path),
-                                pageLayoutMode: PdfPageLayoutMode.continuous,
-                                interactionMode: PdfInteractionMode.pan,
-                              ),
-                            )
-
-                        ],
-                      ),
+                        CustomTextFieldModule(),
+                      ],
                     ),
                   ),
-                  customTextField(),
-                ],
+                ),
+        ),
+        /*body: Stack(
+          children: [
+            const MainBackgroundWidget(),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    customAppBar(context),
+                    const SizedBox(height: 5),
+                    Expanded(
+                      child: Container(
+                        margin: const EdgeInsets.all(10),
+                        child: ReorderableGridView.count(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          onReorder: (oldIndex, newIndex) {
+                            File path = pdfMergeScreenController.files.removeAt(oldIndex);
+                            pdfMergeScreenController.files.insert(newIndex, path);
+                          },
+                          children: [
+                            for(int i = 0; i < pdfMergeScreenController.files.length; i++)
+                              Container(
+                                key: ValueKey(pdfMergeScreenController.files[i]),
+                                child: SfPdfViewer.file(
+                                  File(pdfMergeScreenController.files[i].path),
+                                  pageLayoutMode: PdfPageLayoutMode.continuous,
+                                  interactionMode: PdfInteractionMode.pan,
+                                ),
+                              )
+
+                          ],
+                        ),
+                      ),
+                    ),
+                    customTextField(),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),*/
+          ],
+        ),*/
+      ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child: const Text("No"),
+      onPressed: () {
+        pdfMergeScreenController.files.clear();
+        Get.back();
+        Get.back();
+      },
+    );
+
+    Widget continueButton = TextButton(
+      child: const Text("Yes"),
+      onPressed: () async {
+        if(pdfMergeScreenController.files.isNotEmpty){
+          localList.clear();
+          for(int i = 0; i < pdfMergeScreenController.files.length; i++){
+            localList.add(pdfMergeScreenController.files[i].path);
+          }
+          print('localList : $localList');
+          if (kDebugMode) {print('localList : $localList');}
+        }
+
+        localStorage.storePdfList(localList);
+
+
+        pdfMergeScreenController.files.clear();
+        Get.back();
+        Get.back();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      //title: Text("AlertDialog"),
+      content: const Text("Do you want to save in Draft?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/login_screen_controller/login_screen_controller.dart';
-import 'package:pdf_maker/screens/home_screen/home_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LogoModule extends StatelessWidget {
@@ -46,7 +43,7 @@ class SocialLoginModule extends StatelessWidget {
 
           const SizedBox(height: 15),
 
-          GestureDetector(
+          /*GestureDetector(
             onTap: () async {
               loginScreenController.isLoading(true);
               loginScreenController.onPressedLogInButton().then((value) {
@@ -59,7 +56,7 @@ class SocialLoginModule extends StatelessWidget {
               loginScreenController.isLoading(false);
             },
             child: const FacebookButtonUIModule(),
-          ),
+          ),*/
           /*const SizedBox(height: 20),
 
           GestureDetector(

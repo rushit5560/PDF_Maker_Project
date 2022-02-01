@@ -72,7 +72,6 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
     Widget continueButton = TextButton(
       child: const Text("Yes"),
       onPressed: () async {
-        //todo
         if(pdfMergeScreenController.files.isNotEmpty){
           localList.clear();
           for(int i = 0; i < pdfMergeScreenController.files.length; i++){
@@ -123,7 +122,7 @@ class CustomTextFieldModule extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        height: 45,
+        // height: 45,
         child: Row(
           children: [
             Expanded(
@@ -144,13 +143,14 @@ class CustomTextFieldModule extends StatelessWidget {
               onTap: () async {
                 if (controller.formKey.currentState!.validate()){
                   await makePdfFunction(controller.fileNameController);
-                  Get.back();
+                  // Get.back();
                   if (kDebugMode) {
                     print('Name : ${controller.fileNameController.text.trim()}');
                   }
                 }
               },
               child: Container(
+                height: 45,
                 decoration: BoxDecoration(
                   color: AppColor.kDarkBlueColor,
                   borderRadius: BorderRadius.circular(10),
@@ -162,7 +162,7 @@ class CustomTextFieldModule extends StatelessWidget {
                       "SAVE",
                       style: TextStyle(
                         fontSize: 12,
-                          color: Colors.white,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -186,7 +186,8 @@ class CustomTextFieldModule extends StatelessWidget {
       print('outPutPath : $outPutPath');
 
       MergeMultiplePDFResponse response  = await PdfMerger.mergeMultiplePDF(paths: filesPath, outputDirPath: outPutPath);
-      Fluttertoast.showToast(msg: 'PDF saved in Document');
+      Fluttertoast.showToast(msg: 'Saved');
+      controller.fileNameController.clear();
       Get.back();
 
       // Get.snackbar('Directory', 'Saved In Document');
