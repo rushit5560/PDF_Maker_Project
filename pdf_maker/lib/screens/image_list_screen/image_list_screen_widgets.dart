@@ -3,6 +3,7 @@ import 'package:edge_detection/edge_detection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
@@ -18,8 +19,8 @@ import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 class CustomImageListScreenAppBar extends StatelessWidget {
   CustomImageListScreenAppBar({Key? key}) : super(key: key);
   final homeScreenController = Get.find<HomeScreenController>();
-  List<String> localList = [];
-  LocalStorage localStorage = LocalStorage();
+  // List<String> localList = [];
+  // LocalStorage localStorage = LocalStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -153,14 +154,14 @@ class CustomImageListScreenAppBar extends StatelessWidget {
       child: const Text("Yes"),
       onPressed: () async {
         if(homeScreenController.captureImageList.isNotEmpty) {
-          localList.clear();
+          homeScreenController.localList.clear();
           for(int i = 0; i < homeScreenController.captureImageList.length; i++){
-            localList.add(homeScreenController.captureImageList[i].path);
+            homeScreenController.localList.add(homeScreenController.captureImageList[i].path);
           }
-          if (kDebugMode) {print('localList : $localList');}
+          if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
 
-          if(localList.isNotEmpty){
-            await localStorage.storeSingleImageList(localList);
+          if(homeScreenController.localList.isNotEmpty){
+            await homeScreenController.localStorage.storeSingleImageList(homeScreenController.localList);
           }
           homeScreenController.captureImageList.clear();
         }
@@ -251,6 +252,7 @@ class ItemDeleteButton extends StatelessWidget {
       onTap: () {
         print('index : $i');
         homeScreenController.captureImageList.removeAt(i);
+        Fluttertoast.showToast(msg: 'Selected Image Delete');
       },
       child: Container(
         padding: const EdgeInsets.all(6),
@@ -364,7 +366,7 @@ class _FloatingActionButtonModuleState extends State<FloatingActionButtonModule>
       homeScreenController.file = File(image.path);
       File imageFile = File(image.path);
       homeScreenController.captureImageList.add(imageFile);
-      Get.back();
+      // Get.back();
       // Get.off(()=> CropScreen(imageFile: imageFile));
     }
   }

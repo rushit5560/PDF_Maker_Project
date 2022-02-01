@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
@@ -167,6 +168,7 @@ class ImageShowModule extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        Fluttertoast.showToast(msg: 'Please wait');
         for(int i = 0; i < tempList.length; i++){
           if(i == 0){
             homeScreenController.captureImageList.add(File(tempList[i]));
@@ -202,6 +204,7 @@ class ItemDeleteButton extends StatelessWidget {
       onTap: () async {
         print('index : $i');
         savedPdfScreenController.updateStorageImages(i);
+        Fluttertoast.showToast(msg: 'Selected Draft Successfully Deleted');
       },
       child: Container(
         padding: const EdgeInsets.all(6),
@@ -236,7 +239,6 @@ class SavedPrefsPdfModule extends StatelessWidget {
         crossAxisSpacing: 10,
       ),
       itemBuilder: (context, index){
-
         String oneObject = savedPdfScreenController.storePdfList[index];
         List<String> tempList = oneObject.split(',');
         return Container(
@@ -260,6 +262,7 @@ class SavedPrefsPdfModule extends StatelessWidget {
                       bottom: 10,
                       child: GestureDetector(
                         onTap: () {
+                          Fluttertoast.showToast(msg: 'Please wait');
                           for(int i = 0; i < tempList.length; i++){
                             if(i == 0){
                               pdfMergeScreenController.files.add(File(tempList[i]));
@@ -318,6 +321,7 @@ class PdfDeleteButton extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         savedPdfScreenController.updateStoragePdfs(i);
+        Fluttertoast.showToast(msg: 'Selected Draft Successfully Deleted');
       },
       child: Container(
         padding: const EdgeInsets.all(6),

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:get/get.dart';
+import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreenController extends GetxController {
@@ -15,6 +16,10 @@ class HomeScreenController extends GetxController {
   RxDouble maxScale = 5.0.obs;
 
   RxBool permissionGranted = false.obs;
+
+  List<String> localList = [];
+  LocalStorage localStorage = LocalStorage();
+
 
 
   changeLayoutOnGesture(ScaleUpdateDetails details) {

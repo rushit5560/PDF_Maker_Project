@@ -1,6 +1,7 @@
 import 'package:external_path/external_path.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
@@ -143,6 +144,7 @@ class CustomTextFieldModule extends StatelessWidget {
               onTap: () async {
                 if (controller.formKey.currentState!.validate()){
                   await makePdfFunction(controller.fileNameController);
+                  Get.back();
                   if (kDebugMode) {
                     print('Name : ${controller.fileNameController.text.trim()}');
                   }
@@ -184,16 +186,20 @@ class CustomTextFieldModule extends StatelessWidget {
       print('outPutPath : $outPutPath');
 
       MergeMultiplePDFResponse response  = await PdfMerger.mergeMultiplePDF(paths: filesPath, outputDirPath: outPutPath);
+      Fluttertoast.showToast(msg: 'PDF saved in Document');
+      Get.back();
 
-      if(response.status == 'success') {
+      // Get.snackbar('Directory', 'Saved In Document');
+      // fileNameController.clear();
+
+      /*if(response.status == 'success') {
         Get.snackbar('Directory', 'Saved In Document');
         if (kDebugMode) {
           print('msgs : ${response.response}');
         }
-      }
+      }*/
 
-      fileNameController.clear();
-      Get.back();
+      // Get.back();
     }
   }
 

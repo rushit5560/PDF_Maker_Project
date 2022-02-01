@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/img_url.dart';
@@ -28,6 +29,7 @@ class LogoModule extends StatelessWidget {
 class SocialLoginModule extends StatelessWidget {
   final loginScreenController = Get.find<LoginScreenController>();
   SocialLoginModule({Key? key}) : super(key: key);
+  // FacebookUserProfile? profile;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class SocialLoginModule extends StatelessWidget {
             onTap: () async {
               loginScreenController.isLoading(true);
               loginScreenController.onPressedLogInButton().then((value) {
-                if(loginScreenController.profile1!.userId.isNotEmpty){
+                if(loginScreenController.profile!.userId.isNotEmpty){
 
                   Get.to(() => HomeScreen());
                 }

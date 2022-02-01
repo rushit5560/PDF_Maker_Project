@@ -12,6 +12,7 @@ class LoginScreenController extends GetxController {
   FacebookUserProfile? profile1;
   String? _imageUrl;
   String? _email;
+  FacebookUserProfile? profile;
 
   @override
   void onInit() {
@@ -24,7 +25,6 @@ class LoginScreenController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final plugin1 = plugin;
     final token = await plugin1.accessToken;
-    FacebookUserProfile? profile;
     String? email;
     String? imageUrl;
 
@@ -35,8 +35,8 @@ class LoginScreenController extends GetxController {
       if (token.permissions.contains(FacebookPermission.email.name)) {
         email = await plugin1.getUserEmail();
       }
-      if(profile1!.userId.isNotEmpty){
-        String name = "${profile1!.firstName} ${profile1!.lastName!}";
+      if(profile!.userId.isNotEmpty){
+        String name = "${profile!.firstName} ${profile1!.lastName!}";
         String email = plugin1.getUserEmail().toString();
         String photoUrl = plugin1.getProfileImageUrl(width: 100).toString();
 
