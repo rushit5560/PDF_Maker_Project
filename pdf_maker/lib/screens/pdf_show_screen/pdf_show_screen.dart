@@ -1,10 +1,9 @@
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
-import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
-import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen_widgets.dart';
@@ -19,34 +18,37 @@ class PdfShowScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.kLightBlueColor,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                child: CustomPdfShowScreenAppBar(),
-              ),
-              const SizedBox(height: 15),
+    return WillPopScope(
+      onWillPop: () async => showAlertDialog(context),
+      child: Scaffold(
+        backgroundColor: AppColor.kLightBlueColor,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: CustomPdfShowScreenAppBar(),
+                ),
+                const SizedBox(height: 15),
 
-              Expanded(
-                child: PdfPreview(
-                  maxPageWidth: 1000,
-                  canChangeOrientation: true,
-                  canDebug: false,
-                  initialPageFormat: PdfPageFormat.a4,
-                  build: (format) => generateDocument(
-                    format,
-                    homeScreenController.captureImageList.length,
-                    homeScreenController.captureImageList,
+                Expanded(
+                  child: PdfPreview(
+                    maxPageWidth: 1000,
+                    canChangeOrientation: true,
+                    canDebug: false,
+                    initialPageFormat: PdfPageFormat.a4,
+                    build: (format) => generateDocument(
+                      format,
+                      homeScreenController.captureImageList.length,
+                      homeScreenController.captureImageList,
+                    ),
                   ),
                 ),
-              ),
 
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -84,40 +86,40 @@ class PdfShowScreen extends StatelessWidget {
     );*/
   }
 
-  Widget customAppBar(BuildContext context) {
-    return Container(
-      height: 50,
-      width: Get.width,
-      decoration: borderGradientDecoration(),
-      child: Padding(
-        padding: const EdgeInsets.all(3.0),
-        child: Container(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            decoration: containerBackgroundGradient(),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: () => showAlertDialog(context),
-                  child: Image.asset(ImgUrl.leftArrow, scale: 2.5),
-                ),
-                const Text(
-                  "PDF",
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-                Container(),
-                // GestureDetector(
-                //   onTap: () => Get.off(()=> PdfShowScreen()),
-                //   child: const Icon(Icons.check_rounded),
-                // ),
-              ],
-            ),
-        ),
-      ),
-    );
-  }
+  // Widget customAppBar(BuildContext context) {
+  //   return Container(
+  //     height: 50,
+  //     width: Get.width,
+  //     decoration: borderGradientDecoration(),
+  //     child: Padding(
+  //       padding: const EdgeInsets.all(3.0),
+  //       child: Container(
+  //           padding: const EdgeInsets.only(left: 10, right: 10),
+  //           decoration: containerBackgroundGradient(),
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             children: [
+  //               GestureDetector(
+  //                 onTap: () => showAlertDialog(context),
+  //                 child: Image.asset(ImgUrl.leftArrow, scale: 2.5),
+  //               ),
+  //               const Text(
+  //                 "PDF",
+  //                 style: TextStyle(
+  //                     fontSize: 18,
+  //                     fontWeight: FontWeight.bold),
+  //               ),
+  //               Container(),
+  //               // GestureDetector(
+  //               //   onTap: () => Get.off(()=> PdfShowScreen()),
+  //               //   child: const Icon(Icons.check_rounded),
+  //               // ),
+  //             ],
+  //           ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
@@ -126,6 +128,7 @@ class PdfShowScreen extends StatelessWidget {
         style: TextStyle(fontFamily: ""),
       ),
       onPressed: () {
+        Get.back();
         Get.back();
       },
     );
@@ -136,11 +139,20 @@ class PdfShowScreen extends StatelessWidget {
         style: TextStyle(fontFamily: ""),
       ),
       onPressed: () async {
-        // await _capturePng().then((value) {
-        homeScreenController.captureImageList.clear();
+        if(homeScreenController.captureImageList.isNotEmpty) {
+          homeScreenController.localList.clear();
+          for(int i = 0; i < homeScreenController.captureImageList.length; i++){
+            homeScreenController.localList.add(homeScreenController.captureImageList[i].path);
+          }
+          if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
+
+          if(homeScreenController.localList.isNotEmpty){
+            await homeScreenController.localStorage.storeSingleImageList(homeScreenController.localList);
+          }
+          homeScreenController.captureImageList.clear();
+        }
         Get.back();
         Get.back();
-        // });
       },
     );
 
@@ -148,7 +160,7 @@ class PdfShowScreen extends StatelessWidget {
     AlertDialog alert = AlertDialog(
       //title: Text("AlertDialog"),
       content: const Text(
-        "Do you want to exit?",
+        "Do you want to save in Draft ?",
         style: TextStyle(),
       ),
       actions: [
