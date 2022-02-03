@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
@@ -44,14 +43,15 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
   //   }
   // }
 
-  @override
-  void initState() {
-    Timer(const Duration(seconds: 3), () {
-      pdfMergeScreenController.isLoading(true);
-      pdfMergeScreenController.isLoading(false);
-    });
-    super.initState();
-  }
+
+  // @override
+  // void initState() {
+  //   Timer(const Duration(seconds: 3), () {
+  //     pdfMergeScreenController.isLoading(true);
+  //     pdfMergeScreenController.isLoading(false);
+  //   });
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +94,7 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                                       pageLayoutMode:
                                           PdfPageLayoutMode.continuous,
                                       interactionMode: PdfInteractionMode.pan,
+
                                     ),
                                   )
                               ],

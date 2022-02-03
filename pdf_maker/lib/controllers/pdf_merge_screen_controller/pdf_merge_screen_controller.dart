@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -17,8 +16,8 @@ class PdfMergeScreenController extends GetxController {
     super.onInit();
   }*/
 
-  loading() {
-    isLoading(true);
-    isLoading(false);
-  }
+  // loading() {
+  //   isLoading(true);
+  //   isLoading(false);
+  // }
 }
