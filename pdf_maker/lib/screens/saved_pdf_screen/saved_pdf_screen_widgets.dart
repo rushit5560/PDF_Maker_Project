@@ -118,6 +118,7 @@ class TabSelectView extends StatelessWidget {
 class SavedPrefsImagesModule extends StatelessWidget {
   SavedPrefsImagesModule({Key? key}) : super(key: key);
   final savedPdfScreenController = Get.find<SavedPdfScreenController>();
+  final homeScreenController = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
@@ -142,12 +143,48 @@ class SavedPrefsImagesModule extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Stack(
-                      alignment: Alignment.bottomCenter,
+                      // alignment: Alignment.bottomCenter,
                       children: [
                         ImageShowModule(i: i),
                         Positioned(
                           bottom: 10,
+                          left: 10,
                           child: ItemDeleteButton(i: i),
+                        ),
+
+                        Positioned(
+                          bottom: 10,
+                          right: 10,
+                          child: GestureDetector(
+                            onTap: () {
+                              String oneObject = savedPdfScreenController.storeImageList[i];
+                              List<String> tempList = oneObject.split(',');
+
+                              Fluttertoast.showToast(msg: 'Please wait');
+                              for(int i = 0; i < tempList.length; i++){
+                                if(i == 0){
+                                  homeScreenController.captureImageList.add(File(tempList[i]));
+                                } else {
+                                  String sub = tempList[i].substring(1);
+                                  homeScreenController.captureImageList.add(File(sub));
+                                }
+
+                              }
+                              Get.off(()=> ImageListScreen());
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: AppColor.kDarkBlueColor
+                              ),
+                              child: const Icon(
+                                Icons.arrow_right_alt_outlined,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -159,8 +196,8 @@ class SavedPrefsImagesModule extends StatelessWidget {
 }
 class ImageShowModule extends StatelessWidget {
   int i;
-
   ImageShowModule({Key? key, required this.i}) : super(key: key);
+
   final savedPdfScreenController = Get.find<SavedPdfScreenController>();
   final homeScreenController = Get.find<HomeScreenController>();
 
@@ -169,27 +206,12 @@ class ImageShowModule extends StatelessWidget {
     String oneObject = savedPdfScreenController.storeImageList[i];
     List<String> tempList = oneObject.split(',');
 
-    return GestureDetector(
-      onTap: () {
-        Fluttertoast.showToast(msg: 'Please wait');
-        for(int i = 0; i < tempList.length; i++){
-          if(i == 0){
-            homeScreenController.captureImageList.add(File(tempList[i]));
-          } else {
-            String sub = tempList[i].substring(1);
-            homeScreenController.captureImageList.add(File(sub));
-          }
-          
-        }
-        Get.off(()=> ImageListScreen());
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          image: DecorationImage(
-            image: FileImage(File(tempList[0])),
-            fit: BoxFit.cover,
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
+          image: FileImage(File(tempList[0])),
+          fit: BoxFit.cover,
         ),
       ),
     );
@@ -213,11 +235,11 @@ class ItemDeleteButton extends StatelessWidget {
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.white
+            color: AppColor.kDarkBlueColor
         ),
         child: const Icon(
           Icons.delete_rounded,
-          color: AppColor.kDarkBlueColor,
+          color: Colors.white,
           size: 20,
         ),
       ),
@@ -283,9 +305,17 @@ class SavedPrefsPdfModule extends StatelessWidget {
                       }
                       Get.off(()=> PdfMergeScreen());
                     },
-                    child: const Icon(
-                      Icons.arrow_right_alt_outlined,
-                      color: Colors.white,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColor.kDarkBlueColor
+                      ),
+                      child: const Icon(
+                        Icons.arrow_right_alt_outlined,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ),
@@ -336,11 +366,11 @@ class PdfDeleteButton extends StatelessWidget {
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Colors.white
+            color: AppColor.kDarkBlueColor
         ),
         child: const Icon(
           Icons.delete_rounded,
-          color: AppColor.kDarkBlueColor,
+          color: Colors.white,
           size: 20,
         ),
       ),

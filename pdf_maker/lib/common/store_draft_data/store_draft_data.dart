@@ -6,6 +6,8 @@ class LocalStorage {
   String mainImageListKey = 'MainImageListKey';
   String mainPdfListKey = 'MainPdfListKey';
 
+
+  // Save Image List In Prefs
   Future storeSingleImageList(List<String> subList) async {
     if (kDebugMode) {print('subList : $subList');}
 
@@ -22,6 +24,7 @@ class LocalStorage {
 
   }
 
+  // Save Pdf List In Prefs
   Future storePdfList(List<String> pdfList) async {
     if (kDebugMode) {print('subList : $pdfList');}
     String pdfListString = pdfList.toString();
@@ -34,10 +37,7 @@ class LocalStorage {
   }
 
 
-
-
-
-
+  // Get Store Images List From Prefs
   Future<List<String>> getStorageImageList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> storageList = prefs.getStringList(mainImageListKey) ?? [];
@@ -45,6 +45,7 @@ class LocalStorage {
     return storageList;
   }
 
+  // Get Store Pdf List From Prefs
   Future<List<String>> getStoragePdfList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> storageList = prefs.getStringList(mainPdfListKey) ?? [];
@@ -52,6 +53,7 @@ class LocalStorage {
     return storageList;
   }
 
+  // Update Store Image List in Prefs
   Future updateStorageImageList(List<String> localList) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.remove(singleImageListKey);
@@ -59,9 +61,12 @@ class LocalStorage {
     if (kDebugMode) {print('singleImageListKey : ${prefs.getStringList(mainImageListKey)}');}
   }
 
+  // Update Store Pfd List in Prefs
   Future updateStoragePdfList(List<String> localList) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setStringList(mainPdfListKey, localList);
     if (kDebugMode) {print('singlePdfListKey : ${prefs.getStringList(mainPdfListKey)}');}
   }
+
+
 }

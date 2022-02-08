@@ -30,7 +30,7 @@ class SavedPdfScreenController extends GetxController with GetSingleTickerProvid
     isLoading(true);
     storeImageList.removeAt(i);
     print('Remove at $i : $storeImageList');
-    localStorage.updateStorageImageList(storeImageList);
+    await localStorage.updateStorageImageList(storeImageList);
     getStorageImages();
     isLoading(false);
   }

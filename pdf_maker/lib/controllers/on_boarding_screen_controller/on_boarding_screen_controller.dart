@@ -32,7 +32,7 @@ class OnBoardingScreenController extends GetxController {
     ),
     OnBoardingInfo(
       imageAsset: ImgUrl.service3,
-      title: 'Merge \nPDF',
+      title: 'Merge PDF',
       description: 'This app can quickly merge multiple PDFs into one document. You can upload two documents or more and combine them with a single click.',
     ),
   ];

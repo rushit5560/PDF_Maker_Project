@@ -24,34 +24,47 @@ class OnBoardingScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(onBoardingScreenController.onBoardingPages[index].imageAsset,
-                      height: Get.height * 0.35,),
-                    const SizedBox(height: 35),
-                    // Header Text
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        onBoardingScreenController.onBoardingPages[index].title,
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    Expanded(
+                      flex: 60,
+                      child: Container(
+                        alignment: Alignment.bottomCenter,
+                        child: Image.asset(onBoardingScreenController.onBoardingPages[index].imageAsset,
+                          height: Get.height * 0.35,),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    // Description Text
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 35),
-                      child: Text(
-                        onBoardingScreenController.onBoardingPages[index].description,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                        ),
+                    const SizedBox(height: 35),
+                    // Header Text
+                    Expanded(
+                      flex: 40,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              onBoardingScreenController.onBoardingPages[index].title,
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          // Description Text
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 35),
+                            child: Text(
+                              onBoardingScreenController.onBoardingPages[index].description,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
