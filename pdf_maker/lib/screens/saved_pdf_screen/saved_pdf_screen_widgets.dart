@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
+import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
@@ -11,7 +12,7 @@ import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_scre
 import 'package:pdf_maker/controllers/saved_pdf_screen_controller/saved_pdf_screen_controller.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
-import 'package:reorderable_grid_view/reorderable_grid_view.dart';
+// import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class CustomSavedPdfScreenAppBar extends StatelessWidget {
@@ -126,7 +127,71 @@ class SavedPrefsImagesModule extends StatelessWidget {
         ? const Center(child: Text('No Saved Images'))
         : Padding(
           padding: const EdgeInsets.all(5.0),
-          child: ReorderableGridView.count(
+      child: GridView.builder(
+        itemCount: savedPdfScreenController.storeImageList.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
+        itemBuilder: (context, i){
+          return Container(
+            key: ValueKey(savedPdfScreenController.storeImageList[i]),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Stack(
+              // alignment: Alignment.bottomCenter,
+              children: [
+                ImageShowModule(i: i),
+                Positioned(
+                  bottom: 10,
+                  left: 10,
+                  child: ItemDeleteButton(i: i),
+                ),
+
+                Positioned(
+                  bottom: 10,
+                  right: 10,
+                  child: GestureDetector(
+                    onTap: () {
+                      String oneObject = savedPdfScreenController.storeImageList[i];
+                      List<String> tempList = oneObject.split(',');
+
+                      Fluttertoast.showToast(msg: 'Please wait');
+                      for(int i = 0; i < tempList.length; i++){
+                        if(i == 0){
+                          homeScreenController.captureImageList.add(File(tempList[i]));
+                        } else {
+                          String sub = tempList[i].substring(1);
+                          homeScreenController.captureImageList.add(File(sub));
+                        }
+                      }
+                      Get.to(() => ImageListScreen(
+                                  comingFrom: ComingFrom.savedList,
+                                  index: i,
+                                ));
+                          },
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: AppColor.kDarkBlueColor
+                      ),
+                      child: const Icon(
+                        Icons.arrow_right_alt_outlined,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+      /*child: ReorderableGridView.count(
               crossAxisCount: 3,
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
@@ -190,12 +255,12 @@ class SavedPrefsImagesModule extends StatelessWidget {
                     ),
                   ),
               ],
-            ),
+            ),*/
         );
   }
 }
 class ImageShowModule extends StatelessWidget {
-  int i;
+  final int i;
   ImageShowModule({Key? key, required this.i}) : super(key: key);
 
   final savedPdfScreenController = Get.find<SavedPdfScreenController>();
@@ -218,10 +283,10 @@ class ImageShowModule extends StatelessWidget {
   }
 }
 class ItemDeleteButton extends StatelessWidget {
-  int i;
+  final int i;
   ItemDeleteButton({Key? key, required this.i}) : super(key: key);
   final savedPdfScreenController =Get.find<SavedPdfScreenController>();
-  LocalStorage localStorage = LocalStorage();
+  final LocalStorage localStorage = LocalStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -328,8 +393,8 @@ class SavedPrefsPdfModule extends StatelessWidget {
   }
 }
 class PdfShowModule extends StatelessWidget {
-  int i;
-  String filePath;
+  final int i;
+  final  String filePath;
 
   PdfShowModule({Key? key, required this.i, required this.filePath}) : super(key: key);
   final savedPdfScreenController = Get.find<SavedPdfScreenController>();
@@ -350,10 +415,10 @@ class PdfShowModule extends StatelessWidget {
   }
 }
 class PdfDeleteButton extends StatelessWidget {
-  int i;
+  final int i;
   PdfDeleteButton({Key? key, required this.i}) : super(key: key);
   final savedPdfScreenController =Get.find<SavedPdfScreenController>();
-  LocalStorage localStorage = LocalStorage();
+  final LocalStorage localStorage = LocalStorage();
 
   @override
   Widget build(BuildContext context) {

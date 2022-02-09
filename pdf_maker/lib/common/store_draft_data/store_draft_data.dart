@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../enums.dart';
+
 class LocalStorage {
   // String singleImageListKey = 'SingleImageListKey';
   String mainImageListKey = 'MainImageListKey';
@@ -8,7 +10,7 @@ class LocalStorage {
 
 
   // Save Image List In Prefs
-  Future storeSingleImageList(List<String> subList) async {
+  Future storeSingleImageList({required List<String> subList, required ComingFrom comingFrom, int? index}) async {
     if (kDebugMode) {print('subList : $subList');}
 
     String subListString = subList.toString();
@@ -17,7 +19,15 @@ class LocalStorage {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> oldList = prefs.getStringList(mainImageListKey) ?? [];
-    oldList.add(subString2);
+    if(comingFrom == ComingFrom.newList){
+      oldList.add(subString2);
+    } else {
+      if(index.toString().isNotEmpty){
+        oldList.removeAt(index!);
+        oldList.insert(index, subString2);
+      }
+    }
+
     prefs.setStringList(mainImageListKey, oldList);
 
     if (kDebugMode) {print('Sublist New : ${prefs.getStringList(mainImageListKey)}');}

@@ -35,15 +35,16 @@ class LoginScreenController extends GetxController {
       if (token.permissions.contains(FacebookPermission.email.name)) {
         email = await plugin1.getUserEmail();
       }
+      imageUrl = await plugin1.getProfileImageUrl(width: 100);
       if(profile!.userId.isNotEmpty){
-        String name = "${profile!.firstName} ${profile1!.lastName!}";
-        String email = plugin1.getUserEmail().toString();
-        String photoUrl = plugin1.getProfileImageUrl(width: 100).toString();
+        String name = "${profile!.firstName} ${profile!.lastName!}";
+         //email = plugin1.getUserEmail();
+       // String photoUrl = plugin1.getProfileImageUrl(width: 100).toString();
 
-        prefs.setString('UserId', profile1!.userId);
+        prefs.setString('UserId', profile!.userId);
         prefs.setString('UserName', name);
-        prefs.setString('UserEmail', email);
-        prefs.setString('UserPhoto', photoUrl);
+        prefs.setString('UserEmail', email!);
+        prefs.setString('UserPhoto', imageUrl!.toString());
         prefs.setBool('isLoggedIn', true);
 
         String? id = prefs.getString('UserId');
@@ -52,12 +53,12 @@ class LoginScreenController extends GetxController {
         String? userphoto = prefs.getString('UserPhoto');
         print('id : $id \nusername : $username \nuseremail : $useremail \nuserphoto : $userphoto');
       }
-      imageUrl = await plugin1.getProfileImageUrl(width: 100);
+
     }
 
     //setState(() {
       _token = token;
-      profile1 = profile!;
+      profile1 = profile;
       _email = email;
       _imageUrl = imageUrl;
     //});

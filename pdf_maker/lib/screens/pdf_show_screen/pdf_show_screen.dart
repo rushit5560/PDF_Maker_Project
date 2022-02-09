@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf_maker/common/custom_color.dart';
+import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen_widgets.dart';
@@ -12,7 +13,9 @@ import 'package:printing/printing.dart';
 
 
 class PdfShowScreen extends StatelessWidget {
-  PdfShowScreen({Key? key}) : super(key: key);
+  int? index;
+  ComingFrom comingFrom;
+  PdfShowScreen({Key? key, required this.comingFrom, this.index}) : super(key: key);
 
   final homeScreenController = Get.find<HomeScreenController>();
 
@@ -29,7 +32,10 @@ class PdfShowScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  child: CustomPdfShowScreenAppBar(),
+                  child: CustomPdfShowScreenAppBar(
+                    comingFrom: comingFrom,
+                    index: index,
+                  ),
                 ),
                 const SizedBox(height: 15),
 
@@ -53,73 +59,9 @@ class PdfShowScreen extends StatelessWidget {
         ),
       ),
     );
-    /*return Scaffold(
-      body: Stack(
-        children: [
-          const MainBackgroundWidget(),
-          SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: customAppBar(context),
-                ),
-                // const SizedBox(height: 15),
-                Expanded(
-                  child: PdfPreview(
-                    maxPageWidth: 1000,
-                    canChangeOrientation: true,
-                    canDebug: false,
-                    initialPageFormat: PdfPageFormat.a4,
-                    build: (format) => generateDocument(
-                      format,
-                      homeScreenController.captureImageList.length,
-                      homeScreenController.captureImageList,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );*/
   }
 
-  // Widget customAppBar(BuildContext context) {
-  //   return Container(
-  //     height: 50,
-  //     width: Get.width,
-  //     decoration: borderGradientDecoration(),
-  //     child: Padding(
-  //       padding: const EdgeInsets.all(3.0),
-  //       child: Container(
-  //           padding: const EdgeInsets.only(left: 10, right: 10),
-  //           decoration: containerBackgroundGradient(),
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               GestureDetector(
-  //                 onTap: () => showAlertDialog(context),
-  //                 child: Image.asset(ImgUrl.leftArrow, scale: 2.5),
-  //               ),
-  //               const Text(
-  //                 "PDF",
-  //                 style: TextStyle(
-  //                     fontSize: 18,
-  //                     fontWeight: FontWeight.bold),
-  //               ),
-  //               Container(),
-  //               // GestureDetector(
-  //               //   onTap: () => Get.off(()=> PdfShowScreen()),
-  //               //   child: const Icon(Icons.check_rounded),
-  //               // ),
-  //             ],
-  //           ),
-  //       ),
-  //     ),
-  //   );
-  // }
+
 
   showAlertDialog(BuildContext context) {
     Widget cancelButton = TextButton(
@@ -147,7 +89,11 @@ class PdfShowScreen extends StatelessWidget {
           if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
 
           if(homeScreenController.localList.isNotEmpty){
-            await homeScreenController.localStorage.storeSingleImageList(homeScreenController.localList);
+            await homeScreenController.localStorage.storeSingleImageList(
+              subList: homeScreenController.localList,
+              comingFrom: comingFrom,
+              index: index,
+            );
           }
           homeScreenController.captureImageList.clear();
         }

@@ -1,0 +1,2 @@
+
+enum ComingFrom {savedList, newList}

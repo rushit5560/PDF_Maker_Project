@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
+import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 
 class CustomPdfShowScreenAppBar extends StatelessWidget {
-  CustomPdfShowScreenAppBar({Key? key}) : super(key: key);
+  int? index;
+  ComingFrom comingFrom;
+  CustomPdfShowScreenAppBar({Key? key, required this.comingFrom, this.index}) : super(key: key);
+
   final homeScreenController = Get.find<HomeScreenController>();
 
   @override
@@ -101,7 +105,11 @@ class CustomPdfShowScreenAppBar extends StatelessWidget {
           if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
 
           if(homeScreenController.localList.isNotEmpty){
-            await homeScreenController.localStorage.storeSingleImageList(homeScreenController.localList);
+            await homeScreenController.localStorage.storeSingleImageList(
+                subList: homeScreenController.localList,
+              comingFrom: comingFrom,
+              index: index,
+            );
           }
           homeScreenController.captureImageList.clear();
         }

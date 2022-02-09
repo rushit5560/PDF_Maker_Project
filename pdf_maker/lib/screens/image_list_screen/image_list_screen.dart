@@ -2,19 +2,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/custom_color.dart';
+import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'image_list_screen_widgets.dart';
 
 
 
 class ImageListScreen extends StatelessWidget {
-  ImageListScreen({Key? key}) : super(key: key);
+  int? index;
+  ComingFrom comingFrom;
+  ImageListScreen({Key? key, required this.comingFrom, this.index}) : super(key: key);
   final homeScreenController = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => showAlertDialog(context),
+      onWillPop: () async {
+        showAlertDialog(context);
+        return null!;
+      } ,
       child: Scaffold(
         backgroundColor: AppColor.kLightBlueColor,
         body: SafeArea(
@@ -22,7 +28,10 @@ class ImageListScreen extends StatelessWidget {
             padding: const EdgeInsets.all(25),
             child: Column(
               children: [
-                CustomImageListScreenAppBar(),
+                CustomImageListScreenAppBar(
+                  comingFrom: comingFrom,
+                  index: index,
+                ),
                 const SizedBox(height: 15),
                 Expanded(child: SelectedImagesShowModule()),
               ],
@@ -38,6 +47,7 @@ class ImageListScreen extends StatelessWidget {
   }
 
   showAlertDialog(BuildContext context) {
+
     Widget cancelButton = TextButton(
       child: const Text("No"),
       onPressed: () {
@@ -51,6 +61,29 @@ class ImageListScreen extends StatelessWidget {
     Widget continueButton = TextButton(
       child: const Text("Yes"),
       onPressed: () async {
+        /*if(comingFrom == ComingFrom.newList) {
+          if(homeScreenController.captureImageList.isNotEmpty) {
+            homeScreenController.localList.clear();
+            for(int i = 0; i < homeScreenController.captureImageList.length; i++){
+              homeScreenController.localList.add(homeScreenController.captureImageList[i].path);
+            }
+            if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
+
+            if(homeScreenController.localList.isNotEmpty){
+              await homeScreenController.localStorage.storeSingleImageList(homeScreenController.localList);
+            }
+            homeScreenController.captureImageList.clear();
+          }
+        } else if(comingFrom == ComingFrom.savedList) {
+          if(homeScreenController.captureImageList.isNotEmpty) {
+            homeScreenController.localList.clear();
+            for(int i = 0; i < homeScreenController.captureImageList.length; i++){
+              homeScreenController.localList.add(homeScreenController.captureImageList[i].path);
+            }
+
+          }
+        }*/
+
         if(homeScreenController.captureImageList.isNotEmpty) {
           homeScreenController.localList.clear();
           for(int i = 0; i < homeScreenController.captureImageList.length; i++){
@@ -59,7 +92,11 @@ class ImageListScreen extends StatelessWidget {
           if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
 
           if(homeScreenController.localList.isNotEmpty){
-            await homeScreenController.localStorage.storeSingleImageList(homeScreenController.localList);
+            await homeScreenController.localStorage.storeSingleImageList(
+              subList: homeScreenController.localList,
+              comingFrom: comingFrom,
+              index: index,
+            );
           }
           homeScreenController.captureImageList.clear();
         }

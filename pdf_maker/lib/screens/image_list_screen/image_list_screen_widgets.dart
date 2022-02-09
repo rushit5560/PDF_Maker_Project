@@ -8,16 +8,20 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
+import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/common/img_url.dart';
-import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
+// import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
-import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
+// import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 
 class CustomImageListScreenAppBar extends StatelessWidget {
-  CustomImageListScreenAppBar({Key? key}) : super(key: key);
+  int? index;
+  ComingFrom comingFrom;
+  CustomImageListScreenAppBar({Key? key, required this.comingFrom, this.index}) : super(key: key);
+
   final homeScreenController = Get.find<HomeScreenController>();
   // List<String> localList = [];
   // LocalStorage localStorage = LocalStorage();
@@ -61,7 +65,10 @@ class CustomImageListScreenAppBar extends StatelessWidget {
           ),
           const SizedBox(width: 15),
           GestureDetector(
-            onTap: () => Get.off(()=> PdfShowScreen()),
+            onTap: () => Get.off(()=> PdfShowScreen(
+              comingFrom: comingFrom,
+              index: index,
+            )),
             child: Container(
               height: 50,
               width: 50,
@@ -80,62 +87,7 @@ class CustomImageListScreenAppBar extends StatelessWidget {
           ),
         ],
       ),
-      // child: Row(
-      //   children: [
-      //     GestureDetector(
-      //       onTap: () {
-      //         showAlertDialog(context);
-      //       },
-      //       child: Container(
-      //         decoration: BoxDecoration(
-      //           color: AppColor.kDarkBlueColor,
-      //           borderRadius: BorderRadius.circular(15),
-      //         ),
-      //         child: Padding(
-      //           padding: const EdgeInsets.all(20),
-      //           child: Center(
-      //             child: Image.asset(ImgUrl.backOption),
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //     const SizedBox(width: 15),
-      //     Expanded(
-      //       child: Container(
-      //         decoration: shadowEffectDecoration(),
-      //         child: const Padding(
-      //           padding: EdgeInsets.all(15),
-      //           child: Center(
-      //             child: Text(
-      //               'IMAGES',
-      //               style: TextStyle(
-      //                   color: AppColor.kDarkBlueColor,
-      //                   fontWeight: FontWeight.bold,
-      //                   fontSize: 18
-      //               ),
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //     const SizedBox(width: 15),
-      //     GestureDetector(
-      //       onTap: () {},
-      //       child: Container(
-      //         decoration: BoxDecoration(
-      //           color: AppColor.kDarkBlueColor,
-      //           borderRadius: BorderRadius.circular(15),
-      //         ),
-      //         child: Padding(
-      //           padding: const EdgeInsets.all(20),
-      //           child: Center(
-      //             child: Image.asset(ImgUrl.click),
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
+
     );
   }
 
@@ -161,7 +113,12 @@ class CustomImageListScreenAppBar extends StatelessWidget {
           if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
 
           if(homeScreenController.localList.isNotEmpty){
-            await homeScreenController.localStorage.storeSingleImageList(homeScreenController.localList);
+            // todo - insert at index or new
+            await homeScreenController.localStorage.storeSingleImageList(
+                subList: homeScreenController.localList,
+              comingFrom: comingFrom,
+              index: index
+            );
           }
           homeScreenController.captureImageList.clear();
         }

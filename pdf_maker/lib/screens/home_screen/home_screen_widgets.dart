@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
+import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_screen_controller.dart';
@@ -119,7 +120,7 @@ class SingleImageModule extends StatelessWidget {
 
       if(imagePath != null) {
         homeScreenController.captureImageList.add(File(imagePath));
-        Get.to(() => ImageListScreen());
+        Get.to(() => ImageListScreen(comingFrom: ComingFrom.newList));
       }
 
     } on PlatformException catch (e) {
@@ -301,7 +302,7 @@ class MultipleImageModule extends StatelessWidget {
           File file = File(selectedImages[i].path);
           homeScreenController.captureImageList.add(file);
         }
-        Get.to(() => ImageListScreen());
+        Get.to(() => ImageListScreen(comingFrom: ComingFrom.newList));
       }
     } catch (e) {
       if (kDebugMode) {print('goToImgListScreen : $e');}
