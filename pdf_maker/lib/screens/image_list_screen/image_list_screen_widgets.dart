@@ -18,8 +18,8 @@ import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
 
 class CustomImageListScreenAppBar extends StatelessWidget {
-  int? index;
-  ComingFrom comingFrom;
+  final int? index;
+  final ComingFrom comingFrom;
   CustomImageListScreenAppBar({Key? key, required this.comingFrom, this.index}) : super(key: key);
 
   final homeScreenController = Get.find<HomeScreenController>();
