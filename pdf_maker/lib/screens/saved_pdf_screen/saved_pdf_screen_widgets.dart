@@ -151,111 +151,48 @@ class SavedPrefsImagesModule extends StatelessWidget {
                 ),
 
                 Positioned(
-                  bottom: 10,
-                  right: 10,
-                  child: GestureDetector(
-                    onTap: () {
-                      String oneObject = savedPdfScreenController.storeImageList[i];
-                      List<String> tempList = oneObject.split(',');
+                        bottom: 10,
+                        right: 10,
+                        child: GestureDetector(
+                          onTap: () {
+                            String oneObject =
+                                savedPdfScreenController.storeImageList[i];
+                            List<String> tempList = oneObject.split(',');
 
-                      Fluttertoast.showToast(msg: 'Please wait');
-                      for(int i = 0; i < tempList.length; i++){
-                        if(i == 0){
-                          homeScreenController.captureImageList.add(File(tempList[i]));
-                        } else {
-                          String sub = tempList[i].substring(1);
-                          homeScreenController.captureImageList.add(File(sub));
-                        }
-                      }
-                      Get.to(() => ImageListScreen(
+                            Fluttertoast.showToast(msg: 'Please wait');
+                            for (int i = 0; i < tempList.length; i++) {
+                              if (i == 0) {
+                                homeScreenController.captureImageList.add(File(tempList[i]));
+                              } else {
+                                String sub = tempList[i].substring(1);
+                                homeScreenController.captureImageList.add(File(sub));
+                              }
+                            }
+                            String listString = homeScreenController.captureImageList.toString();
+                            Get.to(() => ImageListScreen(
                                   comingFrom: ComingFrom.savedList,
                                   index: i,
+                                  listString: listString,
                                 ));
                           },
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppColor.kDarkBlueColor
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColor.kDarkBlueColor),
+                            child: const Icon(
+                              Icons.arrow_right_alt_outlined,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ),
                       ),
-                      child: const Icon(
-                        Icons.arrow_right_alt_outlined,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                    ],
             ),
           );
         },
       ),
-      /*child: ReorderableGridView.count(
-              crossAxisCount: 3,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              onReorder: (oldIndex, newIndex) {
-                String path = savedPdfScreenController.storeImageList.removeAt(oldIndex);
-                savedPdfScreenController.storeImageList.insert(newIndex, path);
-                savedPdfScreenController.loading();
-              },
-              children: [
-                for (int i = 0; i < savedPdfScreenController.storeImageList.length; i++)
-                  Container(
-                    key: ValueKey(savedPdfScreenController.storeImageList[i]),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Stack(
-                      // alignment: Alignment.bottomCenter,
-                      children: [
-                        ImageShowModule(i: i),
-                        Positioned(
-                          bottom: 10,
-                          left: 10,
-                          child: ItemDeleteButton(i: i),
-                        ),
-
-                        Positioned(
-                          bottom: 10,
-                          right: 10,
-                          child: GestureDetector(
-                            onTap: () {
-                              String oneObject = savedPdfScreenController.storeImageList[i];
-                              List<String> tempList = oneObject.split(',');
-
-                              Fluttertoast.showToast(msg: 'Please wait');
-                              for(int i = 0; i < tempList.length; i++){
-                                if(i == 0){
-                                  homeScreenController.captureImageList.add(File(tempList[i]));
-                                } else {
-                                  String sub = tempList[i].substring(1);
-                                  homeScreenController.captureImageList.add(File(sub));
-                                }
-
-                              }
-                              Get.off(()=> ImageListScreen());
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: AppColor.kDarkBlueColor
-                              ),
-                              child: const Icon(
-                                Icons.arrow_right_alt_outlined,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),*/
         );
   }
 }

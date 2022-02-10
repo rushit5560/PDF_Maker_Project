@@ -10,7 +10,8 @@ import 'package:pdf_maker/controllers/home_screen_controller/home_screen_control
 class CustomPdfShowScreenAppBar extends StatelessWidget {
   int? index;
   ComingFrom comingFrom;
-  CustomPdfShowScreenAppBar({Key? key, required this.comingFrom, this.index}) : super(key: key);
+  String listString;
+  CustomPdfShowScreenAppBar({Key? key, required this.comingFrom, this.index, required this.listString}) : super(key: key);
 
   final homeScreenController = Get.find<HomeScreenController>();
 
@@ -21,7 +22,20 @@ class CustomPdfShowScreenAppBar extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
-            onTap: () => showAlertDialog(context),
+            onTap: () {
+              String newListString = homeScreenController.captureImageList.toString();
+
+              if(comingFrom == ComingFrom.newList){
+                showAlertDialog(context);
+              } else if(comingFrom == ComingFrom.savedList){
+                if(listString == newListString) {
+                  homeScreenController.captureImageList.clear();
+                  Get.back();
+                } else {
+                  showAlertDialog(context);
+                }
+              }
+            },
             child: Container(
               height: 50,
               width: 50,

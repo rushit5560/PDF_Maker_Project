@@ -120,7 +120,11 @@ class SingleImageModule extends StatelessWidget {
 
       if(imagePath != null) {
         homeScreenController.captureImageList.add(File(imagePath));
-        Get.to(() => ImageListScreen(comingFrom: ComingFrom.newList));
+        String listString = homeScreenController.captureImageList.toString();
+        Get.to(() => ImageListScreen(
+              comingFrom: ComingFrom.newList,
+              listString: listString,
+            ));
       }
 
     } on PlatformException catch (e) {
@@ -302,7 +306,11 @@ class MultipleImageModule extends StatelessWidget {
           File file = File(selectedImages[i].path);
           homeScreenController.captureImageList.add(file);
         }
-        Get.to(() => ImageListScreen(comingFrom: ComingFrom.newList));
+        String listString = homeScreenController.captureImageList.toString();
+        Get.to(() => ImageListScreen(
+            comingFrom: ComingFrom.newList,
+          listString: listString,
+        ));
       }
     } catch (e) {
       if (kDebugMode) {print('goToImgListScreen : $e');}

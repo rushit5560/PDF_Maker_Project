@@ -20,7 +20,8 @@ import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 class CustomImageListScreenAppBar extends StatelessWidget {
   final int? index;
   final ComingFrom comingFrom;
-  CustomImageListScreenAppBar({Key? key, required this.comingFrom, this.index}) : super(key: key);
+  String listString;
+  CustomImageListScreenAppBar({Key? key, required this.comingFrom, this.index, required this.listString}) : super(key: key);
 
   final homeScreenController = Get.find<HomeScreenController>();
   // List<String> localList = [];
@@ -33,7 +34,19 @@ class CustomImageListScreenAppBar extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
-            onTap: () => showAlertDialog(context),
+            onTap: () {
+              String newListString = homeScreenController.captureImageList.toString();
+              if(comingFrom == ComingFrom.newList){
+                showAlertDialog(context);
+              } else if(comingFrom == ComingFrom.savedList){
+                if(listString == newListString) {
+                  homeScreenController.captureImageList.clear();
+                  Get.back();
+                } else {
+                  showAlertDialog(context);
+                }
+              }
+            },
             child: Container(
               height: 50,
               width: 50,
@@ -68,6 +81,7 @@ class CustomImageListScreenAppBar extends StatelessWidget {
             onTap: () => Get.off(()=> PdfShowScreen(
               comingFrom: comingFrom,
               index: index,
+              listString: listString,
             )),
             child: Container(
               height: 50,

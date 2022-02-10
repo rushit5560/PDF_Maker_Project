@@ -9,18 +9,30 @@ import 'image_list_screen_widgets.dart';
 
 
 class ImageListScreen extends StatelessWidget {
-  int? index;
-  ComingFrom comingFrom;
-  ImageListScreen({Key? key, required this.comingFrom, this.index}) : super(key: key);
+  final int? index;
+  final ComingFrom comingFrom;
+  final String listString;
+  ImageListScreen({Key? key, required this.comingFrom, this.index, required this.listString}) : super(key: key);
   final homeScreenController = Get.find<HomeScreenController>();
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        showAlertDialog(context);
+        String newListString = homeScreenController.captureImageList.toString();
+
+        if(comingFrom == ComingFrom.newList) {
+          showAlertDialog(context);
+        } else if(comingFrom == ComingFrom.savedList){
+          if(listString == newListString) {
+            homeScreenController.captureImageList.clear();
+            Get.back();
+          } else {
+            showAlertDialog(context);
+          }
+        }
         return null!;
-      } ,
+      },
       child: Scaffold(
         backgroundColor: AppColor.kLightBlueColor,
         body: SafeArea(
@@ -31,6 +43,7 @@ class ImageListScreen extends StatelessWidget {
                 CustomImageListScreenAppBar(
                   comingFrom: comingFrom,
                   index: index,
+                  listString: listString,
                 ),
                 const SizedBox(height: 15),
                 Expanded(child: SelectedImagesShowModule()),
