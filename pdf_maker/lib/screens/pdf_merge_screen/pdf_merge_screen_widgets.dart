@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
+import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/common/field_validation.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
@@ -12,7 +13,17 @@ import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_scre
 import 'package:pdf_merger/pdf_merger.dart';
 
 class CustomPdfMergeScreenAppBar extends StatelessWidget {
-  CustomPdfMergeScreenAppBar({Key? key}) : super(key: key);
+  final int? index;
+  final PdfComingFrom pdfComingFrom;
+  final String pdfListString;
+
+  CustomPdfMergeScreenAppBar({
+    Key? key,
+    this.index,
+    required this.pdfComingFrom,
+    required this.pdfListString,
+  }) : super(key: key);
+
   final pdfMergeScreenController = Get.find<PdfMergeScreenController>();
   List<String> localList = [];
   LocalStorage localStorage = LocalStorage();
@@ -24,7 +35,21 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
-            onTap: () => showAlertDialog(context),
+            onTap: () {
+              String newPdfListString = pdfMergeScreenController.files.toString();
+
+              if(pdfComingFrom == PdfComingFrom.newList){
+                showAlertDialog(context);
+              } else if(pdfComingFrom == PdfComingFrom.savedList) {
+                if(pdfListString == newPdfListString) {
+                  pdfMergeScreenController.files.clear();
+                  Get.back();
+                } else {
+                  showAlertDialog(context);
+                }
+              }
+
+            },
             child: Container(
               height: 50,
               width: 50,
@@ -81,8 +106,11 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
           if (kDebugMode) {print('localList : $localList');}
         }
 
-        localStorage.storePdfList(localList);
-
+        localStorage.storePdfList(
+          pdfList: localList,
+          pdfComingFrom: pdfComingFrom,
+          index: index,
+        );
 
         pdfMergeScreenController.files.clear();
         Get.back();

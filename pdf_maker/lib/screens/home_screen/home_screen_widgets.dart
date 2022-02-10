@@ -194,7 +194,11 @@ class MergePdfModule extends StatelessWidget {
     if (result != null) {
       pdfMergeScreenController.files.value = result.paths.map((path) => File(path!)).toList();
       if (pdfMergeScreenController.files.length > 1) {
-        Get.to(() => PdfMergeScreen());
+        String pdfListString = pdfMergeScreenController.files.toString();
+        Get.to(() => PdfMergeScreen(
+          pdfComingFrom: PdfComingFrom.newList,
+          pdfListString: pdfListString,
+        ));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Please Select 2 PDF")));

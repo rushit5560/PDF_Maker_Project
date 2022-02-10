@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/custom_color.dart';
+import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_screen_controller.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen_widgets.dart';
@@ -12,8 +13,13 @@ import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 
 class PdfMergeScreen extends StatefulWidget {
-  // List<File> files;
-  // PdfMergeScreen({Key? key, required this.files}) : super(key: key);
+  final int? index;
+  final PdfComingFrom pdfComingFrom;
+  final String pdfListString;
+
+
+  PdfMergeScreen({this.index, required this.pdfComingFrom, required this.pdfListString});
+
   @override
   State<PdfMergeScreen> createState() => _PdfMergeScreenState();
 }
@@ -28,35 +34,26 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
   String? singleFile;
   List<String> localList = [];
 
-  // Future<bool> checkPermission() async {
-  //   await PermissionHandler().requestPermissions([PermissionGroup.storage]);
-  //   PermissionStatus permission = await PermissionHandler()
-  //       .checkPermissionStatus(PermissionGroup.storage);
-  //   print(permission);
-  //   if (permission == PermissionStatus.neverAskAgain) {
-  //     print("Go to Settings and provide media access");
-  //     return false;
-  //   } else if (permission == PermissionStatus.granted) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-
-  // @override
-  // void initState() {
-  //   Timer(const Duration(seconds: 3), () {
-  //     pdfMergeScreenController.isLoading(true);
-  //     pdfMergeScreenController.isLoading(false);
-  //   });
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => showAlertDialog(context),
+      onWillPop: () async {
+        String newPdfListString = pdfMergeScreenController.files.toString();
+
+        if(widget.pdfComingFrom == PdfComingFrom.newList){
+          showAlertDialog(context);
+        } else if(widget.pdfComingFrom == PdfComingFrom.savedList) {
+          if(widget.pdfListString == newPdfListString) {
+            pdfMergeScreenController.files.clear();
+            Get.back();
+          } else {
+            showAlertDialog(context);
+          }
+        }
+
+        return null!;
+      },
       child: Scaffold(
         backgroundColor: AppColor.kLightBlueColor,
         body: Obx(
@@ -67,7 +64,11 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
-                        CustomPdfMergeScreenAppBar(),
+                        CustomPdfMergeScreenAppBar(
+                            pdfComingFrom: widget.pdfComingFrom,
+                            index: widget.index,
+                            pdfListString: widget.pdfListString,
+                        ),
                         const SizedBox(height: 15),
                         Expanded(
                           child: Container(
@@ -176,7 +177,11 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
           if (kDebugMode) {print('localList : $localList');}
         }
 
-        localStorage.storePdfList(localList);
+        localStorage.storePdfList(
+          pdfList: localList,
+          pdfComingFrom: widget.pdfComingFrom,
+          index: widget.index,
+        );
 
 
         pdfMergeScreenController.files.clear();

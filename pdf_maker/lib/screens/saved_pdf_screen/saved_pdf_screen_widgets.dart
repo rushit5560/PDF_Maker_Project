@@ -168,6 +168,7 @@ class SavedPrefsImagesModule extends StatelessWidget {
                                 homeScreenController.captureImageList.add(File(sub));
                               }
                             }
+                            //todo
                             String listString = homeScreenController.captureImageList.toString();
                             Get.to(() => ImageListScreen(
                                   comingFrom: ComingFrom.savedList,
@@ -305,7 +306,12 @@ class SavedPrefsPdfModule extends StatelessWidget {
                           pdfMergeScreenController.files.add(File(sub));
                         }
                       }
-                      Get.off(()=> PdfMergeScreen());
+                      String pdfListString = pdfMergeScreenController.files.toString();
+                      Get.off(()=> PdfMergeScreen(
+                        index: index,
+                        pdfComingFrom: PdfComingFrom.savedList,
+                        pdfListString: pdfListString,
+                      ));
                     },
                     child: Container(
                       padding: const EdgeInsets.all(6),

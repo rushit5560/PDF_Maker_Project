@@ -35,14 +35,23 @@ class LocalStorage {
   }
 
   // Save Pdf List In Prefs
-  Future storePdfList(List<String> pdfList) async {
+  Future storePdfList({required List<String> pdfList, required PdfComingFrom pdfComingFrom, int? index}) async {
     if (kDebugMode) {print('subList : $pdfList');}
+
     String pdfListString = pdfList.toString();
     String subString2 = pdfListString.substring(1, pdfListString.length-1);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> oldPdfList = prefs.getStringList(mainPdfListKey) ?? [];
-    oldPdfList.add(subString2);
+    if(pdfComingFrom == PdfComingFrom.newList) {
+      oldPdfList.add(subString2);
+    } else {
+      if(index.toString().isNotEmpty) {
+        oldPdfList.removeAt(index!);
+        oldPdfList.insert(index, subString2);
+      }
+    }
+
     prefs.setStringList(mainPdfListKey, oldPdfList);
   }
 
