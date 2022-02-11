@@ -12,8 +12,8 @@ import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_scre
 import 'package:pdf_maker/controllers/saved_pdf_screen_controller/saved_pdf_screen_controller.dart';
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
-// import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
 
 class CustomSavedPdfScreenAppBar extends StatelessWidget {
   const CustomSavedPdfScreenAppBar({Key? key}) : super(key: key);
@@ -168,13 +168,15 @@ class SavedPrefsImagesModule extends StatelessWidget {
                                 homeScreenController.captureImageList.add(File(sub));
                               }
                             }
-                            //todo
                             String listString = homeScreenController.captureImageList.toString();
                             Get.to(() => ImageListScreen(
                                   comingFrom: ComingFrom.savedList,
                                   index: i,
                                   listString: listString,
-                                ));
+                                ))!.then((value) {
+                              savedPdfScreenController.getStorageImages();
+                              print('Images Rerender Function');
+                            });
                           },
                           child: Container(
                             padding: const EdgeInsets.all(6),
@@ -311,7 +313,10 @@ class SavedPrefsPdfModule extends StatelessWidget {
                         index: index,
                         pdfComingFrom: PdfComingFrom.savedList,
                         pdfListString: pdfListString,
-                      ));
+                      ))!.then((value) {
+                        savedPdfScreenController.getStoragePdfs();
+                        print('Pdf Rerender Function');
+                      });
                     },
                     child: Container(
                       padding: const EdgeInsets.all(6),

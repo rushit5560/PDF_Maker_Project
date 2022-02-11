@@ -47,35 +47,3 @@ class SavedPdfScreen extends StatelessWidget {
     );
   }
 }
-
-/*body: Stack(
-        children: [
-          const MainBackgroundWidget(),
-
-          SafeArea(
-            child: Obx(
-              () => savedPdfScreenController.isLoading.value
-                  ? const Center(child: CircularProgressIndicator())
-                  : Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                        children: [
-                          CustomAppBar(),
-                          const SizedBox(height: 10),
-                          Expanded(
-                            child: TabBarView(
-                              controller: savedPdfScreenController.tabController,
-                              children: [
-                                SavedPrefsImagesModule(),
-                                SavedPrefsPdfModule(),
-                              ],
-                            ),
-                          ),
-                          TabSelectView(),
-                        ],
-                      ),
-                  ),
-            ),
-          ),
-        ],
-      ),*/

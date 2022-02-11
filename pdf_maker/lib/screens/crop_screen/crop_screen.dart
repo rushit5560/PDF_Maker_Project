@@ -39,61 +39,84 @@ class _CropScreenState extends State<CropScreen> {
               const SizedBox(height: 15),
 
               Obx(
-                ()=> Container(
+                () => Container(
                   child: croppedImage == null
                       ? Expanded(
-                    child: Column(
-                      children: [
-                        Flexible(
-                          child: Crop(
-                              maskColor: Colors.black38,
-                              controller: cropController,
-                              cornerDotBuilder: (size, edgeAlignment) => const DotControl(color: Colors.red),
-                              image: homeScreenController.captureImageList[widget.i].readAsBytesSync(),
-                              onCropped: (croppedData1) async {
-                                croppedImage = croppedData1;
-                                homeScreenController.captureImageList[widget.i].writeAsBytesSync(croppedImage!);
-                                tempCroppedFile =homeScreenController.captureImageList[widget.i].path;
-                                print('tempCroppedFile : $tempCroppedFile');
-                                homeScreenController.isCropping.value = false;
-                                homeScreenController.cropEnable.value = false;
-                                homeScreenController.loading();
+                          child: Column(
+                            children: [
+                              Flexible(
+                                child: Crop(
+                                    maskColor: Colors.black38,
+                                    controller: cropController,
+                                    cornerDotBuilder: (size, edgeAlignment) =>
+                                        const DotControl(color: Colors.red),
+                                    image: homeScreenController
+                                        .captureImageList[widget.i]
+                                        .readAsBytesSync(),
+                                    onCropped: (croppedData1) async {
+                                      croppedImage = croppedData1;
+                                      homeScreenController
+                                          .captureImageList[widget.i]
+                                          .writeAsBytesSync(croppedImage!);
+                                      tempCroppedFile = homeScreenController
+                                          .captureImageList[widget.i].path;
+                                      print(
+                                          'tempCroppedFile : $tempCroppedFile');
+                                      homeScreenController.isCropping.value =
+                                          false;
+                                      homeScreenController.cropEnable.value =
+                                          false;
+                                      homeScreenController.loading();
 
-                                if(tempCroppedFile.isNotEmpty) {
-                                  String frontPath = tempCroppedFile.split('cache')[0];
-                                  List<String> ogPathList = tempCroppedFile.split('/');
-                                  String ogExt = ogPathList[ogPathList.length - 1].split('.')[1];
-                                  DateTime today = DateTime.now();
-                                  String dateSlug = "${today.day}${today.month}${today.year}${today.hour}${today.minute}${today.second}";
-                                  String newPath = "${frontPath}cache/image_$dateSlug.$ogExt";
-                                  homeScreenController.captureImageList[widget.i].rename(newPath);
+                                      if (tempCroppedFile.isNotEmpty) {
+                                        String frontPath =
+                                            tempCroppedFile.split('cache')[0];
+                                        List<String> ogPathList =
+                                            tempCroppedFile.split('/');
+                                        String ogExt =
+                                            ogPathList[ogPathList.length - 1]
+                                                .split('.')[1];
+                                        DateTime today = DateTime.now();
+                                        String dateSlug =
+                                            "${today.day}${today.month}${today.year}${today.hour}${today.minute}${today.second}";
+                                        String newPath =
+                                            "${frontPath}cache/image_$dateSlug.$ogExt";
+                                        homeScreenController
+                                            .captureImageList[widget.i]
+                                            .rename(newPath);
 
-                                  tempList.clear();
-                                  for(int i = 0; i < homeScreenController.captureImageList.length; i++) {
-                                    tempList.add(homeScreenController.captureImageList[i]);
-                                  }
-                                  tempList.removeAt(widget.i);
-                                  tempList.insert(widget.i, File(newPath));
+                                        tempList.clear();
+                                        for (int i = 0;
+                                            i <
+                                                homeScreenController
+                                                    .captureImageList.length;
+                                            i++) {
+                                          tempList.add(homeScreenController
+                                              .captureImageList[i]);
+                                        }
+                                        tempList.removeAt(widget.i);
+                                        tempList.insert(
+                                            widget.i, File(newPath));
 
-                                  homeScreenController.captureImageList.clear();
-                                  for(int i =0; i < tempList.length; i++){
-                                    homeScreenController.captureImageList.add(tempList[i]);
-                                  }
+                                        homeScreenController.captureImageList
+                                            .clear();
+                                        for (int i = 0;
+                                            i < tempList.length;
+                                            i++) {
+                                          homeScreenController.captureImageList
+                                              .add(tempList[i]);
+                                        }
 
-                                  Get.back();
-
-                                }
-
-                              }),
-                        ),
-                      ],
-                    ),
-                  )
+                                        Get.back();
+                                      }
+                                    }),
+                              ),
+                            ],
+                          ),
+                        )
                       : Center(child: Image.memory(croppedImage!)),
                 ),
               ),
-
-
 
             ],
           ),

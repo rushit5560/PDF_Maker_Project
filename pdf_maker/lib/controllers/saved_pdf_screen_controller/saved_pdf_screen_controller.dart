@@ -8,7 +8,6 @@ class SavedPdfScreenController extends GetxController with GetSingleTickerProvid
   LocalStorage localStorage = LocalStorage();
   RxList<String> storeImageList = RxList();
   RxList<String> storePdfList = RxList();
-  // RxList<File> storeImageFileList = RxList();
   late TabController tabController;
 
   getStorageImages() async {
