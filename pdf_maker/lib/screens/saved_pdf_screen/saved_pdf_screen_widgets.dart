@@ -62,6 +62,7 @@ class CustomSavedPdfScreenAppBar extends StatelessWidget {
   }
 }
 
+
 class TabSelectView extends StatelessWidget {
   TabSelectView({Key? key}) : super(key: key);
   final savedPdfScreenController = Get.find<SavedPdfScreenController>();
@@ -115,6 +116,7 @@ class TabSelectView extends StatelessWidget {
     );
   }
 }
+
 
 class SavedPrefsImagesModule extends StatelessWidget {
   SavedPrefsImagesModule({Key? key}) : super(key: key);
@@ -286,6 +288,7 @@ class ItemDeleteButton extends StatelessWidget {
   }
 
 }
+
 
 class SavedPrefsPdfModule extends StatelessWidget {
   SavedPrefsPdfModule({Key? key}) : super(key: key);

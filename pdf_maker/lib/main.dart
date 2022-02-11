@@ -25,9 +25,17 @@ class MyApp extends StatelessWidget {
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white,
           ),
-        // bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        //   backgroundColor: AppColor.kDarkBlueColor
-        // ),
+        dialogTheme: const DialogTheme(
+          backgroundColor: AppColor.kLightBlueColor,
+          elevation: 10,
+          contentTextStyle: TextStyle(
+            color: AppColor.kDarkBlueColor,
+          ),
+          titleTextStyle: TextStyle(color: AppColor.kDarkBlueColor)
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(primary: AppColor.kDarkBlueColor,)
+        ),
       ),
       home: SplashScreen(),
     );
