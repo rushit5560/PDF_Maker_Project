@@ -35,19 +35,23 @@ class ImageListScreen extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: AppColor.kLightBlueColor,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(25),
-            child: Column(
-              children: [
-                CustomImageListScreenAppBar(
-                  comingFrom: comingFrom,
-                  index: index,
-                  listString: listString,
-                ),
-                const SizedBox(height: 15),
-                Expanded(child: SelectedImagesShowModule()),
-              ],
+        body: Obx(
+          ()=> homeScreenController.isLoading.value
+            ? const Center(child: CircularProgressIndicator())
+          : SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(25),
+              child: Column(
+                children: [
+                  CustomImageListScreenAppBar(
+                    comingFrom: comingFrom,
+                    index: index,
+                    listString: listString,
+                  ),
+                  const SizedBox(height: 15),
+                  Expanded(child: SelectedImagesShowModule()),
+                ],
+              ),
             ),
           ),
         ),

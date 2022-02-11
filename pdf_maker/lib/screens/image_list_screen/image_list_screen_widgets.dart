@@ -12,6 +12,7 @@ import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/common/img_url.dart';
 // import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 // import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
@@ -176,36 +177,53 @@ class SelectedImagesShowModule extends StatelessWidget {
       child: Obx(
         () => homeScreenController.captureImageList.isEmpty
             ? const Center(child: Text('Please Add Image'))
-            : ReorderableGridView.count(
-                crossAxisCount: homeScreenController.crossAxisCount.value,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 0.75,
-                onReorder: (oldIndex, newIndex) {
-                  File path =
-                      homeScreenController.captureImageList.removeAt(oldIndex);
-                  homeScreenController.captureImageList.insert(newIndex, path);
-                },
-                children: [
-                  for (int i = 0;
-                      i < homeScreenController.captureImageList.length;
-                      i++)
-                    Container(
-                      key: ValueKey(homeScreenController.captureImageList[i]),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
+            : Obx(
+                () => homeScreenController.isLoading.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : ReorderableGridView.count(
+                        crossAxisCount:
+                            homeScreenController.crossAxisCount.value,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 0.75,
+                        onReorder: (oldIndex, newIndex) {
+                          File path = homeScreenController.captureImageList
+                              .removeAt(oldIndex);
+                          homeScreenController.captureImageList
+                              .insert(newIndex, path);
+                        },
                         children: [
-                          ImageShowModule(i: i),
-                          Positioned(
-                            bottom: 5,
-                              child: ItemDeleteButton(i: i)),
+                          for (int i = 0;
+                              i < homeScreenController.captureImageList.length;
+                              i++)
+                            Container(
+                              key: ValueKey(
+                                  homeScreenController.captureImageList[i]),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      print('Selected Image : ${homeScreenController.captureImageList[i].path}');
+                                      Get.to(() => CropScreen(i: i))!.then((value) {
+                                        homeScreenController.isLoading(true);
+                                        // homeScreenController.captureImageList.removeAt(i);
+                                        // homeScreenController.captureImageList.insert(i, File(value[0]));
+                                        homeScreenController.isLoading(false);
+                                      });
+                                    },
+                                    child: ImageShowModule(i: i),
+                                  ),
+                                  Positioned(
+                                      bottom: 5, child: ItemDeleteButton(i: i)),
+                                ],
+                              ),
+                            ),
                         ],
                       ),
-                    ),
-                ],
               ),
       ),
     );
