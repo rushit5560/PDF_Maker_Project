@@ -15,7 +15,7 @@ class CustomCropScreenAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60,
+      height: 50,
       child: Row(
         children: [
           GestureDetector(
@@ -24,15 +24,15 @@ class CustomCropScreenAppBar extends StatelessWidget {
               // showAlertDialog(context);
             },
             child: Container(
+              height: 50,
+              width: 50,
               decoration: BoxDecoration(
-                color: AppColor.kDarkBlueColor,
-                borderRadius: BorderRadius.circular(15),
+                  color: AppColor.kDarkBlueColor,
+                  borderRadius: BorderRadius.circular(10)
               ),
               child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Center(
-                  child: Image.asset(ImgUrl.backOption),
-                ),
+                padding: const EdgeInsets.all(17),
+                child: Image.asset(ImgUrl.backOption),
               ),
             ),
           ),
@@ -65,14 +65,17 @@ class CustomCropScreenAppBar extends StatelessWidget {
               homeScreenController.isCropping.value = true;
             },
             child: Container(
+              height: 50,
+              width: 50,
               decoration: BoxDecoration(
-                color: AppColor.kDarkBlueColor,
-                borderRadius: BorderRadius.circular(15),
+                  color: AppColor.kDarkBlueColor,
+                  borderRadius: BorderRadius.circular(10)
               ),
               child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Center(
-                  child: Image.asset(ImgUrl.click),
+                padding: const EdgeInsets.all(16),
+                child: Image.asset(
+                  ImgUrl.click,
+                  // height: 5, width: 5,
                 ),
               ),
             ),
