@@ -232,9 +232,7 @@ class ItemDeleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        print('index : $i');
-        savedPdfScreenController.updateStorageImages(i);
-        Fluttertoast.showToast(msg: 'Selected Draft Successfully Deleted');
+        showAlertDialog(context);
       },
       child: Container(
         padding: const EdgeInsets.all(6),
@@ -250,6 +248,43 @@ class ItemDeleteButton extends StatelessWidget {
       ),
     );
   }
+
+  showAlertDialog(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child: const Text("No"),
+      onPressed: () {
+        Get.back();
+      },
+    );
+
+    Widget continueButton = TextButton(
+      child: const Text("Yes"),
+      onPressed: () async {
+        savedPdfScreenController.updateStorageImages(i);
+        Fluttertoast.showToast(msg: 'Selected Draft Successfully Deleted');
+        Get.back();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      //title: Text("AlertDialog"),
+      content: const Text("Do you want to delete ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 }
 
 class SavedPrefsPdfModule extends StatelessWidget {
@@ -372,8 +407,7 @@ class PdfDeleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        savedPdfScreenController.updateStoragePdfs(i);
-        Fluttertoast.showToast(msg: 'Selected Draft Successfully Deleted');
+        showAlertDialog(context);
       },
       child: Container(
         padding: const EdgeInsets.all(6),
@@ -389,5 +423,42 @@ class PdfDeleteButton extends StatelessWidget {
       ),
     );
   }
+
+  showAlertDialog(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child: const Text("No"),
+      onPressed: () {
+        Get.back();
+      },
+    );
+
+    Widget continueButton = TextButton(
+      child: const Text("Yes"),
+      onPressed: () async {
+        savedPdfScreenController.updateStoragePdfs(i);
+        Fluttertoast.showToast(msg: 'Selected Draft Successfully Deleted');
+        Get.back();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      //title: Text("AlertDialog"),
+      content: const Text("Do you want to delete ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 }
 
