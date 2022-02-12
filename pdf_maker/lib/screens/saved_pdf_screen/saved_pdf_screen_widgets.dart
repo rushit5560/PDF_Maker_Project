@@ -157,11 +157,10 @@ class SavedPrefsImagesModule extends StatelessWidget {
                         right: 10,
                         child: GestureDetector(
                           onTap: () {
-                            String oneObject =
-                                savedPdfScreenController.storeImageList[i];
+                            String oneObject = savedPdfScreenController.storeImageList[i];
                             List<String> tempList = oneObject.split(',');
 
-                            Fluttertoast.showToast(msg: 'Please wait');
+                            Fluttertoast.showToast(msg: 'Please wait', toastLength: Toast.LENGTH_SHORT);
                             for (int i = 0; i < tempList.length; i++) {
                               if (i == 0) {
                                 homeScreenController.captureImageList.add(File(tempList[i]));

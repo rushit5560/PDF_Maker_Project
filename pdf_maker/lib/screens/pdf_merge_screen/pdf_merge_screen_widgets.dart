@@ -39,7 +39,13 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
               String newPdfListString = pdfMergeScreenController.files.toString();
 
               if(pdfComingFrom == PdfComingFrom.newList){
-                showAlertDialog(context);
+                if(pdfMergeScreenController.files.isEmpty) {
+                  Get.back();
+                  pdfMergeScreenController.files.clear();
+                  Get.back();
+                } else {
+                  showAlertDialog(context);
+                }
               } else if(pdfComingFrom == PdfComingFrom.savedList) {
                 if(pdfListString == newPdfListString) {
                   pdfMergeScreenController.files.clear();

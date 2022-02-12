@@ -42,7 +42,13 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
         String newPdfListString = pdfMergeScreenController.files.toString();
 
         if(widget.pdfComingFrom == PdfComingFrom.newList){
-          showAlertDialog(context);
+          if(pdfMergeScreenController.files.isEmpty) {
+            Get.back();
+            pdfMergeScreenController.files.clear();
+            Get.back();
+          } else {
+            showAlertDialog(context);
+          }
         } else if(widget.pdfComingFrom == PdfComingFrom.savedList) {
           if(widget.pdfListString == newPdfListString) {
             pdfMergeScreenController.files.clear();
@@ -173,16 +179,14 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
           for(int i = 0; i < pdfMergeScreenController.files.length; i++){
             localList.add(pdfMergeScreenController.files[i].path);
           }
-          print('localList : $localList');
-          if (kDebugMode) {print('localList : $localList');}
+          if(localList.isNotEmpty) {
+            localStorage.storePdfList(
+              pdfList: localList,
+              pdfComingFrom: widget.pdfComingFrom,
+              index: widget.index,
+            );
+          }
         }
-
-        localStorage.storePdfList(
-          pdfList: localList,
-          pdfComingFrom: widget.pdfComingFrom,
-          index: widget.index,
-        );
-
 
         pdfMergeScreenController.files.clear();
         Get.back();

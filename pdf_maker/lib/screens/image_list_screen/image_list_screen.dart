@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/enums.dart';
+import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:pdf_maker/controllers/saved_pdf_screen_controller/saved_pdf_screen_controller.dart';
 import 'image_list_screen_widgets.dart';
 
 
@@ -14,6 +16,8 @@ class ImageListScreen extends StatelessWidget {
   final String listString;
   ImageListScreen({Key? key, required this.comingFrom, this.index, required this.listString}) : super(key: key);
   final homeScreenController = Get.find<HomeScreenController>();
+  final savedPdfScreenController = Get.put(SavedPdfScreenController());
+  LocalStorage localStorage = LocalStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +26,18 @@ class ImageListScreen extends StatelessWidget {
         String newListString = homeScreenController.captureImageList.toString();
 
         if(comingFrom == ComingFrom.newList) {
-          showAlertDialog(context);
-        } else if(comingFrom == ComingFrom.savedList){
-          if(listString == newListString) {
+          if(homeScreenController.captureImageList.isEmpty){
+            Get.back();
             homeScreenController.captureImageList.clear();
             Get.back();
           } else {
+            showAlertDialog(context);
+          }
+        } else if(comingFrom == ComingFrom.savedList){
+          if (listString == newListString) {
+            homeScreenController.captureImageList.clear();
+            Get.back();
+          }  else {
             showAlertDialog(context);
           }
         }
@@ -115,8 +125,13 @@ class ImageListScreen extends StatelessWidget {
               index: index,
             );
           }
-          homeScreenController.captureImageList.clear();
+        } else if (homeScreenController.captureImageList.isEmpty) {
+          print('storeImageList : ${savedPdfScreenController.storeImageList}');
+          savedPdfScreenController.storeImageList.removeAt(index!);
+          localStorage.updateStorageImageList(savedPdfScreenController.storeImageList);
+          print('storeImageList : ${savedPdfScreenController.storeImageList}');
         }
+        homeScreenController.captureImageList.clear();
         Get.back();
         Get.back();
       },

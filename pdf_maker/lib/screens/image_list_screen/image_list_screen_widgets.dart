@@ -10,8 +10,10 @@ import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/common/img_url.dart';
+import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 // import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:pdf_maker/controllers/saved_pdf_screen_controller/saved_pdf_screen_controller.dart';
 import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 // import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen.dart';
@@ -25,8 +27,8 @@ class CustomImageListScreenAppBar extends StatelessWidget {
   CustomImageListScreenAppBar({Key? key, required this.comingFrom, this.index, required this.listString}) : super(key: key);
 
   final homeScreenController = Get.find<HomeScreenController>();
-  // List<String> localList = [];
-  // LocalStorage localStorage = LocalStorage();
+  final savedPdfScreenController = Get.find<SavedPdfScreenController>();
+  LocalStorage localStorage = LocalStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,14 @@ class CustomImageListScreenAppBar extends StatelessWidget {
             onTap: () {
               String newListString = homeScreenController.captureImageList.toString();
               if(comingFrom == ComingFrom.newList){
-                showAlertDialog(context);
+                if(homeScreenController.captureImageList.isEmpty){
+                  Get.back();
+                  homeScreenController.captureImageList.clear();
+                  Get.back();
+                } else {
+                  showAlertDialog(context);
+                }
+
               } else if(comingFrom == ComingFrom.savedList){
                 if(listString == newListString) {
                   homeScreenController.captureImageList.clear();
@@ -128,15 +137,19 @@ class CustomImageListScreenAppBar extends StatelessWidget {
           if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
 
           if(homeScreenController.localList.isNotEmpty){
-            // todo - insert at index or new
             await homeScreenController.localStorage.storeSingleImageList(
-                subList: homeScreenController.localList,
+              subList: homeScreenController.localList,
               comingFrom: comingFrom,
-              index: index
+              index: index,
             );
           }
-          homeScreenController.captureImageList.clear();
+        } else if (homeScreenController.captureImageList.isEmpty) {
+          print('storeImageList : ${savedPdfScreenController.storeImageList}');
+          savedPdfScreenController.storeImageList.removeAt(index!);
+          localStorage.updateStorageImageList(savedPdfScreenController.storeImageList);
+          print('storeImageList : ${savedPdfScreenController.storeImageList}');
         }
+        homeScreenController.captureImageList.clear();
         Get.back();
         Get.back();
       },
