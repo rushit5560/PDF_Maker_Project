@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "232320502272",
-    "project_id": "scan4pdf",
-    "storage_bucket": "scan4pdf.appspot.com"
+    "project_number": "70608009549",
+    "project_id": "scanpdf-48021",
+    "storage_bucket": "scanpdf-48021.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:232320502272:android:e25367eaf7aa63e0f2e6e5",
+        "mobilesdk_app_id": "1:70608009549:android:1f495ae273e31f7cf41f04",
         "android_client_info": {
-          "package_name": "com.example.pdf_maker"
+          "package_name": "com.camerascanner.pdfmerger"
         }
       },
       "oauth_client": [
         {
-          "client_id": "232320502272-eeufrvs6aokp2vbhjsbssrqq3hsg766v.apps.googleusercontent.com",
+          "client_id": "70608009549-mlo29alnjp6h0jmocm0u86u1au3k33n0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCtxgk7mJgDTiZEPpfVFKxe4-4cLMXaIOI"
+          "current_key": "AIzaSyCZl5Slqs2N1jQrZvfzTtJ_2Ed7-Nmtsh8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "232320502272-eeufrvs6aokp2vbhjsbssrqq3hsg766v.apps.googleusercontent.com",
+              "client_id": "70608009549-mlo29alnjp6h0jmocm0u86u1au3k33n0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

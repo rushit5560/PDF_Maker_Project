@@ -1,4 +1,4 @@
-package com.example.pdf_maker
+package com.camerascanner.pdfmerger
 
 import io.flutter.embedding.android.FlutterActivity
 
