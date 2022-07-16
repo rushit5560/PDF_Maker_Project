@@ -46,8 +46,8 @@ class CustomHomeScreenAppBar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 15),
-          GestureDetector(
+          //const SizedBox(width: 15),
+          /*GestureDetector(
             onTap: () => Get.to(()=> SettingScreen(),
               transition: Transition.rightToLeft,
             ),
@@ -63,7 +63,7 @@ class CustomHomeScreenAppBar extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );
