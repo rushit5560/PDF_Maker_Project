@@ -7,6 +7,7 @@ import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/enums.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf_maker/controllers/pdf_show_screen_controller/pdf_show_screen_controller.dart';
 import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen_widgets.dart';
 import 'package:printing/printing.dart';
 
@@ -19,6 +20,7 @@ class PdfShowScreen extends StatelessWidget {
   PdfShowScreen({Key? key, required this.comingFrom, this.index, required this.listString}) : super(key: key);
 
   final homeScreenController = Get.find<HomeScreenController>();
+  final pdfShowScreenController = Get.put(PdfShowScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,11 @@ class PdfShowScreen extends StatelessWidget {
                       homeScreenController.captureImageList,
                     ),
                   ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  height: 48,
+                  child: pdfShowScreenController.adWidget,
                 ),
 
               ],

@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreenController extends GetxController {
   RxBool isLoading = false.obs;
-  final FacebookLogin  plugin = FacebookLogin(debug: true);
+  final FacebookLogin plugin = FacebookLogin(debug: true);
   FacebookAccessToken? _token;
   FacebookUserProfile? profile1;
   String? _imageUrl;
@@ -36,10 +36,10 @@ class LoginScreenController extends GetxController {
         email = await plugin1.getUserEmail();
       }
       imageUrl = await plugin1.getProfileImageUrl(width: 100);
-      if(profile!.userId.isNotEmpty){
+      if (profile!.userId.isNotEmpty) {
         String name = "${profile!.firstName} ${profile!.lastName!}";
-         //email = plugin1.getUserEmail();
-       // String photoUrl = plugin1.getProfileImageUrl(width: 100).toString();
+        //email = plugin1.getUserEmail();
+        // String photoUrl = plugin1.getProfileImageUrl(width: 100).toString();
 
         prefs.setString('UserId', profile!.userId);
         prefs.setString('UserName', name);
@@ -51,16 +51,16 @@ class LoginScreenController extends GetxController {
         String? username = prefs.getString('UserName');
         String? useremail = prefs.getString('UserEmail');
         String? userphoto = prefs.getString('UserPhoto');
-        print('id : $id \nusername : $username \nuseremail : $useremail \nuserphoto : $userphoto');
+        print(
+            'id : $id \nusername : $username \nuseremail : $useremail \nuserphoto : $userphoto');
       }
-
     }
 
     //setState(() {
-      _token = token;
-      profile1 = profile;
-      _email = email;
-      _imageUrl = imageUrl;
+    _token = token;
+    profile1 = profile;
+    _email = email;
+    _imageUrl = imageUrl;
     //});
   }
 
@@ -70,10 +70,11 @@ class LoginScreenController extends GetxController {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final GoogleSignIn googleSignIn = GoogleSignIn();
     googleSignIn.signOut();
-    final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
+          await googleSignInAccount.authentication;
       final AuthCredential authCredential = GoogleAuthProvider.credential(
           idToken: googleSignInAuthentication.idToken,
           accessToken: googleSignInAuthentication.accessToken);
@@ -96,13 +97,11 @@ class LoginScreenController extends GetxController {
   }
 
   Future<void> onPressedLogInButton() async {
-    await plugin.logIn(
-        permissions: [
-          FacebookPermission.publicProfile,
-          FacebookPermission.email,
-        ]);
+    await plugin.logIn(permissions: [
+      FacebookPermission.publicProfile,
+      FacebookPermission.email,
+    ]);
     await updateLoginInfo();
     await plugin.logOut();
   }
-
 }

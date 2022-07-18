@@ -5,10 +5,9 @@ import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_scre
 import 'package:pdf_maker/controllers/saved_pdf_screen_controller/saved_pdf_screen_controller.dart';
 import 'saved_pdf_screen_widgets.dart';
 
-
 class SavedPdfScreen extends StatelessWidget {
   SavedPdfScreen({Key? key}) : super(key: key);
-  final savedPdfScreenController =Get.put(SavedPdfScreenController());
+  final savedPdfScreenController = Get.put(SavedPdfScreenController());
   final pdfMergeScreenController = Get.put(PdfMergeScreenController());
 
   @override
@@ -17,7 +16,11 @@ class SavedPdfScreen extends StatelessWidget {
       backgroundColor: AppColor.kLightBlueColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
           child: Obx(
             () => savedPdfScreenController.isLoading.value
                 ? const Center(
@@ -39,6 +42,11 @@ class SavedPdfScreen extends StatelessWidget {
                         ),
                       ),
                       TabSelectView(),
+                      SizedBox(height: 10),
+                      Container(
+                        height: 48,
+                        child: savedPdfScreenController.adWidget,
+                      ),
                     ],
                   ),
           ),

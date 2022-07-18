@@ -14,7 +14,6 @@ import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-
 class CustomSavedPdfScreenAppBar extends StatelessWidget {
   const CustomSavedPdfScreenAppBar({Key? key}) : super(key: key);
 
@@ -31,8 +30,7 @@ class CustomSavedPdfScreenAppBar extends StatelessWidget {
               width: 50,
               decoration: BoxDecoration(
                   color: AppColor.kDarkBlueColor,
-                  borderRadius: BorderRadius.circular(10)
-              ),
+                  borderRadius: BorderRadius.circular(10)),
               child: Padding(
                 padding: const EdgeInsets.all(17),
                 child: Image.asset(ImgUrl.backOption),
@@ -57,11 +55,9 @@ class CustomSavedPdfScreenAppBar extends StatelessWidget {
           ),
         ],
       ),
-
     );
   }
 }
-
 
 class TabSelectView extends StatelessWidget {
   TabSelectView({Key? key}) : super(key: key);
@@ -75,10 +71,9 @@ class TabSelectView extends StatelessWidget {
       labelColor: Colors.black,
       labelPadding: const EdgeInsets.only(top: 20.0),
       unselectedLabelColor: Colors.grey,
-      controller:  savedPdfScreenController.tabController,
+      controller: savedPdfScreenController.tabController,
       labelStyle: const TextStyle(fontSize: 20),
       tabs: [
-
         Container(
           width: Get.width,
           decoration: BoxDecoration(
@@ -111,12 +106,10 @@ class TabSelectView extends StatelessWidget {
             ),
           ),
         ),
-
       ],
     );
   }
 }
-
 
 class SavedPrefsImagesModule extends StatelessWidget {
   SavedPrefsImagesModule({Key? key}) : super(key: key);
@@ -128,53 +121,60 @@ class SavedPrefsImagesModule extends StatelessWidget {
     return savedPdfScreenController.storeImageList.isEmpty
         ? const Center(child: Text('No Saved Images'))
         : Padding(
-          padding: const EdgeInsets.all(5.0),
-      child: GridView.builder(
-        itemCount: savedPdfScreenController.storeImageList.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemBuilder: (context, i){
-          return Container(
-            key: ValueKey(savedPdfScreenController.storeImageList[i]),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Stack(
-              // alignment: Alignment.bottomCenter,
-              children: [
-                ImageShowModule(i: i),
-                Positioned(
-                  bottom: 10,
-                  left: 10,
-                  child: ItemDeleteButton(i: i),
-                ),
-
-                Positioned(
+            padding: const EdgeInsets.all(5.0),
+            child: GridView.builder(
+              itemCount: savedPdfScreenController.storeImageList.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemBuilder: (context, i) {
+                return Container(
+                  key: ValueKey(savedPdfScreenController.storeImageList[i]),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Stack(
+                    // alignment: Alignment.bottomCenter,
+                    children: [
+                      ImageShowModule(i: i),
+                      Positioned(
+                        bottom: 10,
+                        left: 10,
+                        child: ItemDeleteButton(i: i),
+                      ),
+                      Positioned(
                         bottom: 10,
                         right: 10,
                         child: GestureDetector(
                           onTap: () {
-                            String oneObject = savedPdfScreenController.storeImageList[i];
+                            String oneObject =
+                                savedPdfScreenController.storeImageList[i];
                             List<String> tempList = oneObject.split(',');
 
-                            Fluttertoast.showToast(msg: 'Please wait', toastLength: Toast.LENGTH_SHORT);
+                            Fluttertoast.showToast(
+                                msg: 'Please wait',
+                                toastLength: Toast.LENGTH_SHORT);
                             for (int i = 0; i < tempList.length; i++) {
                               if (i == 0) {
-                                homeScreenController.captureImageList.add(File(tempList[i]));
+                                homeScreenController.captureImageList
+                                    .add(File(tempList[i]));
                               } else {
                                 String sub = tempList[i].substring(1);
-                                homeScreenController.captureImageList.add(File(sub));
+                                homeScreenController.captureImageList
+                                    .add(File(sub));
                               }
                             }
-                            String listString = homeScreenController.captureImageList.toString();
+                            String listString = homeScreenController
+                                .captureImageList
+                                .toString();
                             Get.to(() => ImageListScreen(
-                                  comingFrom: ComingFrom.savedList,
-                                  index: i,
-                                  listString: listString,
-                                ))!.then((value) {
+                                      comingFrom: ComingFrom.savedList,
+                                      index: i,
+                                      listString: listString,
+                                    ))!
+                                .then((value) {
                               savedPdfScreenController.getStorageImages();
                               print('Images Rerender Function');
                             });
@@ -193,13 +193,14 @@ class SavedPrefsImagesModule extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                );
+              },
             ),
           );
-        },
-      ),
-        );
   }
 }
+
 class ImageShowModule extends StatelessWidget {
   final int i;
   ImageShowModule({Key? key, required this.i}) : super(key: key);
@@ -223,10 +224,11 @@ class ImageShowModule extends StatelessWidget {
     );
   }
 }
+
 class ItemDeleteButton extends StatelessWidget {
   final int i;
   ItemDeleteButton({Key? key, required this.i}) : super(key: key);
-  final savedPdfScreenController =Get.find<SavedPdfScreenController>();
+  final savedPdfScreenController = Get.find<SavedPdfScreenController>();
   final LocalStorage localStorage = LocalStorage();
 
   @override
@@ -239,8 +241,7 @@ class ItemDeleteButton extends StatelessWidget {
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: AppColor.kDarkBlueColor
-        ),
+            color: AppColor.kDarkBlueColor),
         child: const Icon(
           Icons.delete_rounded,
           color: Colors.white,
@@ -285,9 +286,7 @@ class ItemDeleteButton extends StatelessWidget {
       },
     );
   }
-
 }
-
 
 class SavedPrefsPdfModule extends StatelessWidget {
   SavedPrefsPdfModule({Key? key}) : super(key: key);
@@ -297,91 +296,96 @@ class SavedPrefsPdfModule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return savedPdfScreenController.storePdfList.isEmpty
-    ? const Center(child: Text("No Saved PDF"))
-    : Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: GridView.builder(
-        itemCount: savedPdfScreenController.storePdfList.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-        ),
-        itemBuilder: (context, index){
-          String oneObject = savedPdfScreenController.storePdfList[index];
-          List<String> tempList = oneObject.split(',');
-          print('index : $index');
-          String path = '';
-          if(index == 0){
-            path = tempList[index];
-          } else {
-            path = tempList[0];
-          }
+        ? const Center(child: Text("No Saved PDF"))
+        : Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: GridView.builder(
+              itemCount: savedPdfScreenController.storePdfList.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+              ),
+              itemBuilder: (context, index) {
+                String oneObject = savedPdfScreenController.storePdfList[index];
+                List<String> tempList = oneObject.split(',');
+                print('index : $index');
+                String path = '';
+                if (index == 0) {
+                  path = tempList[index];
+                } else {
+                  path = tempList[0];
+                }
 
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Stack(
-              // alignment: Alignment.bottomCenter,
-              children: [
-                PdfShowModule(i: index, filePath: /*tempList[index]*/path),
-                Positioned(
-                  bottom: 10,
-                  left: 10,
-                  child: PdfDeleteButton(i: index),
-                ),
-                Positioned(
-                  bottom: 10,
-                  right: 10,
-                  child: GestureDetector(
-                    onTap: () {
-                      Fluttertoast.showToast(msg: 'Please wait');
-                      for(int i = 0; i < tempList.length; i++){
-                        if(i == 0){
-                          pdfMergeScreenController.files.add(File(tempList[i]));
-                        } else {
-                          String sub = tempList[i].substring(1);
-                          pdfMergeScreenController.files.add(File(sub));
-                        }
-                      }
-                      String pdfListString = pdfMergeScreenController.files.toString();
-                      Get.off(()=> PdfMergeScreen(
-                        index: index,
-                        pdfComingFrom: PdfComingFrom.savedList,
-                        pdfListString: pdfListString,
-                      ))!.then((value) {
-                        savedPdfScreenController.getStoragePdfs();
-                        print('Pdf Rerender Function');
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: AppColor.kDarkBlueColor
-                      ),
-                      child: const Icon(
-                        Icons.arrow_right_alt_outlined,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                ),
-              ],
+                  child: Stack(
+                    // alignment: Alignment.bottomCenter,
+                    children: [
+                      PdfShowModule(
+                          i: index, filePath: /*tempList[index]*/ path),
+                      Positioned(
+                        bottom: 10,
+                        left: 10,
+                        child: PdfDeleteButton(i: index),
+                      ),
+                      Positioned(
+                        bottom: 10,
+                        right: 10,
+                        child: GestureDetector(
+                          onTap: () {
+                            Fluttertoast.showToast(msg: 'Please wait');
+                            for (int i = 0; i < tempList.length; i++) {
+                              if (i == 0) {
+                                pdfMergeScreenController.files
+                                    .add(File(tempList[i]));
+                              } else {
+                                String sub = tempList[i].substring(1);
+                                pdfMergeScreenController.files.add(File(sub));
+                              }
+                            }
+                            String pdfListString =
+                                pdfMergeScreenController.files.toString();
+                            Get.off(() => PdfMergeScreen(
+                                      index: index,
+                                      pdfComingFrom: PdfComingFrom.savedList,
+                                      pdfListString: pdfListString,
+                                    ))!
+                                .then((value) {
+                              savedPdfScreenController.getStoragePdfs();
+                              print('Pdf Rerender Function');
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: AppColor.kDarkBlueColor),
+                            child: const Icon(
+                              Icons.arrow_right_alt_outlined,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           );
-        },
-      ),
-    );
   }
 }
+
 class PdfShowModule extends StatelessWidget {
   final int i;
-  final  String filePath;
+  final String filePath;
 
-  PdfShowModule({Key? key, required this.i, required this.filePath}) : super(key: key);
+  PdfShowModule({Key? key, required this.i, required this.filePath})
+      : super(key: key);
   final savedPdfScreenController = Get.find<SavedPdfScreenController>();
 
   @override
@@ -399,10 +403,11 @@ class PdfShowModule extends StatelessWidget {
     );
   }
 }
+
 class PdfDeleteButton extends StatelessWidget {
   final int i;
   PdfDeleteButton({Key? key, required this.i}) : super(key: key);
-  final savedPdfScreenController =Get.find<SavedPdfScreenController>();
+  final savedPdfScreenController = Get.find<SavedPdfScreenController>();
   final LocalStorage localStorage = LocalStorage();
 
   @override
@@ -415,8 +420,7 @@ class PdfDeleteButton extends StatelessWidget {
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: AppColor.kDarkBlueColor
-        ),
+            color: AppColor.kDarkBlueColor),
         child: const Icon(
           Icons.delete_rounded,
           color: Colors.white,
@@ -461,6 +465,4 @@ class PdfDeleteButton extends StatelessWidget {
       },
     );
   }
-
 }
-

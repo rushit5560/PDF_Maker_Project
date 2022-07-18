@@ -108,7 +108,16 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                             ),
                           ),
                         ),
-                        CustomTextFieldModule(),
+                        Column(
+                          children: [
+                            CustomTextFieldModule(),
+                            SizedBox(height: 10),
+                            Container(
+                              height: 48,
+                              child: pdfMergeScreenController.adWidget,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),

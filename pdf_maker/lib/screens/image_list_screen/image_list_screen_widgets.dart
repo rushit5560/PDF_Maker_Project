@@ -13,6 +13,7 @@ import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 // import 'package:pdf_maker/common/store_draft_data/store_draft_data.dart';
 import 'package:pdf_maker/controllers/home_screen_controller/home_screen_controller.dart';
+import 'package:pdf_maker/controllers/image_list_screen_controller/image_list_screen_controller.dart';
 import 'package:pdf_maker/controllers/saved_pdf_screen_controller/saved_pdf_screen_controller.dart';
 import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 // import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
@@ -28,6 +29,7 @@ class CustomImageListScreenAppBar extends StatelessWidget {
 
   final homeScreenController = Get.find<HomeScreenController>();
   final savedPdfScreenController = Get.find<SavedPdfScreenController>();
+  final imageListScreenController = Get.find<ImageListScreenController>();
   LocalStorage localStorage = LocalStorage();
 
   @override
@@ -120,6 +122,9 @@ class CustomImageListScreenAppBar extends StatelessWidget {
       child: const Text("No"),
       onPressed: () {
         homeScreenController.captureImageList.clear();
+        imageListScreenController.rewardedAd.show(
+          onUserEarnedReward: (ad, reward) {},
+        );
         print('No Button List : ${homeScreenController.captureImageList}');
         Get.back();
         Get.back();
@@ -150,6 +155,10 @@ class CustomImageListScreenAppBar extends StatelessWidget {
           print('storeImageList : ${savedPdfScreenController.storeImageList}');
         }
         homeScreenController.captureImageList.clear();
+
+        imageListScreenController.rewardedAd.show(
+          onUserEarnedReward: (ad, reward) {},
+        );
         Get.back();
         Get.back();
       },

@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "70608009549-5hi0idvoijk8vr1sduaj9uqgcdja3rq6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.camerascanner.pdfmerger",
+            "certificate_hash": "9282a350eb19df342d3a3819c73c5f82beb3557e"
+          }
+        },
+        {
+          "client_id": "70608009549-6u1mvc05pthb479nrgoj7nv10jrpbf1e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.camerascanner.pdfmerger",
+            "certificate_hash": "63ac6bc040b75912ce629331db25a2e8cd62bbee"
+          }
+        },
+        {
+          "client_id": "70608009549-pmuq8pqrb46engb3fo6mkttjbijsoeru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.camerascanner.pdfmerger",
+            "certificate_hash": "4a73bc800a970025668e9683565edbb5d70b22b0"
+          }
+        },
+        {
           "client_id": "70608009549-mlo29alnjp6h0jmocm0u86u1au3k33n0.apps.googleusercontent.com",
           "client_type": 3
         }

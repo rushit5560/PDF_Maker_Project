@@ -5,8 +5,6 @@ import 'package:pdf_maker/controllers/home_screen_controller/home_screen_control
 import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_screen_controller.dart';
 import 'home_screen_widgets.dart';
 
-
-
 // class HomeScreen extends StatefulWidget {
 //   HomeScreen({Key? key}) : super(key: key);
 //
@@ -233,48 +231,53 @@ class _HomeScreenState extends State<HomeScreen> {
   final homeScreenController = Get.put(HomeScreenController());
   final pdfMergeScreenController = Get.put(PdfMergeScreenController());
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.kLightBlueColor,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(top: 25),
-                child: CustomHomeScreenAppBar(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 25, left: 10, right: 10),
+              child: CustomHomeScreenAppBar(),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      // Single Image Module
+                      SingleImageModule(),
+                      const SizedBox(width: 10),
+
+                      // Merge Pdf Module
+                      MergePdfModule(),
+                      const SizedBox(width: 10),
+
+                      // Multiple Image Module
+                      MultipleImageModule(),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  SavedPdfModule(),
+                ],
               ),
-
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        // Single Image Module
-                        SingleImageModule(),
-                        const SizedBox(width: 10),
-
-                        // Merge Pdf Module
-                        MergePdfModule(),
-                        const SizedBox(width: 10),
-
-                        // Multiple Image Module
-                        MultipleImageModule(),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    SavedPdfModule(),
-                  ],
-                ),
-              ),
-              Container(),
-            ],
-          ),
+            ),
+            Container(
+              height: 48,
+              child: homeScreenController.adWidget,
+            ),
+            // Align(
+            //   alignment: Alignment.bottomCenter,
+            //   child: Container(
+            //     height: 48,
+            //     child: homeScreenController.adWidget,
+            //   ),
+            // )
+          ],
         ),
       ),
     );

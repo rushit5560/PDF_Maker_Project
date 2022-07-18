@@ -1,53 +1,11 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:pdf_maker/common/helper/ad_helper.dart';
 
-class PdfMergeScreenController extends GetxController {
-  RxBool isLoading = false.obs;
-  RxList<File> files = RxList();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController fileNameController = TextEditingController();
-
-
-  /*@override
-  void onInit() {
-    Timer(const Duration(seconds: 2), loading());
-    super.onInit();
-  }*/
-
-  // loading() {
-  //   isLoading(true);
-  //   isLoading(false);
-  // }
-
+class PdfShowScreenController extends GetxController{
   late AdWidget? adWidget;
 
   late BannerAdListener listener;
-  late RewardedAd rewardedAd;
-
-  void loadRewardedAd() {
-    RewardedAd.load(
-      adUnitId: AdHelper.rewardedAdUnitId,
-      request: AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (ad) {
-          rewardedAd = ad;
-
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              loadRewardedAd();
-            },
-          );
-        },
-        onAdFailedToLoad: (err) {
-          print('Failed to load a rewarded ad: ${err.message}');
-        },
-      ),
-    );
-  }
 
   final AdManagerBannerAd myBanner = AdManagerBannerAd(
     adUnitId: AdHelper.bannerAdUnitId,
@@ -105,7 +63,6 @@ class PdfMergeScreenController extends GetxController {
       ad: myBanner,
     );
     myBanner.load();
-    loadRewardedAd();
   }
 
   @override

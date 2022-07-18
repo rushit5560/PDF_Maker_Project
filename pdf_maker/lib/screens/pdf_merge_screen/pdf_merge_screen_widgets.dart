@@ -95,6 +95,9 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
       child: const Text("No"),
       onPressed: () {
         pdfMergeScreenController.files.clear();
+        pdfMergeScreenController.rewardedAd.show(
+          onUserEarnedReward: (ad, reward) {},
+        );
         Get.back();
         Get.back();
       },
@@ -119,6 +122,10 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
         );
 
         pdfMergeScreenController.files.clear();
+
+        pdfMergeScreenController.rewardedAd.show(
+          onUserEarnedReward: (ad, reward) {},
+        );
         Get.back();
         Get.back();
       },

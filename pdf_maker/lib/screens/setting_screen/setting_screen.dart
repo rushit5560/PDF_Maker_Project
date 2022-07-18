@@ -20,16 +20,28 @@ class SettingScreen extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             child: Column(
               children: [
-                CustomSettingScreenAppBar(),
-                const SizedBox(height: 15),
-                UserProfileDetailsModule(),
-                const SizedBox(height: 15),
-                /*AboutAppModule(),
-                const SizedBox(height: 15),*/
-                /*HelpModule(),
-                const SizedBox(height: 15),*/
-                SignOutModule(),
-                const SizedBox(height: 15),
+                Expanded(
+                  child: Column(
+                    children: [
+                      CustomSettingScreenAppBar(),
+                      const SizedBox(height: 15),
+                      UserProfileDetailsModule(),
+                      const SizedBox(height: 15),
+                      /*AboutAppModule(),
+                  const SizedBox(height: 15),*/
+                      /*HelpModule(),
+                  const SizedBox(height: 15),*/
+                      SignOutModule(),
+                      const SizedBox(height: 15),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
+                  height: 48,
+                  child: settingScreenController.adWidget,
+                ),
+
               ],
             ),
           ),
