@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Padding(
-              padding: EdgeInsets.only(top: 25, left: 10, right: 10),
+              padding: EdgeInsets.only(top: 25, left: 15, right: 15),
               child: CustomHomeScreenAppBar(),
             ),
             Padding(

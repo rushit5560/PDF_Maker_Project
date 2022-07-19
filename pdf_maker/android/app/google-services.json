@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "70608009549-5hi0idvoijk8vr1sduaj9uqgcdja3rq6.apps.googleusercontent.com",
+          "client_id": "70608009549-6qr4ip20shvrtn47avu2antv86qdccbo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.camerascanner.pdfmerger",
@@ -22,7 +22,7 @@
           }
         },
         {
-          "client_id": "70608009549-6u1mvc05pthb479nrgoj7nv10jrpbf1e.apps.googleusercontent.com",
+          "client_id": "70608009549-g381biivo3o3nau4gmp5qihtcda6b0pd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.camerascanner.pdfmerger",
@@ -35,6 +35,14 @@
           "android_info": {
             "package_name": "com.camerascanner.pdfmerger",
             "certificate_hash": "4a73bc800a970025668e9683565edbb5d70b22b0"
+          }
+        },
+        {
+          "client_id": "70608009549-vmcss44hdc7akvgl10aclbajv6hdl6m1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.camerascanner.pdfmerger",
+            "certificate_hash": "c19bd675edacdf83d9c6b8279b599c7d086c1fd3"
           }
         },
         {

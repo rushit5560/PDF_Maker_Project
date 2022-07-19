@@ -18,7 +18,6 @@ import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
 import 'package:pdf_maker/screens/saved_pdf_screen/saved_pdf_screen.dart';
 import 'package:pdf_maker/screens/setting_screen/setting_screen.dart';
 
-
 class CustomHomeScreenAppBar extends StatelessWidget {
   const CustomHomeScreenAppBar({Key? key}) : super(key: key);
 
@@ -37,18 +36,18 @@ class CustomHomeScreenAppBar extends StatelessWidget {
                   child: Text(
                     'SCAN4PDF',
                     style: TextStyle(
-                      color: AppColor.kDarkBlueColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18
-                    ),
+                        color: AppColor.kDarkBlueColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
                   ),
                 ),
               ),
             ),
           ),
-          //const SizedBox(width: 15),
-          /*GestureDetector(
-            onTap: () => Get.to(()=> SettingScreen(),
+          const SizedBox(width: 15),
+          GestureDetector(
+            onTap: () => Get.to(
+              () => SettingScreen(),
               transition: Transition.rightToLeft,
             ),
             child: Container(
@@ -63,7 +62,7 @@ class CustomHomeScreenAppBar extends StatelessWidget {
                 ),
               ),
             ),
-          ),*/
+          ),
         ],
       ),
     );
@@ -116,9 +115,11 @@ class SingleImageModule extends StatelessWidget {
     // We also handle the message potentially returning null.
     try {
       imagePath = (await EdgeDetection.detectEdge);
-      if (kDebugMode) {print("$imagePath");}
+      if (kDebugMode) {
+        print("$imagePath");
+      }
 
-      if(imagePath != null) {
+      if (imagePath != null) {
         homeScreenController.captureImageList.add(File(imagePath));
         String listString = homeScreenController.captureImageList.toString();
         Get.to(() => ImageListScreen(
@@ -126,10 +127,11 @@ class SingleImageModule extends StatelessWidget {
               listString: listString,
             ));
       }
-
     } on PlatformException catch (e) {
       // imagePath = e.toString();
-      if (kDebugMode) {print('PlatformException : $e');}
+      if (kDebugMode) {
+        print('PlatformException : $e');
+      }
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -142,7 +144,6 @@ class SingleImageModule extends StatelessWidget {
     //   _imagePath = imagePath;
     // });
   }
-
 }
 
 class MergePdfModule extends StatelessWidget {
@@ -192,20 +193,20 @@ class MergePdfModule extends StatelessWidget {
       allowMultiple: true,
     );
     if (result != null) {
-      pdfMergeScreenController.files.value = result.paths.map((path) => File(path!)).toList();
+      pdfMergeScreenController.files.value =
+          result.paths.map((path) => File(path!)).toList();
       if (pdfMergeScreenController.files.length > 1) {
         String pdfListString = pdfMergeScreenController.files.toString();
         Get.to(() => PdfMergeScreen(
-          pdfComingFrom: PdfComingFrom.newList,
-          pdfListString: pdfListString,
-        ));
+              pdfComingFrom: PdfComingFrom.newList,
+              pdfListString: pdfListString,
+            ));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Please Select 2 PDF")));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text("Please Select 2 PDF")));
       }
     }
   }
-
 }
 
 class MultipleImageModule extends StatelessWidget {
@@ -312,15 +313,16 @@ class MultipleImageModule extends StatelessWidget {
         }
         String listString = homeScreenController.captureImageList.toString();
         Get.to(() => ImageListScreen(
-            comingFrom: ComingFrom.newList,
-          listString: listString,
-        ));
+              comingFrom: ComingFrom.newList,
+              listString: listString,
+            ));
       }
     } catch (e) {
-      if (kDebugMode) {print('goToImgListScreen : $e');}
+      if (kDebugMode) {
+        print('goToImgListScreen : $e');
+      }
     }
   }
-
 }
 
 class SavedPdfModule extends StatelessWidget {
@@ -331,7 +333,7 @@ class SavedPdfModule extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: GestureDetector(
-        onTap: () => Get.to(()=> SavedPdfScreen()),
+        onTap: () => Get.to(() => SavedPdfScreen()),
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: shadowEffectDecoration(),

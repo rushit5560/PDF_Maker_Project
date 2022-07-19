@@ -19,7 +19,6 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               LogoModule(),
-
               SocialLoginModule(),
             ],
           ),

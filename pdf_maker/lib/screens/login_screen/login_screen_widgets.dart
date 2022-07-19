@@ -5,9 +5,8 @@ import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/controllers/login_screen_controller/login_screen_controller.dart';
 import 'package:pdf_maker/screens/home_screen/home_screen.dart';
 
-
 class LogoModule extends StatelessWidget {
-  LogoModule({Key? key}) : super(key: key);
+  const LogoModule({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +14,37 @@ class LogoModule extends StatelessWidget {
       height: 160,
       width: 160,
       decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(ImgUrl.loginLogo)
-        ),
+        image: DecorationImage(image: AssetImage(ImgUrl.loginLogo)),
       ),
     );
   }
 }
 
+class SkipNavText extends StatelessWidget {
+  const SkipNavText({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        GestureDetector(
+          onTap: () {
+            Get.to(() => HomeScreen());
+          },
+          child: const Text(
+            "Skip",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}
 
 class SocialLoginModule extends StatelessWidget {
   final loginScreenController = Get.find<LoginScreenController>();
@@ -36,30 +58,27 @@ class SocialLoginModule extends StatelessWidget {
       child: Column(
         children: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               loginScreenController.googleAuthentication(context);
             },
             child: const GoogleButtonUIModule(),
           ),
-
-          const SizedBox(height: 15),
-
-          GestureDetector(
-            onTap: () async {
-              loginScreenController.isLoading(true);
-              loginScreenController.onPressedLogInButton().then((value) {
-                if(loginScreenController.profile!.userId.isNotEmpty){
-
-                  Get.to(() => HomeScreen());
-                }
-
-              });
-              loginScreenController.isLoading(false);
-            },
-            child: const FacebookButtonUIModule(),
-          ),
-          /*const SizedBox(height: 20),
-
+          // const SizedBox(height: 15),
+          // GestureDetector(
+          //   onTap: () async {
+          //     loginScreenController.isLoading(true);
+          //     loginScreenController.onPressedLogInButton().then((value) {
+          //       if (loginScreenController.profile!.userId.isNotEmpty) {
+          //         Get.to(() => HomeScreen());
+          //       }
+          //     });
+          //     loginScreenController.isLoading(false);
+          //   },
+          //   child: const FacebookButtonUIModule(),
+          // ),
+          const SizedBox(height: 45),
+          const SkipNavText(),
+/*
           GestureDetector(
             onTap: () {
               Get.off(() => HomeScreen());
@@ -76,7 +95,6 @@ class SocialLoginModule extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class GoogleButtonUIModule extends StatelessWidget {
@@ -98,7 +116,7 @@ class GoogleButtonUIModule extends StatelessWidget {
           const Expanded(
             child: Center(
               child: Text(
-                  'LOGIN WITH GOOGLE',
+                'LOGIN WITH GOOGLE',
                 style: TextStyle(fontSize: 13),
               ),
             ),
@@ -128,7 +146,7 @@ class FacebookButtonUIModule extends StatelessWidget {
           const Expanded(
             child: Center(
               child: Text(
-                  'LOGIN WITH FACEBOOK',
+                'LOGIN WITH FACEBOOK',
                 style: TextStyle(fontSize: 13),
               ),
             ),
