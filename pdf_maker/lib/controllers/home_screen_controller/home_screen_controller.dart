@@ -21,53 +21,66 @@ class HomeScreenController extends GetxController {
 
   List<String> localList = [];
   LocalStorage localStorage = LocalStorage();
+  late InterstitialAd interstitialAd;
 
   late AdWidget? adWidget;
 
   late BannerAdListener listener;
-  late RewardedAd rewardedAd;
-
-  void loadRewardedAd() {
-    RewardedAd.load(
-      adUnitId: AdHelper.rewardedAdUnitId,
-      request: AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
-        onAdLoaded: (ad) {
-          rewardedAd = ad;
-
-          ad.fullScreenContentCallback = FullScreenContentCallback(
-            onAdDismissedFullScreenContent: (ad) {
-              loadRewardedAd();
-            },
-          );
-        },
-        onAdFailedToLoad: (err) {
-          print('Failed to load a rewarded ad: ${err.message}');
-        },
-      ),
-    );
-  }
 
   final AdManagerBannerAd myBanner = AdManagerBannerAd(
     adUnitId: AdHelper.bannerAdUnitId,
     sizes: [
       AdSize.banner,
     ],
-    request: AdManagerAdRequest(),
+    request: const AdManagerAdRequest(),
     listener: AdManagerBannerAdListener(),
   );
 
   RequestConfiguration? requestConfiguration;
 
-  // MobileAds().getRequestConfiguration();
+  // MobileAds.getRequestConfiguration();
 
   initAds() async {
     requestConfiguration = RequestConfiguration(
-      testDeviceIds: [
-        "7DC439E3F9AB79A198A10BB10E256801",
-      ],
+      // testDeviceIds: [
+      //   "7DC439E3F9AB79A198A10BB10E256801",
+      // ],
     );
     await MobileAds.instance.updateRequestConfiguration(requestConfiguration!);
+  }
+
+  void loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          interstitialAd = ad;
+
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              loadInterstitialAd();
+            },
+          );
+        },
+        onAdFailedToLoad: (err) {
+          print('Failed to load a interstitial ad: ${err.message}');
+        },
+      ),
+    );
+    interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (InterstitialAd ad) =>
+          print('%ad onAdShowedFullScreenContent.'),
+      onAdDismissedFullScreenContent: (InterstitialAd ad) {
+        print('$ad onAdDismissedFullScreenContent.');
+        ad.dispose();
+      },
+      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+        print('$ad onAdFailedToShowFullScreenContent: $error');
+        ad.dispose();
+      },
+      onAdImpression: (InterstitialAd ad) => print('$ad impression occurred.'),
+    );
   }
 
   changeLayoutOnGesture(ScaleUpdateDetails details) {
@@ -135,15 +148,13 @@ class HomeScreenController extends GetxController {
       ad: myBanner,
     );
     myBanner.load();
-    loadRewardedAd();
+    loadInterstitialAd();
     await getStoragePermission();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     myBanner.dispose();
-
     super.dispose();
   }
 }

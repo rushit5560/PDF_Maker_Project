@@ -11,7 +11,6 @@ class PdfMergeScreenController extends GetxController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController fileNameController = TextEditingController();
 
-
   /*@override
   void onInit() {
     Timer(const Duration(seconds: 2), loading());
@@ -26,26 +25,39 @@ class PdfMergeScreenController extends GetxController {
   late AdWidget? adWidget;
 
   late BannerAdListener listener;
-  late RewardedAd rewardedAd;
+  late InterstitialAd interstitialAd;
 
-  void loadRewardedAd() {
-    RewardedAd.load(
-      adUnitId: AdHelper.rewardedAdUnitId,
-      request: AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
+  void loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          rewardedAd = ad;
+          interstitialAd = ad;
 
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
-              loadRewardedAd();
+              loadInterstitialAd();
             },
           );
         },
         onAdFailedToLoad: (err) {
-          print('Failed to load a rewarded ad: ${err.message}');
+          print('Failed to load a interstitial ad: ${err.message}');
         },
       ),
+    );
+    interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (InterstitialAd ad) =>
+          print('%ad onAdShowedFullScreenContent.'),
+      onAdDismissedFullScreenContent: (InterstitialAd ad) {
+        print('$ad onAdDismissedFullScreenContent.');
+        ad.dispose();
+      },
+      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+        print('$ad onAdFailedToShowFullScreenContent: $error');
+        ad.dispose();
+      },
+      onAdImpression: (InterstitialAd ad) => print('$ad impression occurred.'),
     );
   }
 
@@ -64,17 +76,22 @@ class PdfMergeScreenController extends GetxController {
 
   initAds() async {
     requestConfiguration = RequestConfiguration(
-      testDeviceIds: [
-        "7DC439E3F9AB79A198A10BB10E256801",
-      ],
-    );
+        // testDeviceIds: [
+        //   "7DC439E3F9AB79A198A10BB10E256801",
+        // ],
+        );
     await MobileAds.instance.updateRequestConfiguration(requestConfiguration!);
   }
 
   @override
   void onInit() async {
     super.onInit();
+    myBanner.load();
+    adWidget = AdWidget(
+      ad: myBanner,
+    );
 
+    loadInterstitialAd();
     initAds();
     listener = BannerAdListener(
       // Called when an ad is successfully received.
@@ -100,18 +117,13 @@ class PdfMergeScreenController extends GetxController {
       // Called when an impression occurs on the ad.
       onAdImpression: (Ad ad) => print('Ad impression.'),
     );
-
-    adWidget = AdWidget(
-      ad: myBanner,
-    );
-    myBanner.load();
-    loadRewardedAd();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     myBanner.dispose();
+    interstitialAd.dispose();
 
     super.dispose();
   }

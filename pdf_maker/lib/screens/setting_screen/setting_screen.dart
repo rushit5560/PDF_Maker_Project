@@ -13,39 +13,42 @@ class SettingScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.kLightBlueColor,
       body: Obx(
-        ()=> settingScreenController.isLoading.value
-          ? const Center(child: CircularProgressIndicator())
-         : SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              children: [
-                Expanded(
+        () => settingScreenController.isLoading.value
+            ? const Center(child: CircularProgressIndicator())
+            : SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15,
+                    right: 15,
+                    top: 20,
+                  ),
                   child: Column(
                     children: [
-                      CustomSettingScreenAppBar(),
-                      const SizedBox(height: 15),
-                      UserProfileDetailsModule(),
-                      const SizedBox(height: 15),
-                      /*AboutAppModule(),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            CustomSettingScreenAppBar(),
+                            const SizedBox(height: 15),
+                            UserProfileDetailsModule(),
+                            const SizedBox(height: 15),
+                            /*AboutAppModule(),
                   const SizedBox(height: 15),*/
-                      /*HelpModule(),
+                            /*HelpModule(),
                   const SizedBox(height: 15),*/
-                      SignOutModule(),
-                      const SizedBox(height: 15),
+                            SignOutModule(),
+                            const SizedBox(height: 15),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        height: 48,
+                        child: settingScreenController.adWidget,
+                      ),
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
-                Container(
-                  height: 48,
-                  child: settingScreenController.adWidget,
-                ),
-
-              ],
-            ),
-          ),
-        ),
+              ),
       ),
     );
   }

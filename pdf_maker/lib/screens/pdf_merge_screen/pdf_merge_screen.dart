@@ -11,14 +11,13 @@ import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen_widgets.dart
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-
 class PdfMergeScreen extends StatefulWidget {
   final int? index;
   final PdfComingFrom pdfComingFrom;
   final String pdfListString;
 
-
-  PdfMergeScreen({this.index, required this.pdfComingFrom, required this.pdfListString});
+  PdfMergeScreen(
+      {this.index, required this.pdfComingFrom, required this.pdfListString});
 
   @override
   State<PdfMergeScreen> createState() => _PdfMergeScreenState();
@@ -34,23 +33,22 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
   String? singleFile;
   List<String> localList = [];
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
         String newPdfListString = pdfMergeScreenController.files.toString();
 
-        if(widget.pdfComingFrom == PdfComingFrom.newList){
-          if(pdfMergeScreenController.files.isEmpty) {
+        if (widget.pdfComingFrom == PdfComingFrom.newList) {
+          if (pdfMergeScreenController.files.isEmpty) {
             Get.back();
             pdfMergeScreenController.files.clear();
             Get.back();
           } else {
             showAlertDialog(context);
           }
-        } else if(widget.pdfComingFrom == PdfComingFrom.savedList) {
-          if(widget.pdfListString == newPdfListString) {
+        } else if (widget.pdfComingFrom == PdfComingFrom.savedList) {
+          if (widget.pdfListString == newPdfListString) {
             pdfMergeScreenController.files.clear();
             Get.back();
           } else {
@@ -67,13 +65,14 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
               ? const Center(child: CircularProgressIndicator())
               : SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding:
+                        const EdgeInsets.only(left: 15, right: 15, top: 20),
                     child: Column(
                       children: [
                         CustomPdfMergeScreenAppBar(
-                            pdfComingFrom: widget.pdfComingFrom,
-                            index: widget.index,
-                            pdfListString: widget.pdfListString,
+                          pdfComingFrom: widget.pdfComingFrom,
+                          index: widget.index,
+                          pdfListString: widget.pdfListString,
                         ),
                         const SizedBox(height: 15),
                         Expanded(
@@ -97,11 +96,11 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
                                     key: ValueKey(
                                         pdfMergeScreenController.files[i]),
                                     child: SfPdfViewer.file(
-                                      File(pdfMergeScreenController.files[i].path),
+                                      File(pdfMergeScreenController
+                                          .files[i].path),
                                       pageLayoutMode:
                                           PdfPageLayoutMode.continuous,
                                       interactionMode: PdfInteractionMode.pan,
-
                                     ),
                                   )
                               ],
@@ -183,12 +182,12 @@ class _PdfMergeScreenState extends State<PdfMergeScreen> {
     Widget continueButton = TextButton(
       child: const Text("Yes"),
       onPressed: () async {
-        if(pdfMergeScreenController.files.isNotEmpty){
+        if (pdfMergeScreenController.files.isNotEmpty) {
           localList.clear();
-          for(int i = 0; i < pdfMergeScreenController.files.length; i++){
+          for (int i = 0; i < pdfMergeScreenController.files.length; i++) {
             localList.add(pdfMergeScreenController.files[i].path);
           }
-          if(localList.isNotEmpty) {
+          if (localList.isNotEmpty) {
             localStorage.storePdfList(
               pdfList: localList,
               pdfComingFrom: widget.pdfComingFrom,

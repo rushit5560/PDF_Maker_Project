@@ -16,11 +16,7 @@ class SavedPdfScreen extends StatelessWidget {
       backgroundColor: AppColor.kLightBlueColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(
-            top: 8,
-            left: 8,
-            right: 8,
-          ),
+          padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
           child: Obx(
             () => savedPdfScreenController.isLoading.value
                 ? const Center(

@@ -2,32 +2,43 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:pdf_maker/common/helper/ad_helper.dart';
 
-class ImageListScreenController extends GetxController{
-
-
+class ImageListScreenController extends GetxController {
   late AdWidget? adWidget;
 
   late BannerAdListener listener;
-  late RewardedAd rewardedAd;
+  late InterstitialAd interstitialAd;
 
-  void loadRewardedAd() {
-    RewardedAd.load(
-      adUnitId: AdHelper.rewardedAdUnitId,
-      request: AdRequest(),
-      rewardedAdLoadCallback: RewardedAdLoadCallback(
+  void loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
-          rewardedAd = ad;
+          interstitialAd = ad;
 
           ad.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
-              loadRewardedAd();
+              loadInterstitialAd();
             },
           );
         },
         onAdFailedToLoad: (err) {
-          print('Failed to load a rewarded ad: ${err.message}');
+          print('Failed to load a interstitial ad: ${err.message}');
         },
       ),
+    );
+    interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (InterstitialAd ad) =>
+          print('%ad onAdShowedFullScreenContent.'),
+      onAdDismissedFullScreenContent: (InterstitialAd ad) {
+        print('$ad onAdDismissedFullScreenContent.');
+        ad.dispose();
+      },
+      onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
+        print('$ad onAdFailedToShowFullScreenContent: $error');
+        ad.dispose();
+      },
+      onAdImpression: (InterstitialAd ad) => print('$ad impression occurred.'),
     );
   }
 
@@ -46,10 +57,10 @@ class ImageListScreenController extends GetxController{
 
   initAds() async {
     requestConfiguration = RequestConfiguration(
-      testDeviceIds: [
-        "7DC439E3F9AB79A198A10BB10E256801",
-      ],
-    );
+        // testDeviceIds: [
+        //   "7DC439E3F9AB79A198A10BB10E256801",
+        // ],
+        );
     await MobileAds.instance.updateRequestConfiguration(requestConfiguration!);
   }
 
@@ -87,13 +98,14 @@ class ImageListScreenController extends GetxController{
       ad: myBanner,
     );
     myBanner.load();
-    loadRewardedAd();
+    loadInterstitialAd();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     myBanner.dispose();
+    interstitialAd.dispose();
 
     super.dispose();
   }

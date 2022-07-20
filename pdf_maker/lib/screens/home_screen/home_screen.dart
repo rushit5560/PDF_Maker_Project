@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Padding(
-              padding: EdgeInsets.only(top: 25, left: 15, right: 15),
+              padding: EdgeInsets.only(top: 20, left: 15, right: 15),
               child: CustomHomeScreenAppBar(),
             ),
             Padding(
@@ -261,8 +261,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       MultipleImageModule(),
                     ],
                   ),
-                  const SizedBox(height: 15),
-                  SavedPdfModule(),
+                  const SizedBox(height: 20),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: const [
+                  //     // Single Image Module
+                  //     PdfViewer(),
+                  //     SizedBox(width: 10),
+                  //     ScanPdfText(),
+                  //
+                  //     SizedBox(width: 10),
+                  //     EditPdf(),
+                  //     SizedBox(width: 10),
+                  //
+                  //     // Merge Pdf Module
+                  //     // MergePdfModule(),
+                  //     // const SizedBox(width: 10),
+                  //
+                  //     // // Multiple Image Module
+                  //     // MultipleImageModule(),
+                  //   ],
+                  // ),
+                  const SizedBox(height: 25),
+                  const SavedPdfModule(),
                 ],
               ),
             ),

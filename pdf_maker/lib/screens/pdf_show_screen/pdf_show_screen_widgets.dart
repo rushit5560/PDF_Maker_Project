@@ -100,9 +100,9 @@ class CustomPdfShowScreenAppBar extends StatelessWidget {
         style: TextStyle(fontFamily: ""),
       ),
       onPressed: () {
-        homeScreenController.rewardedAd.show(
-          onUserEarnedReward: (ad, reward) {},
-        );
+        // homeScreenController.interstitialAd.show(
+
+        // );
         Get.back();
         Get.back();
       },
@@ -131,9 +131,7 @@ class CustomPdfShowScreenAppBar extends StatelessWidget {
           homeScreenController.captureImageList.clear();
         }
 
-        homeScreenController.rewardedAd.show(
-          onUserEarnedReward: (ad, reward) {},
-        );
+        homeScreenController.interstitialAd.show();
         Get.back();
         Get.back();
       },

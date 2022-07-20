@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:pdf_maker/common/helper/ad_helper.dart';
 
-class PdfShowScreenController extends GetxController{
+class PdfShowScreenController extends GetxController {
   late AdWidget? adWidget;
 
   late BannerAdListener listener;
@@ -22,9 +22,9 @@ class PdfShowScreenController extends GetxController{
 
   initAds() async {
     requestConfiguration = RequestConfiguration(
-      testDeviceIds: [
-        "7DC439E3F9AB79A198A10BB10E256801",
-      ],
+      // testDeviceIds: [
+      //   "7DC439E3F9AB79A198A10BB10E256801",
+      // ],
     );
     await MobileAds.instance.updateRequestConfiguration(requestConfiguration!);
   }

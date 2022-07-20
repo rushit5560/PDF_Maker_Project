@@ -44,8 +44,8 @@ class CustomHomeScreenAppBar extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 15),
-          GestureDetector(
+          // const SizedBox(width: 10),
+          /*GestureDetector(
             onTap: () => Get.to(
               () => SettingScreen(),
               transition: Transition.rightToLeft,
@@ -62,7 +62,7 @@ class CustomHomeScreenAppBar extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ),*/
         ],
       ),
     );
@@ -322,6 +322,126 @@ class MultipleImageModule extends StatelessWidget {
         print('goToImgListScreen : $e');
       }
     }
+  }
+}
+
+class PdfViewer extends StatelessWidget {
+  const PdfViewer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () async {
+          // await scanSingleImage();
+        },
+        child: Column(
+          children: [
+            Container(
+              // height: 80,
+              decoration: shadowEffectDecoration(),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Image.asset(
+                  ImgUrl.singleImage,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            const Text(
+              'Pdf viewer',
+              maxLines: 1,
+              style: TextStyle(
+                color: AppColor.kDarkBlueColor,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ScanPdfText extends StatelessWidget {
+  const ScanPdfText({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () async {
+          // await scanSingleImage();
+        },
+        child: Column(
+          children: [
+            Container(
+              // height: 80,
+              decoration: shadowEffectDecoration(),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Image.asset(
+                  ImgUrl.singleImage,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            const Text(
+              'Scan text\nfrom pdf',
+              maxLines: 2,
+              style: TextStyle(
+                color: AppColor.kDarkBlueColor,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EditPdf extends StatelessWidget {
+  const EditPdf({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: () async {
+          // await scanSingleImage();
+        },
+        child: Column(
+          children: [
+            Container(
+              // height: 80,
+              decoration: shadowEffectDecoration(),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Image.asset(
+                  ImgUrl.singleImage,
+                  height: 40,
+                  width: 40,
+                ),
+              ),
+            ),
+            const SizedBox(height: 15),
+            const Text(
+              'Edit pdf',
+              maxLines: 1,
+              style: TextStyle(
+                color: AppColor.kDarkBlueColor,
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

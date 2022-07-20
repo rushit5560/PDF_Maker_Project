@@ -36,7 +36,7 @@ class SkipNavText extends StatelessWidget {
             "Skip",
             style: TextStyle(
               color: Colors.black,
-              fontSize: 17,
+              fontSize: 15,
               fontWeight: FontWeight.w600,
             ),
           ),

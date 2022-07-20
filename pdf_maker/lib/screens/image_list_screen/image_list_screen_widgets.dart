@@ -20,12 +20,16 @@ import 'package:pdf_maker/screens/crop_screen/crop_screen.dart';
 import 'package:pdf_maker/screens/pdf_show_screen/pdf_show_screen.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 
-
 class CustomImageListScreenAppBar extends StatelessWidget {
   final int? index;
   final ComingFrom comingFrom;
   String listString;
-  CustomImageListScreenAppBar({Key? key, required this.comingFrom, this.index, required this.listString}) : super(key: key);
+  CustomImageListScreenAppBar(
+      {Key? key,
+      required this.comingFrom,
+      this.index,
+      required this.listString})
+      : super(key: key);
 
   final homeScreenController = Get.find<HomeScreenController>();
   final savedPdfScreenController = Get.find<SavedPdfScreenController>();
@@ -40,18 +44,18 @@ class CustomImageListScreenAppBar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              String newListString = homeScreenController.captureImageList.toString();
-              if(comingFrom == ComingFrom.newList){
-                if(homeScreenController.captureImageList.isEmpty){
+              String newListString =
+                  homeScreenController.captureImageList.toString();
+              if (comingFrom == ComingFrom.newList) {
+                if (homeScreenController.captureImageList.isEmpty) {
                   Get.back();
                   homeScreenController.captureImageList.clear();
                   Get.back();
                 } else {
                   showAlertDialog(context);
                 }
-
-              } else if(comingFrom == ComingFrom.savedList){
-                if(listString == newListString) {
+              } else if (comingFrom == ComingFrom.savedList) {
+                if (listString == newListString) {
                   homeScreenController.captureImageList.clear();
                   Get.back();
                 } else {
@@ -63,9 +67,8 @@ class CustomImageListScreenAppBar extends StatelessWidget {
               height: 50,
               width: 50,
               decoration: BoxDecoration(
-                color: AppColor.kDarkBlueColor,
-                borderRadius: BorderRadius.circular(10)
-              ),
+                  color: AppColor.kDarkBlueColor,
+                  borderRadius: BorderRadius.circular(10)),
               child: Padding(
                 padding: const EdgeInsets.all(17),
                 child: Image.asset(ImgUrl.backOption),
@@ -82,7 +85,7 @@ class CustomImageListScreenAppBar extends StatelessWidget {
                   style: TextStyle(
                     color: AppColor.kDarkBlueColor,
                     fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                    fontSize: 18,
                   ),
                 ),
               ),
@@ -90,18 +93,17 @@ class CustomImageListScreenAppBar extends StatelessWidget {
           ),
           const SizedBox(width: 15),
           GestureDetector(
-            onTap: () => Get.off(()=> PdfShowScreen(
-              comingFrom: comingFrom,
-              index: index,
-              listString: listString,
-            )),
+            onTap: () => Get.off(() => PdfShowScreen(
+                  comingFrom: comingFrom,
+                  index: index,
+                  listString: listString,
+                )),
             child: Container(
               height: 50,
               width: 50,
               decoration: BoxDecoration(
                   color: AppColor.kDarkBlueColor,
-                  borderRadius: BorderRadius.circular(10)
-              ),
+                  borderRadius: BorderRadius.circular(10)),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Image.asset(
@@ -113,7 +115,6 @@ class CustomImageListScreenAppBar extends StatelessWidget {
           ),
         ],
       ),
-
     );
   }
 
@@ -122,9 +123,7 @@ class CustomImageListScreenAppBar extends StatelessWidget {
       child: const Text("No"),
       onPressed: () {
         homeScreenController.captureImageList.clear();
-        imageListScreenController.rewardedAd.show(
-          onUserEarnedReward: (ad, reward) {},
-        );
+        // imageListScreenController.interstitialAd.show();
         print('No Button List : ${homeScreenController.captureImageList}');
         Get.back();
         Get.back();
@@ -134,14 +133,19 @@ class CustomImageListScreenAppBar extends StatelessWidget {
     Widget continueButton = TextButton(
       child: const Text("Yes"),
       onPressed: () async {
-        if(homeScreenController.captureImageList.isNotEmpty) {
+        if (homeScreenController.captureImageList.isNotEmpty) {
           homeScreenController.localList.clear();
-          for(int i = 0; i < homeScreenController.captureImageList.length; i++){
-            homeScreenController.localList.add(homeScreenController.captureImageList[i].path);
+          for (int i = 0;
+              i < homeScreenController.captureImageList.length;
+              i++) {
+            homeScreenController.localList
+                .add(homeScreenController.captureImageList[i].path);
           }
-          if (kDebugMode) {print('localList : ${homeScreenController.localList}');}
+          if (kDebugMode) {
+            print('localList : ${homeScreenController.localList}');
+          }
 
-          if(homeScreenController.localList.isNotEmpty){
+          if (homeScreenController.localList.isNotEmpty) {
             await homeScreenController.localStorage.storeSingleImageList(
               subList: homeScreenController.localList,
               comingFrom: comingFrom,
@@ -151,14 +155,13 @@ class CustomImageListScreenAppBar extends StatelessWidget {
         } else if (homeScreenController.captureImageList.isEmpty) {
           print('storeImageList : ${savedPdfScreenController.storeImageList}');
           savedPdfScreenController.storeImageList.removeAt(index!);
-          localStorage.updateStorageImageList(savedPdfScreenController.storeImageList);
+          localStorage
+              .updateStorageImageList(savedPdfScreenController.storeImageList);
           print('storeImageList : ${savedPdfScreenController.storeImageList}');
         }
         homeScreenController.captureImageList.clear();
 
-        imageListScreenController.rewardedAd.show(
-          onUserEarnedReward: (ad, reward) {},
-        );
+        imageListScreenController.interstitialAd.show();
         Get.back();
         Get.back();
       },
@@ -182,7 +185,6 @@ class CustomImageListScreenAppBar extends StatelessWidget {
       },
     );
   }
-
 }
 
 class SelectedImagesShowModule extends StatelessWidget {
@@ -229,8 +231,10 @@ class SelectedImagesShowModule extends StatelessWidget {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      print('Selected Image : ${homeScreenController.captureImageList[i].path}');
-                                      Get.to(() => CropScreen(i: i))!.then((value) {
+                                      print(
+                                          'Selected Image : ${homeScreenController.captureImageList[i].path}');
+                                      Get.to(() => CropScreen(i: i))!
+                                          .then((value) {
                                         homeScreenController.isLoading(true);
                                         // homeScreenController.captureImageList.removeAt(i);
                                         // homeScreenController.captureImageList.insert(i, File(value[0]));
@@ -268,9 +272,7 @@ class ItemDeleteButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Colors.white
-        ),
+            borderRadius: BorderRadius.circular(8), color: Colors.white),
         child: const Icon(
           Icons.delete_rounded,
           color: AppColor.kDarkBlueColor,
@@ -303,9 +305,12 @@ class FloatingActionButtonModule extends StatefulWidget {
   FloatingActionButtonModule({Key? key}) : super(key: key);
 
   @override
-  State<FloatingActionButtonModule> createState() => _FloatingActionButtonModuleState();
+  State<FloatingActionButtonModule> createState() =>
+      _FloatingActionButtonModuleState();
 }
-class _FloatingActionButtonModuleState extends State<FloatingActionButtonModule> {
+
+class _FloatingActionButtonModuleState
+    extends State<FloatingActionButtonModule> {
   final homeScreenController = Get.find<HomeScreenController>();
 
   final ImagePicker imagePicker = ImagePicker();
@@ -352,10 +357,9 @@ class _FloatingActionButtonModuleState extends State<FloatingActionButtonModule>
       imagePath = (await EdgeDetection.detectEdge);
       print("$imagePath");
 
-      if(imagePath != null) {
+      if (imagePath != null) {
         homeScreenController.captureImageList.add(File(imagePath));
       }
-
     } on PlatformException catch (e) {
       imagePath = e.toString();
     }
@@ -372,7 +376,7 @@ class _FloatingActionButtonModuleState extends State<FloatingActionButtonModule>
 
   getImageFromGallery() async {
     final image = await imagePicker.pickImage(source: ImageSource.gallery);
-    if(image != null) {
+    if (image != null) {
       // Original File Store In Controller file
       homeScreenController.file = File(image.path);
       File imageFile = File(image.path);
@@ -381,5 +385,4 @@ class _FloatingActionButtonModuleState extends State<FloatingActionButtonModule>
       // Get.off(()=> CropScreen(imageFile: imageFile));
     }
   }
-
 }

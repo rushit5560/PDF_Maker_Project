@@ -36,33 +36,32 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              String newPdfListString = pdfMergeScreenController.files.toString();
+              String newPdfListString =
+                  pdfMergeScreenController.files.toString();
 
-              if(pdfComingFrom == PdfComingFrom.newList){
-                if(pdfMergeScreenController.files.isEmpty) {
+              if (pdfComingFrom == PdfComingFrom.newList) {
+                if (pdfMergeScreenController.files.isEmpty) {
                   Get.back();
                   pdfMergeScreenController.files.clear();
                   Get.back();
                 } else {
                   showAlertDialog(context);
                 }
-              } else if(pdfComingFrom == PdfComingFrom.savedList) {
-                if(pdfListString == newPdfListString) {
+              } else if (pdfComingFrom == PdfComingFrom.savedList) {
+                if (pdfListString == newPdfListString) {
                   pdfMergeScreenController.files.clear();
                   Get.back();
                 } else {
                   showAlertDialog(context);
                 }
               }
-
             },
             child: Container(
               height: 50,
               width: 50,
               decoration: BoxDecoration(
                   color: AppColor.kDarkBlueColor,
-                  borderRadius: BorderRadius.circular(10)
-              ),
+                  borderRadius: BorderRadius.circular(10)),
               child: Padding(
                 padding: const EdgeInsets.all(17),
                 child: Image.asset(ImgUrl.backOption),
@@ -95,9 +94,7 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
       child: const Text("No"),
       onPressed: () {
         pdfMergeScreenController.files.clear();
-        pdfMergeScreenController.rewardedAd.show(
-          onUserEarnedReward: (ad, reward) {},
-        );
+        pdfMergeScreenController.interstitialAd.show();
         Get.back();
         Get.back();
       },
@@ -106,13 +103,15 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
     Widget continueButton = TextButton(
       child: const Text("Yes"),
       onPressed: () async {
-        if(pdfMergeScreenController.files.isNotEmpty){
+        if (pdfMergeScreenController.files.isNotEmpty) {
           localList.clear();
-          for(int i = 0; i < pdfMergeScreenController.files.length; i++){
+          for (int i = 0; i < pdfMergeScreenController.files.length; i++) {
             localList.add(pdfMergeScreenController.files[i].path);
           }
           print('localList : $localList');
-          if (kDebugMode) {print('localList : $localList');}
+          if (kDebugMode) {
+            print('localList : $localList');
+          }
         }
 
         localStorage.storePdfList(
@@ -123,9 +122,7 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
 
         pdfMergeScreenController.files.clear();
 
-        pdfMergeScreenController.rewardedAd.show(
-          onUserEarnedReward: (ad, reward) {},
-        );
+        pdfMergeScreenController.interstitialAd.show();
         Get.back();
         Get.back();
       },
@@ -149,8 +146,6 @@ class CustomPdfMergeScreenAppBar extends StatelessWidget {
       },
     );
   }
-
-
 }
 
 class CustomTextFieldModule extends StatelessWidget {
@@ -173,7 +168,8 @@ class CustomTextFieldModule extends StatelessWidget {
                   controller: controller.fileNameController,
                   maxLines: 1,
                   keyboardType: TextInputType.text,
-                  validator: (value) => FieldValidator().validateFileName(controller.fileNameController.text.trim()),
+                  validator: (value) => FieldValidator().validateFileName(
+                      controller.fileNameController.text.trim()),
                   cursorColor: AppColor.kBorderGradientColor3,
                   decoration: fileNameFieldDecoration(),
                 ),
@@ -182,11 +178,12 @@ class CustomTextFieldModule extends StatelessWidget {
             const SizedBox(width: 10),
             GestureDetector(
               onTap: () async {
-                if (controller.formKey.currentState!.validate()){
+                if (controller.formKey.currentState!.validate()) {
                   await makePdfFunction(controller.fileNameController);
                   // Get.back();
                   if (kDebugMode) {
-                    print('Name : ${controller.fileNameController.text.trim()}');
+                    print(
+                        'Name : ${controller.fileNameController.text.trim()}');
                   }
                 }
               },
@@ -218,16 +215,19 @@ class CustomTextFieldModule extends StatelessWidget {
   }
 
   Future makePdfFunction(TextEditingController fileNameController) async {
-    try{
-      if(controller.files.isNotEmpty) {
-        for(int i = 0; i < controller.files.length; i++){
+    try {
+      if (controller.files.isNotEmpty) {
+        for (int i = 0; i < controller.files.length; i++) {
           filesPath.add(controller.files[i].path);
         }
-        String directory = await ExternalPath.getExternalStoragePublicDirectory(ExternalPath.DIRECTORY_DOCUMENTS);
-        String outPutPath = '$directory' '/${fileNameController.text.trim()}' '.pdf';
+        String directory = await ExternalPath.getExternalStoragePublicDirectory(
+            ExternalPath.DIRECTORY_DOCUMENTS);
+        String outPutPath =
+            '$directory' '/${fileNameController.text.trim()}' '.pdf';
         print('outPutPath : $outPutPath');
 
-        /*MergeMultiplePDFResponse response  = */await PdfMerger.mergeMultiplePDF(paths: filesPath, outputDirPath: outPutPath);
+        /*MergeMultiplePDFResponse response  = */ await PdfMerger
+            .mergeMultiplePDF(paths: filesPath, outputDirPath: outPutPath);
         Fluttertoast.showToast(msg: 'Saved In Storage');
         controller.fileNameController.clear();
         Get.back();
@@ -244,11 +244,9 @@ class CustomTextFieldModule extends StatelessWidget {
 
         // Get.back();
       }
-    } catch(e) {
+    } catch (e) {
       print('Error : $e');
       Fluttertoast.showToast(msg: 'Please Change Name');
     }
   }
-
-
 }
