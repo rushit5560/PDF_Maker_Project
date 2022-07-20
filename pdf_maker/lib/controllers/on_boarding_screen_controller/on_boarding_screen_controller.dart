@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pdf_maker/common/img_url.dart';
 import 'package:pdf_maker/models/onboarding_screen_model/onboarding_screen_model.dart';
+import 'package:pdf_maker/screens/home_screen/home_screen.dart';
 import 'package:pdf_maker/screens/login_screen/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +14,7 @@ class OnBoardingScreenController extends GetxController {
   forwardAction() {
     if(isLastPage){
       setOnBoardingValue();
-      Get.off(() => LoginScreen());
+      Get.off(() => HomeScreen());
     } else {
       pageController.nextPage(duration: 300.milliseconds, curve: Curves.ease);
     }
