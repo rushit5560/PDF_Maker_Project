@@ -47,8 +47,8 @@ android {
         applicationId "com.camerascanner.pdfmerger"
         minSdkVersion 24
         targetSdkVersion 30
-        versionCode 4
-        versionName "1.4"
+        versionCode 6
+        versionName "1.6"
 //        ndk {
 //            abiFilters 'armeabi-v7a'
 //        }
