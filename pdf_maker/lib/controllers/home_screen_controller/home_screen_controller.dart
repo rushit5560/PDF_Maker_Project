@@ -21,7 +21,7 @@ class HomeScreenController extends GetxController {
 
   List<String> localList = [];
   LocalStorage localStorage = LocalStorage();
-  late InterstitialAd interstitialAd;
+   InterstitialAd? interstitialAd ;
 
   late AdWidget? adWidget;
 
@@ -68,7 +68,7 @@ class HomeScreenController extends GetxController {
         },
       ),
     );
-    interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+    interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (InterstitialAd ad) =>
           print('%ad onAdShowedFullScreenContent.'),
       onAdDismissedFullScreenContent: (InterstitialAd ad) {

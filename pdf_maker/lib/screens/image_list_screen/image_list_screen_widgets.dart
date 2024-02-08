@@ -161,7 +161,7 @@ class CustomImageListScreenAppBar extends StatelessWidget {
         }
         homeScreenController.captureImageList.clear();
 
-        imageListScreenController.interstitialAd.show();
+        imageListScreenController.interstitialAd?.show();
         Get.back();
         Get.back();
       },

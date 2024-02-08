@@ -25,7 +25,7 @@ class PdfMergeScreenController extends GetxController {
   late AdWidget? adWidget;
 
   late BannerAdListener listener;
-  late InterstitialAd interstitialAd;
+   InterstitialAd? interstitialAd;
 
   void loadInterstitialAd() {
     InterstitialAd.load(
@@ -46,7 +46,7 @@ class PdfMergeScreenController extends GetxController {
         },
       ),
     );
-    interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+    interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (InterstitialAd ad) =>
           print('%ad onAdShowedFullScreenContent.'),
       onAdDismissedFullScreenContent: (InterstitialAd ad) {
@@ -91,7 +91,7 @@ class PdfMergeScreenController extends GetxController {
       ad: myBanner,
     );
 
-    loadInterstitialAd();
+
     initAds();
     listener = BannerAdListener(
       // Called when an ad is successfully received.
@@ -118,12 +118,17 @@ class PdfMergeScreenController extends GetxController {
       onAdImpression: (Ad ad) => print('Ad impression.'),
     );
   }
+  @override
+  Future<void> onReady() async {
+    loadInterstitialAd();
+    super.onReady();
+  }
 
   @override
   void dispose() {
     // TODO: implement dispose
     myBanner.dispose();
-    interstitialAd.dispose();
+    interstitialAd?.dispose();
 
     super.dispose();
   }

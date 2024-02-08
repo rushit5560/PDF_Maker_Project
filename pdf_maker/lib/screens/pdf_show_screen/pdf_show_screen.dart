@@ -120,7 +120,7 @@ class PdfShowScreen extends StatelessWidget {
           }
           homeScreenController.captureImageList.clear();
         }
-        homeScreenController.interstitialAd.show();
+        homeScreenController.interstitialAd?.show();
         Get.back();
         Get.back();
       },

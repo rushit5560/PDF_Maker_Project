@@ -6,7 +6,7 @@ class ImageListScreenController extends GetxController {
   late AdWidget? adWidget;
 
   late BannerAdListener listener;
-  late InterstitialAd interstitialAd;
+   InterstitialAd? interstitialAd;
 
   void loadInterstitialAd() {
     InterstitialAd.load(
@@ -27,7 +27,7 @@ class ImageListScreenController extends GetxController {
         },
       ),
     );
-    interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+    interstitialAd?.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (InterstitialAd ad) =>
           print('%ad onAdShowedFullScreenContent.'),
       onAdDismissedFullScreenContent: (InterstitialAd ad) {
@@ -105,7 +105,7 @@ class ImageListScreenController extends GetxController {
   void dispose() {
     // TODO: implement dispose
     myBanner.dispose();
-    interstitialAd.dispose();
+    interstitialAd?.dispose();
 
     super.dispose();
   }
