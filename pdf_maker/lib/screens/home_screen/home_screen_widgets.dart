@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:edge_detection/edge_detection.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,6 @@ import 'package:pdf_maker/controllers/pdf_merge_screen_controller/pdf_merge_scre
 import 'package:pdf_maker/screens/image_list_screen/image_list_screen.dart';
 import 'package:pdf_maker/screens/pdf_merge_screen/pdf_merge_screen.dart';
 import 'package:pdf_maker/screens/saved_pdf_screen/saved_pdf_screen.dart';
-import 'package:pdf_maker/screens/setting_screen/setting_screen.dart';
 
 class CustomHomeScreenAppBar extends StatelessWidget {
   const CustomHomeScreenAppBar({Key? key}) : super(key: key);
@@ -35,10 +33,7 @@ class CustomHomeScreenAppBar extends StatelessWidget {
                 child: Center(
                   child: Text(
                     'SCAN4PDF',
-                    style: TextStyle(
-                        color: AppColor.kDarkBlueColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
+                    style: TextStyle(color: AppColor.kDarkBlueColor, fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 ),
               ),
@@ -110,23 +105,28 @@ class SingleImageModule extends StatelessWidget {
   }
 
   Future<void> scanSingleImage() async {
-    String? imagePath;
+    final ImagePicker imagePicker = ImagePicker();
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      imagePath = (await EdgeDetection.detectEdge);
-      if (kDebugMode) {
-        print("$imagePath");
+      // imagePath = (EdgeDetection.detectEdge).toString();
+      // if (kDebugMode) {
+      //   print("---------$imagePath");
+      // }
+      final image = await imagePicker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        // Original File Store In Controller file
+        homeScreenController.file = File(image.path);
+        File imageFile = File(image.path);
+        homeScreenController.captureImageList.add(imageFile);
+        // Get.back();
+        // Get.off(()=> CropScreen(imageFile: imageFile));
       }
-
-      if (imagePath != null) {
-        homeScreenController.captureImageList.add(File(imagePath));
-        String listString = homeScreenController.captureImageList.toString();
-        Get.to(() => ImageListScreen(
-              comingFrom: ComingFrom.newList,
-              listString: listString,
-            ));
-      }
+      String listString = homeScreenController.captureImageList.toString();
+      Get.to(() => ImageListScreen(
+            comingFrom: ComingFrom.newList,
+            listString: listString,
+          ));
     } on PlatformException catch (e) {
       // imagePath = e.toString();
       if (kDebugMode) {
@@ -193,8 +193,7 @@ class MergePdfModule extends StatelessWidget {
       allowMultiple: true,
     );
     if (result != null) {
-      pdfMergeScreenController.files.value =
-          result.paths.map((path) => File(path!)).toList();
+      pdfMergeScreenController.files.value = result.paths.map((path) => File(path!)).toList();
       if (pdfMergeScreenController.files.length > 1) {
         String pdfListString = pdfMergeScreenController.files.toString();
         Get.to(() => PdfMergeScreen(
@@ -202,8 +201,7 @@ class MergePdfModule extends StatelessWidget {
               pdfListString: pdfListString,
             ));
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Please Select 2 PDF")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please Select 2 PDF")));
       }
     }
   }

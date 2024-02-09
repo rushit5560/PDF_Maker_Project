@@ -59,7 +59,7 @@ class SocialLoginModule extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              loginScreenController.googleAuthentication(context);
+              // loginScreenController.googleAuthentication(context);
             },
             child: const GoogleButtonUIModule(),
           ),

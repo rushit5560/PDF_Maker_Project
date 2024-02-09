@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pdf_maker/common/common_widgets.dart';
 import 'package:pdf_maker/common/custom_color.dart';
 import 'package:pdf_maker/common/img_url.dart';
@@ -198,9 +197,9 @@ class SignOutModule extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        final GoogleSignIn googleSignIn = GoogleSignIn();
-        googleSignIn.signOut();
-        await settingScreenController.clearUserDetails();
+        // final GoogleSignIn googleSignIn = GoogleSignIn();
+        // googleSignIn.signOut();
+        // await settingScreenController.clearUserDetails();
         // Get.back();
         Get.offAll(()=> LoginScreen());
       },

@@ -1,27 +1,24 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:pdf_maker/screens/home_screen/home_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginScreenController extends GetxController {
   RxBool isLoading = false.obs;
-  final FacebookLogin plugin = FacebookLogin(debug: true);
-  FacebookAccessToken? _token;
-  FacebookUserProfile? profile1;
-  String? _imageUrl;
-  String? _email;
-  FacebookUserProfile? profile;
+  // final FacebookLogin plugin = FacebookLogin(debug: true);
+  // FacebookAccessToken? _token;
+  // FacebookUserProfile? profile1;
+  // String? _imageUrl;
+  // String? _email;
+  // FacebookUserProfile? profile;
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    updateLoginInfo();
+    // updateLoginInfo();
   }
 
-  Future<void> updateLoginInfo() async {
+ /* Future<void> updateLoginInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final plugin1 = plugin;
     final token = await plugin1.accessToken;
@@ -62,8 +59,8 @@ class LoginScreenController extends GetxController {
     _email = email;
     _imageUrl = imageUrl;
     //});
-  }
-
+  }*/
+/*
   Future googleAuthentication(context) async {
     isLoading(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -94,14 +91,14 @@ class LoginScreenController extends GetxController {
       }
     }
     isLoading(false);
-  }
+  }*/
 
   Future<void> onPressedLogInButton() async {
-    await plugin.logIn(permissions: [
-      FacebookPermission.publicProfile,
-      FacebookPermission.email,
-    ]);
-    await updateLoginInfo();
-    await plugin.logOut();
+    // await plugin.logIn(permissions: [
+    //   FacebookPermission.publicProfile,
+    //   FacebookPermission.email,
+    // ]);
+    // await updateLoginInfo();
+    // await plugin.logOut();
   }
 }
